@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PandaCubeTimer", "PandaCubeTimer\PandaCubeTimer.csproj", "{27055543-F8E8-4432-A8A2-807DE4604FBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27055543-F8E8-4432-A8A2-807DE4604FBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27055543-F8E8-4432-A8A2-807DE4604FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27055543-F8E8-4432-A8A2-807DE4604FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27055543-F8E8-4432-A8A2-807DE4604FBD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

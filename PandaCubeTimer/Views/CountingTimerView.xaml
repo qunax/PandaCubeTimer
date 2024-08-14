@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             x:Class="PandaCubeTimer.Views.CountingTimerView"
+             x:DataType="viewModels:CountingTimerViewModel"
+             x:Name="AnimatedStopwatch">
+    
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="Timer">
+            <MenuFlyoutItem Text="Start Timer" Command="{Binding  StopTimerCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key=" " />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+    
+    <Grid>
+        
+        <Frame Padding="0"
+               BackgroundColor="Transparent"
+               BorderColor="Transparent"
+               HasShadow="False">
+            
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding StopTimerCommand}" />
+            </Frame.GestureRecognizers>
+            
+            <StackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center">
+                
+                <Label Text="{Binding ElapsedTime}"
+                       FontSize="40"
+                       HorizontalOptions="Center"
+                       VerticalTextAlignment="Center"
+                       VerticalOptions="Center"
+                       x:Name="TimeText"
+                       Loaded="TimeText_OnLoaded">
+                </Label>
+                
+            </StackLayout>
+            
+        </Frame>
+        
+    </Grid>
+</ContentPage>

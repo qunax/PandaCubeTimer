@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             x:DataType="viewModels:TimerViewModel"
+             x:Class="PandaCubeTimer.Views.TimerView"
+             Title="Timer">
+    
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="Timer">
+            <MenuFlyoutItem Text="Start Timer" Command="{Binding StartTimerCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key=" " />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+    
+    <Grid >
+        
+        <Frame HeightRequest="400"
+               Padding="0"
+               BackgroundColor="Transparent"
+               HasShadow="False"
+               BorderColor="Transparent">
+            
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding StartTimerCommand}"/>
+            </Frame.GestureRecognizers>
+            
+            <StackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center">
+            
+                <Label Text="{Binding LastSolveTime}"
+                       FontSize="40"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       VerticalTextAlignment="Center"
+                       VerticalOptions="Center"
+                       x:Name="LastTimeSolved"
+                        
+                />
+            
+            </StackLayout>
+            
+        </Frame>
+        
+    </Grid>
+</ContentPage>
