@@ -14,7 +14,6 @@ public partial class CountingTimerView : ContentPage
         InitializeComponent();
         BindingContext = viewModel;
         
-        
     }
 
     private void TimeText_OnLoaded(object? sender, EventArgs e)

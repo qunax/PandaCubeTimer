@@ -5,7 +5,8 @@
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
              x:Class="PandaCubeTimer.Views.CountingTimerView"
              x:DataType="viewModels:CountingTimerViewModel"
-             x:Name="AnimatedStopwatch">
+             x:Name="AnimatedStopwatch"
+             Shell.TabBarIsVisible="False">
     
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Timer">

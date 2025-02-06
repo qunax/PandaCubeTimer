@@ -1,9 +1,7 @@
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PandaCubeTimer.Views;
-using Plugin.Maui.KeyListener;
 
 namespace PandaCubeTimer.ViewModels;
 

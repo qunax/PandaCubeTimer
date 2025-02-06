@@ -5,12 +5,42 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PandaCubeTimer"
     xmlns:views="clr-namespace:PandaCubeTimer.Views"
-    Shell.FlyoutBehavior="Disabled"
+    
     Title="PandaCubeTimer">
-
-    <ShellContent
-        Title="Timer"
-        ContentTemplate="{DataTemplate views:TimerView}"
-        Route="Timer" />
-
+    
+    <FlyoutItem Title="Timer">
+        <ShellContent
+            Title="Timer"
+            ContentTemplate="{DataTemplate views:TimerView}"
+            Route="Timer" />
+        <ShellContent
+            Title="Solves"
+            ContentTemplate="{DataTemplate views:SettingsView}"
+            Route="Solves"/>
+        <ShellContent
+            Title="Stats"
+            ContentTemplate="{DataTemplate views:SettingsView}"
+            Route="Stats"/>
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Trainings">
+        <ShellContent
+            Title="OLL"
+            ContentTemplate="{DataTemplate views:SettingsView}"
+            Route="OLL_Trainings"/>
+        <ShellContent
+            Title="PLL"
+            ContentTemplate="{DataTemplate views:SettingsView}"
+            Route="PLL_Trainings"/>
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Settings">
+        <Tab>
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate views:SettingsView}"
+                Route="Settings"/>
+        </Tab>
+    </FlyoutItem>
+    
 </Shell>
