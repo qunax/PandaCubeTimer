@@ -12,6 +12,9 @@ public partial class AppShell : Shell
         Routing.RegisterRoute($"{nameof(CountingTimerView)}", typeof(CountingTimerView));
         Routing.RegisterRoute($"{nameof(TimerView)}", typeof(TimerView));
         Routing.RegisterRoute($"{nameof(SettingsView)}", typeof(SettingsView));
-
+        Routing.RegisterRoute($"{nameof(OLLTrainingsView)}", typeof(OLLTrainingsView));
+        Routing.RegisterRoute($"{nameof(PLLTrainingsView)}", typeof(PLLTrainingsView));
+        Routing.RegisterRoute($"{nameof(SolvesView)}", typeof(SolvesView));
+        Routing.RegisterRoute($"{nameof(StatsView)}", typeof(StatsView));
     }
 }

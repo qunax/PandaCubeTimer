@@ -21,9 +21,15 @@ public static class MauiProgram
 
         builder.Services.AddTransient<TimerView>();
         builder.Services.AddTransient<CountingTimerView>();
+        builder.Services.AddTransient<SettingsView>();
+        builder.Services.AddTransient<OLLTrainingsView>();
+        builder.Services.AddTransient<PLLTrainingsView>();
+        builder.Services.AddTransient<SolvesView>();
+        builder.Services.AddTransient<StatsView>();
         
         builder.Services.AddTransient<TimerViewModel>();
         builder.Services.AddTransient<CountingTimerViewModel>();
+        builder.Services.AddTransient<SettingsViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();

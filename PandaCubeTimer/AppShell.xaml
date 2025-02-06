@@ -15,22 +15,22 @@
             Route="Timer" />
         <ShellContent
             Title="Solves"
-            ContentTemplate="{DataTemplate views:SettingsView}"
+            ContentTemplate="{DataTemplate views:SolvesView}"
             Route="Solves"/>
         <ShellContent
             Title="Stats"
-            ContentTemplate="{DataTemplate views:SettingsView}"
+            ContentTemplate="{DataTemplate views:StatsView}"
             Route="Stats"/>
     </FlyoutItem>
     
     <FlyoutItem Title="Trainings">
         <ShellContent
             Title="OLL"
-            ContentTemplate="{DataTemplate views:SettingsView}"
+            ContentTemplate="{DataTemplate views:OLLTrainingsView}"
             Route="OLL_Trainings"/>
         <ShellContent
             Title="PLL"
-            ContentTemplate="{DataTemplate views:SettingsView}"
+            ContentTemplate="{DataTemplate views:PLLTrainingsView}"
             Route="PLL_Trainings"/>
     </FlyoutItem>
     
