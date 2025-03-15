@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PandaCubeTimer.Services;
 using PandaCubeTimer.ViewModels;
 using PandaCubeTimer.Views;
 using Plugin.Maui.KeyListener;
@@ -30,6 +31,8 @@ public static class MauiProgram
         builder.Services.AddTransient<TimerViewModel>();
         builder.Services.AddTransient<CountingTimerViewModel>();
         builder.Services.AddTransient<SettingsViewModel>();
+
+        builder.Services.AddSingleton<IKeyboardService, KeyboardService>();
 
 #if DEBUG
         builder.Logging.AddDebug();

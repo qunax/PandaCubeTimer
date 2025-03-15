@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PandaCubeTimer", "PandaCubeTimer\PandaCubeTimer.csproj", "{27055543-F8E8-4432-A8A2-807DE4604FBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TNoodleNET8", "..\TNoodleMAUILib\TNoodleNET8\TNoodleNET8.csproj", "{B713E35A-5598-40BD-942C-C068B9E72599}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,7 +15,15 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{27055543-F8E8-4432-A8A2-807DE4604FBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27055543-F8E8-4432-A8A2-807DE4604FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27055543-F8E8-4432-A8A2-807DE4604FBD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{27055543-F8E8-4432-A8A2-807DE4604FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27055543-F8E8-4432-A8A2-807DE4604FBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B713E35A-5598-40BD-942C-C068B9E72599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B713E35A-5598-40BD-942C-C068B9E72599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B713E35A-5598-40BD-942C-C068B9E72599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B713E35A-5598-40BD-942C-C068B9E72599}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

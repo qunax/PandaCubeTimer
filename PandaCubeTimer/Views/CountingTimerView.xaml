@@ -10,7 +10,7 @@
     
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Timer">
-            <MenuFlyoutItem Text="Start Timer" Command="{Binding  StopTimerCommand}">
+            <MenuFlyoutItem Text="Stop Timer" Command="{Binding  StopTimerCommand}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key=" " />
                 </MenuFlyoutItem.KeyboardAccelerators>

@@ -11,7 +11,7 @@
         <MenuBarItem Text="Timer">
             <MenuFlyoutItem Text="Start Timer" Command="{Binding StartTimerCommand}">
                 <MenuFlyoutItem.KeyboardAccelerators>
-                    <KeyboardAccelerator Key=" " />
+                    <KeyboardAccelerator Key=" " Modifiers="None"/>
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
 
@@ -19,33 +19,40 @@
     </ContentPage.MenuBarItems>
     
     <Grid >
-        
-        <Frame HeightRequest="400"
-               Padding="0"
-               BackgroundColor="Transparent"
-               HasShadow="False"
-               BorderColor="Transparent">
+        <VerticalStackLayout>
+            <Label Text="{Binding Scramble}"
+                   HeightRequest="200"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"/>
             
-            <Frame.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding StartTimerCommand}"/>
-            </Frame.GestureRecognizers>
-            
-            <StackLayout HorizontalOptions="Center"
-                         VerticalOptions="Center">
-            
-                <Label Text="{Binding LastSolveTime}"
-                       FontSize="40"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center"
-                       VerticalTextAlignment="Center"
-                       VerticalOptions="Center"
-                       x:Name="LastTimeSolved"
-                        
-                />
-            
-            </StackLayout>
-            
-        </Frame>
+            <Frame HeightRequest="400"
+        Padding="0"
+        BackgroundColor="Transparent"
+        HasShadow="False"
+        BorderColor="Transparent">
+
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding StartTimerCommand}"/>
+                </Frame.GestureRecognizers>
+
+                <StackLayout HorizontalOptions="Center"
+                  VerticalOptions="Center">
+
+                    <Label Text="{Binding LastSolveTime}"
+                FontSize="40"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                VerticalTextAlignment="Center"
+                VerticalOptions="Center"
+                x:Name="LastTimeSolved"
+                 
+         />
+
+                </StackLayout>
+
+            </Frame>
+        </VerticalStackLayout>
+       
         
     </Grid>
 </ContentPage>
