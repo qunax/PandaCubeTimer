@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PandaCubeTimer.Services;
 using PandaCubeTimer.Views;
-using SharpHook;
-using SharpHook.Native;
-using SharpHook.Reactive;
 using TNoodle.Puzzles;
+// using SharpHook;
+// using SharpHook.Native;
+// using SharpHook.Reactive;
+
 
 namespace PandaCubeTimer.ViewModels;
 
@@ -25,7 +25,7 @@ public partial class TimerViewModel : BaseViewModel
     
 
 
-    public TimerViewModel(IKeyboardService keyboardService)
+    public TimerViewModel(/*IKeyboardService keyboardService*/)
     {
         //_keyboardService = keyboardService;
 
@@ -50,17 +50,17 @@ public partial class TimerViewModel : BaseViewModel
         //_hook.RunAsync();
     }
 
-    private void  Hook_KeyPressed(object? sender, SharpHook.KeyboardHookEventArgs e)
-    {
-        switch (e.Data.KeyCode)
-        {
-            case KeyCode.VcSpace:
-                StartTimerCommand.Execute(null);
-                break;
-            default:
-                break;
-        }
-    }
+    // private void  Hook_KeyPressed(object? sender, SharpHook.KeyboardHookEventArgs e)
+    // {
+    //     switch (e.Data.KeyCode)
+    //     {
+    //         case KeyCode.VcSpace:
+    //             StartTimerCommand.Execute(null);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 
     [RelayCommand]
     private async Task StartTimerAsync()
