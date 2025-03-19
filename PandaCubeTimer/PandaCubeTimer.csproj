@@ -67,7 +67,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\TNoodleMAUILib\TNoodleNET8\TNoodleNET8.csproj" />
+      <ProjectReference Include="..\TNoodleMaui\TNoodleMaui.csproj" />
     </ItemGroup>
 
 </Project>
