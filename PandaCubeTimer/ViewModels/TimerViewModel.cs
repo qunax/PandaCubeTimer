@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PandaCubeTimer.Data;
+using PandaCubeTimer.Models;
 using PandaCubeTimer.Views;
 using TNoodle.Puzzles;
 // using SharpHook;
@@ -23,11 +25,14 @@ public partial class TimerViewModel : BaseViewModel
     [ObservableProperty]
     private string _lastSolveTime;
     
+    private readonly CubeTimerDb _cubeTimerDb;
 
 
-    public TimerViewModel(/*IKeyboardService keyboardService*/)
+    public TimerViewModel(/*IKeyboardService keyboardService*/CubeTimerDb db)
     {
         //_keyboardService = keyboardService;
+        _cubeTimerDb = db;
+
 
         _lastSolveTime = "Tap to start";
 
@@ -65,6 +70,7 @@ public partial class TimerViewModel : BaseViewModel
     [RelayCommand]
     private async Task StartTimerAsync()
     {
+        List<PuzzleSolve> test = await _cubeTimerDb.Connection.Table<PuzzleSolve>().ToListAsync();
         if (IsBusy)
             return;
 
@@ -87,7 +93,7 @@ public partial class TimerViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void GenerateScramble()
+    private async Task GenerateScramble()
     {
         Puzzle puzzle = new ThreeByThreeCubePuzzle();
         Random random = new Random(2017);

@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+using SQLite;
 
 namespace PandaCubeTimer.Models;
 
 public class Discipline
 {
-    [Key]
+    [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
     /// <summary>

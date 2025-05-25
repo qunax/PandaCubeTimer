@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data;
 using PandaCubeTimer.ViewModels;
 using PandaCubeTimer.Views;
@@ -21,7 +20,10 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        builder.Services.AddDbContext<AppDbContext>();
+        //string dbPath = Path.Combine(FileSystem.AppDataDirectory, "pandacubetimer.db");
+        //builder.Services.AddDbContext<AppDbContext>();
+        //builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite($"Filename={dbPath}"));
+        builder.Services.AddSingleton<CubeTimerDb>();
 
         builder.Services.AddTransient<TimerView>();
         builder.Services.AddTransient<CountingTimerView>();
@@ -43,9 +45,9 @@ public static class MauiProgram
         var app = builder.Build();
         
         // Ensure database is created
-        using var scope = app.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        db.Database.EnsureCreated();
+        //using var scope = app.Services.CreateScope();
+        //var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        //db.Database.EnsureCreated();
 
         return app;
     }

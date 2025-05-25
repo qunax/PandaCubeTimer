@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PandaCubeTimer.Data;
+using PandaCubeTimer.Models;
 using PandaCubeTimer.Views;
 
 namespace PandaCubeTimer.ViewModels;
@@ -20,10 +22,13 @@ public partial class CountingTimerViewModel : BaseViewModel
     [ObservableProperty]
     private string _elapsedTime;
 
+    private readonly CubeTimerDb _cubeTimerDb;
 
 
-    public CountingTimerViewModel()
+
+    public CountingTimerViewModel(CubeTimerDb database)
     {
+        _cubeTimerDb = database;
         Start();
     }
 
@@ -35,6 +40,17 @@ public partial class CountingTimerViewModel : BaseViewModel
         Stop();
         try
         {
+            PuzzleSolve currentSolve = new PuzzleSolve() { 
+                Discipline = "3x3",
+                SessionId = 0,
+                SolveTime = _stopwatch.Elapsed.TotalMicroseconds,
+                IsPlusTwo = false,
+                IsDNF = false,
+                Scramble = "test Scramble",
+                DateTime = DateTime.Now,
+                Comment = "test comment"
+            };
+            await _cubeTimerDb.Connection.InsertAsync(currentSolve);
             await Shell.Current.GoToAsync($"..", false, new Dictionary<string, object>
             {
                 {"LastSolveTime", _elapsedTime}
