@@ -22,6 +22,7 @@ Global
 		{FB55ABD3-FFDB-E08A-32CA-518C271A865D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB55ABD3-FFDB-E08A-32CA-518C271A865D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB55ABD3-FFDB-E08A-32CA-518C271A865D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB55ABD3-FFDB-E08A-32CA-518C271A865D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
