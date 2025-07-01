@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using MauiIcons.Core;
 using PandaCubeTimer.ViewModels;
 using Plugin.Maui.KeyListener;
 
@@ -26,6 +27,8 @@ public partial class TimerView : ContentPage
         //     Debug.WriteLine($"KeyUp: {args.Keys.ToString()}");
         //     Debug.WriteLine($"KeyUp Char: {args.KeyChar}");
         // };
+        
+        _ = new MauiIcon(); //done for making visible to page because of bug marked by the author of the nuget
     }
     
     protected override void OnNavigatedTo(NavigatedToEventArgs args)

@@ -47,7 +47,6 @@ public partial class TimerViewModel : BaseViewModel
         //     Debug.WriteLine($"KeyUp: {args.Keys.ToString()}");
         //     Debug.WriteLine($"KeyUp Char: {args.KeyChar}");
         // };
-        GenerateScrambleCommand.Execute(null);
 
         //_keyboardService.Hook.KeyPressed += Hook_KeyPressed;
         //_hook = new TaskPoolGlobalHook();

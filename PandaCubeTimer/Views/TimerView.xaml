@@ -3,6 +3,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              x:DataType="viewModels:TimerViewModel"
              x:Class="PandaCubeTimer.Views.TimerView"
              Title="Timer">
@@ -20,10 +22,28 @@
     
     <Grid >
         <VerticalStackLayout>
-            <Label Text="{Binding Scramble}"
-                   HeightRequest="200"
-                   HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Center"/>
+            <HorizontalStackLayout HorizontalOptions="End"
+                                   VerticalOptions="Fill"
+                                   Padding="10">
+                <Label x:Name="ScrambleText"
+                       Text="{Binding Scramble}"
+                       HeightRequest="200"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center">
+                    <Label.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="Loaded"
+                            Command="{Binding GenerateScrambleCommand}"/>
+                    </Label.Behaviors>    
+                </Label>
+                <Button Text="{mi:Material Refresh, IconSize=Large}" 
+                        Command="{Binding GenerateScrambleCommand}"
+                        MaximumWidthRequest="50"
+                        MaximumHeightRequest="50"
+                        Margin="5"
+                        Padding="0"/>
+
+            </HorizontalStackLayout>
             
             <Frame HeightRequest="400"
         Padding="0"

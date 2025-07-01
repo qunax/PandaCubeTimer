@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using MauiIcons.Material;
+using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data;
 using PandaCubeTimer.ViewModels;
 using PandaCubeTimer.Views;
@@ -13,6 +15,8 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
+            .UseMaterialMauiIcons()
             .UseKeyListener()
             .ConfigureFonts(fonts =>
             {
