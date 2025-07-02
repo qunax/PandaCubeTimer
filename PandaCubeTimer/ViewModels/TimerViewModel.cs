@@ -69,7 +69,7 @@ public partial class TimerViewModel : BaseViewModel
     [RelayCommand]
     private async Task StartTimerAsync()
     {
-        List<PuzzleSolve> test = await _cubeTimerDb.Connection.Table<PuzzleSolve>().ToListAsync();
+         List<PuzzleSolve> test = await _cubeTimerDb.Connection.Table<PuzzleSolve>().ToListAsync();
         if (IsBusy)
             return;
 
@@ -94,11 +94,14 @@ public partial class TimerViewModel : BaseViewModel
     [RelayCommand]
     private async Task GenerateScramble()
     {
-        Puzzle puzzle = new ThreeByThreeCubePuzzle();
-        Random random = new Random(2017);
+        await Task.Run(() =>
+        {
+            Puzzle puzzle = new ThreeByThreeCubePuzzle();
+            Random random = new Random(2017);
 
-        string scramble = puzzle.GenerateWcaScramble(random);
-        Scramble = scramble;
+            string scramble = puzzle.GenerateWcaScramble(random);
+            Scramble = scramble;
+        });
     }
 
 

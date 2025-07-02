@@ -16,20 +16,24 @@
                     <KeyboardAccelerator Key=" " Modifiers="None"/>
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-
+            <MenuFlyoutItem Text="Generate New Scramble" Command="{Binding GenerateScrambleCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="G" Modifiers="Shift"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
     
     <Grid >
-        <VerticalStackLayout>
-            <HorizontalStackLayout HorizontalOptions="End"
-                                   VerticalOptions="Fill"
-                                   Padding="10">
+        <VerticalStackLayout VerticalOptions="Center"
+                             HorizontalOptions="Center">
+            <VerticalStackLayout HeightRequest="200"
+                                 Margin="0, 20, 0, 0">
                 <Label x:Name="ScrambleText"
                        Text="{Binding Scramble}"
-                       HeightRequest="200"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center">
+                       VerticalTextAlignment="Center"
+                       FontSize="18">
                     <Label.Behaviors>
                         <toolkit:EventToCommandBehavior
                             EventName="Loaded"
@@ -38,12 +42,12 @@
                 </Label>
                 <Button Text="{mi:Material Refresh, IconSize=Large}" 
                         Command="{Binding GenerateScrambleCommand}"
-                        MaximumWidthRequest="50"
-                        MaximumHeightRequest="50"
-                        Margin="5"
+                        MaximumWidthRequest="60"
+                        MaximumHeightRequest="60"
+                        Margin="10"
                         Padding="0"/>
 
-            </HorizontalStackLayout>
+            </VerticalStackLayout>
             
             <Frame HeightRequest="400"
         Padding="0"
