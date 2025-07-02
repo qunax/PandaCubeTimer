@@ -2,8 +2,78 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PandaCubeTimer.Views.SolvesView">
-    <ContentPage.Content>
-        <Label>All Solves</Label>
-    </ContentPage.Content>
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             xmlns:models="clr-namespace:PandaCubeTimer.Models"
+             x:Class="PandaCubeTimer.Views.SolvesView"
+             x:DataType="viewModels:SolvesViewModel"
+             Title="Solves">
+    
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding LoadSolvesCommand}"/>
+    </ContentPage.Behaviors>
+    
+    <Grid Padding="5">
+        
+        <RefreshView Command="{Binding LoadSolvesCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
+            <CollectionView Background="Transparent"
+                            ItemsSource="{Binding PuzzleSolves}">
+                
+                <CollectionView.EmptyView>
+                    <Label Text="No solves made yet. Try your first one!"
+                           FontSize="20"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center" />
+                </CollectionView.EmptyView>
+                
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="3" />
+                </CollectionView.ItemsLayout>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:PuzzleSolve">
+                        
+                        <Grid Padding="3">
+                            
+                            <Frame HeightRequest="60"
+                                   Padding="0">
+                                
+                                <!-- TODO: click on solve to see details and edit -->
+                                <!-- <Frame.GestureRecognizers> -->
+                                <!--     <TapGestureRecognizer CommandParameter="{Binding SolveId}" -->
+                                <!--                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SolvesViewModel}}, Path=GoToSolveDetailsCommand  }"/> -->
+                                <!-- </Frame.GestureRecognizers> -->
+                                
+                                <Grid Padding="0"
+                                      Background="{AppThemeBinding Light=White, Dark=#171717}">
+                                    <Label Text="{Binding SolveTimeString}"
+                                           Padding="0"
+                                           FontAutoScalingEnabled="True"
+                                           FontAttributes="Bold"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"/>
+                                </Grid>
+                                
+                            </Frame>
+                            
+                        </Grid>
+                        
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                
+            </CollectionView>
+        </RefreshView>
+    
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="CenterAndExpand"/>   
+        
+    </Grid>
 </ContentPage>

@@ -11,16 +11,19 @@
     
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Timer">
+            
             <MenuFlyoutItem Text="Start Timer" Command="{Binding StartTimerCommand}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key=" " Modifiers="None"/>
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
+            
             <MenuFlyoutItem Text="Generate New Scramble" Command="{Binding GenerateScrambleCommand}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="G" Modifiers="Shift"/>
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
+            
         </MenuBarItem>
     </ContentPage.MenuBarItems>
     

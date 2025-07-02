@@ -35,6 +35,7 @@ public static class MauiProgram
         builder.Services.AddTransient<TimerViewModel>();
         builder.Services.AddTransient<CountingTimerViewModel>();
         builder.Services.AddTransient<SettingsViewModel>();
+        builder.Services.AddTransient<SolvesViewModel>();
         
 #if DEBUG
         builder.Logging.AddDebug();

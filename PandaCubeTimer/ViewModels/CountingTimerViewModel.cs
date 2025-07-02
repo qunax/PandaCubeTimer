@@ -43,7 +43,7 @@ public partial class CountingTimerViewModel : BaseViewModel
             PuzzleSolve currentSolve = new PuzzleSolve() { 
                 Discipline = "3x3",
                 SessionId = 0,
-                SolveTime = _stopwatch.Elapsed.TotalMicroseconds,
+                SolveTime = _stopwatch.Elapsed.TotalSeconds,
                 IsPlusTwo = false,
                 IsDNF = false,
                 Scramble = "test Scramble",
