@@ -51,7 +51,7 @@ public partial class CountingTimerViewModel : BaseViewModel
                 Comment = "test comment"
             };
             await _cubeTimerDb.Connection.InsertAsync(currentSolve);
-            await Shell.Current.GoToAsync($"..", false, new Dictionary<string, object>
+            await Shell.Current.GoToAsync($"{nameof(TimerView)}", false, new Dictionary<string, object>
             {
                 {"LastSolveTime", _elapsedTime}
             });

@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data;
 using PandaCubeTimer.ViewModels;
 using PandaCubeTimer.Views;
-using Plugin.Maui.KeyListener;
 
 namespace PandaCubeTimer;
 
@@ -17,16 +16,12 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .UseMaterialMauiIcons()
-            .UseKeyListener()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        //string dbPath = Path.Combine(FileSystem.AppDataDirectory, "pandacubetimer.db");
-        //builder.Services.AddDbContext<AppDbContext>();
-        //builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite($"Filename={dbPath}"));
         builder.Services.AddSingleton<CubeTimerDb>();
 
         builder.Services.AddTransient<TimerView>();
@@ -40,8 +35,6 @@ public static class MauiProgram
         builder.Services.AddTransient<TimerViewModel>();
         builder.Services.AddTransient<CountingTimerViewModel>();
         builder.Services.AddTransient<SettingsViewModel>();
-
-        //builder.Services.AddSingleton<IKeyboardService, KeyboardService>();
         
 #if DEBUG
         builder.Logging.AddDebug();

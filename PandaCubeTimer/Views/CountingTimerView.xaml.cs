@@ -1,13 +1,10 @@
 using System.Diagnostics;
 using PandaCubeTimer.ViewModels;
-using Plugin.Maui.KeyListener;
 
 namespace PandaCubeTimer.Views;
 
 public partial class CountingTimerView : ContentPage
 {
-    
-    
     
     public CountingTimerView(CountingTimerViewModel viewModel)
     {
