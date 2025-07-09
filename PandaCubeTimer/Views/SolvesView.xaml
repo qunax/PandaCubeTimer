@@ -38,15 +38,13 @@
                     <DataTemplate x:DataType="models:PuzzleSolve">
                         
                         <Grid Padding="3">
-                            
                             <Frame HeightRequest="60"
                                    Padding="0">
                                 
-                                <!-- TODO: click on solve to see details and edit -->
-                                <!-- <Frame.GestureRecognizers> -->
-                                <!--     <TapGestureRecognizer CommandParameter="{Binding SolveId}" -->
-                                <!--                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SolvesViewModel}}, Path=GoToSolveDetailsCommand  }"/> -->
-                                <!-- </Frame.GestureRecognizers> -->
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding}"
+                                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SolvesViewModel}}, Path=SelectPuzzleSolveCommand  }"/>
+                                </Frame.GestureRecognizers>
                                 
                                 <Grid Padding="0"
                                       Background="{AppThemeBinding Light=White, Dark=#171717}">
@@ -61,7 +59,6 @@
                                 </Grid>
                                 
                             </Frame>
-                            
                         </Grid>
                         
                     </DataTemplate>
@@ -69,6 +66,27 @@
                 
             </CollectionView>
         </RefreshView>
+        
+        <Grid IsVisible="{Binding IsOverlayVisible}">
+            
+            
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ClosePuzzleSolveCommand}"/>
+            </Grid.GestureRecognizers>
+            
+            <Frame VerticalOptions="Center"
+                   HorizontalOptions="Center" 
+                   WidthRequest="300" 
+                   HeightRequest="400" 
+                   Padding="20">
+                <StackLayout>
+                    <Label Text="{Binding SelectedPuzzleSolve.Scramble}"/>
+                    <Label Text="{Binding SelectedPuzzleSolve.SolveTimeString}"/>
+                    <Label Text="{Binding SelectedPuzzleSolve.DateTime}"/>
+                </StackLayout>
+            </Frame>
+            
+        </Grid>
     
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}"

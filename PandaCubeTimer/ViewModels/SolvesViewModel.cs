@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PandaCubeTimer.Data;
@@ -12,9 +13,15 @@ public partial class SolvesViewModel : BaseViewModel
     
     [ObservableProperty]
     private ObservableCollection<PuzzleSolve>? _puzzleSolves;
-
+    
     [ObservableProperty] 
     private bool _isRefreshing;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsOverlayVisible))]
+    private PuzzleSolve? _selectedPuzzleSolve;
+    
+    public bool IsOverlayVisible => _selectedPuzzleSolve != null;
     
     
     
@@ -46,6 +53,18 @@ public partial class SolvesViewModel : BaseViewModel
             IsBusy = false;
             IsRefreshing = false;
         }
+    }
+
+    [RelayCommand]
+    private void SelectPuzzleSolve(PuzzleSolve selectedSolve)
+    {
+        SelectedPuzzleSolve = selectedSolve;
+    }
+
+    [RelayCommand]
+    private void ClosePuzzleSolve()
+    {
+        SelectedPuzzleSolve = null;
     }
     
     
