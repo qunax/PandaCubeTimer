@@ -27,13 +27,7 @@ public class PuzzleSolve
     /// <summary>
     /// Time in which puzzle was solved
     /// </summary>
-    public double SolveTime { get; set; }
-
-    /// <summary>
-    /// SolveTime to display
-    /// </summary>
-    [Ignore]
-    public string SolveTimeString => SolveTime.ToString("F");
+    public double SolveTimeSeconds { get; set; }
     
     /// <summary>
     /// Penalty

@@ -6,9 +6,15 @@
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
              xmlns:models="clr-namespace:PandaCubeTimer.Models"
+             xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              x:Class="PandaCubeTimer.Views.SolvesView"
              x:DataType="viewModels:SolvesViewModel"
              Title="Solves">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:SolveTimeConverter x:Key="SolveTimeConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding LoadSolvesCommand}"/>
@@ -46,9 +52,11 @@
                                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SolvesViewModel}}, Path=SelectPuzzleSolveCommand  }"/>
                                 </Frame.GestureRecognizers>
                                 
-                                <Grid Padding="0"
+                                <VerticalStackLayout Padding="0"
+                                                     HorizontalOptions="Center"
+                                                     VerticalOptions="Center"
                                       Background="{AppThemeBinding Light=White, Dark=#171717}">
-                                    <Label Text="{Binding SolveTimeString}"
+                                    <Label Text="{Binding SolveTimeSeconds, Converter={StaticResource SolveTimeConverter}}"
                                            Padding="0"
                                            FontAutoScalingEnabled="True"
                                            FontAttributes="Bold"
@@ -56,7 +64,16 @@
                                            VerticalTextAlignment="Center"
                                            HorizontalOptions="Center"
                                            VerticalOptions="Center"/>
-                                </Grid>
+                                    
+                                    <Label Text="{Binding DateTime, StringFormat='{0:MMM dd, yyyy}'}"
+                                           VerticalOptions="Center"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalOptions="Center"
+                                           HorizontalTextAlignment="Center"
+                                           FontAttributes="Italic"
+                                           FontSize="8"
+                                           Margin="5, 3, 0, 0"/>
+                                </VerticalStackLayout>
                                 
                             </Frame>
                         </Grid>
@@ -81,7 +98,7 @@
                    Padding="20">
                 <StackLayout>
                     <Label Text="{Binding SelectedPuzzleSolve.Scramble}"/>
-                    <Label Text="{Binding SelectedPuzzleSolve.SolveTimeString}"/>
+                    <Label Text="{Binding SelectedPuzzleSolve.SolveTimeSeconds, Converter={StaticResource SolveTimeConverter}}"/>
                     <Label Text="{Binding SelectedPuzzleSolve.DateTime}"/>
                 </StackLayout>
             </Frame>
