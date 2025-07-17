@@ -60,7 +60,7 @@ public partial class TimerViewModel : BaseViewModel
         await Task.Run(() =>
         {
             Puzzle puzzle = new ThreeByThreeCubePuzzle();
-            Random random = new Random(2017);
+            Random random = new Random();
 
             string scramble = puzzle.GenerateWcaScramble(random);
             Scramble = scramble;

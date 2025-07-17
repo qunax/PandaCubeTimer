@@ -43,6 +43,9 @@ bld/
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 
+# Visual Studio Code auto generated files
+.vscode/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -386,7 +389,7 @@ FodyWeavers.xsd
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
-!.vscode/launch.json
+.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
 
