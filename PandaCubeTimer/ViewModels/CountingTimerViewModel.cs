@@ -2,6 +2,7 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PandaCubeTimer.Data;
+using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Views;
 
@@ -51,10 +52,9 @@ public partial class CountingTimerViewModel : BaseViewModel
                 Comment = "test comment"
             };
             await _cubeTimerDb.Connection.InsertAsync(currentSolve);
-            await Shell.Current.GoToAsync($"{nameof(TimerView)}", false, new Dictionary<string, object>
-            {
-                {"LastSolveTime", _elapsedTime}
-            });
+            
+            LastSolveTimeStore.LastSolveTime = ElapsedTime;
+            await Shell.Current.GoToAsync($"{nameof(TimerView)}", false);
         }
         catch (Exception ex)
         {
@@ -78,7 +78,7 @@ public partial class CountingTimerViewModel : BaseViewModel
 
         IsRunning = true;
 
-        Device.StartTimer(TimeSpan.FromMilliseconds(100), () =>
+        Device.StartTimer(TimeSpan.FromMilliseconds(10), () =>
         {
             Device.BeginInvokeOnMainThread(() =>
             {

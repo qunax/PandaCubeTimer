@@ -36,7 +36,7 @@
                        Text="{Binding Scramble}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
-                       FontSize="18">
+                       FontSize="25">
                     <Label.Behaviors>
                         <toolkit:EventToCommandBehavior
                             EventName="Loaded"

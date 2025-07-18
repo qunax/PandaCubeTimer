@@ -2,6 +2,7 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PandaCubeTimer.Data;
+using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Views;
 using TNoodle.Puzzles;
@@ -24,7 +25,9 @@ public partial class TimerViewModel : BaseViewModel
     public TimerViewModel(CubeTimerDb db)
     {
         _cubeTimerDb = db;
-        _lastSolveTime = "Tap to start";
+        _lastSolveTime = LastSolveTimeStore.LastSolveTime ??  "Tap to start";
+        
+        ClearNavStack();
     }
     
     
@@ -65,5 +68,18 @@ public partial class TimerViewModel : BaseViewModel
             string scramble = puzzle.GenerateWcaScramble(random);
             Scramble = scramble;
         });
+    }
+
+
+    /// <summary>
+    /// Resets Shell completely for disabling navigation back from this page. 
+    /// </summary>
+    private void ClearNavStack()
+    {
+        var stack = Shell.Current.Navigation.NavigationStack.ToArray();
+        if (stack.Length > 1)
+        {
+            Application.Current.MainPage = new AppShell();
+        }
     }
 }
