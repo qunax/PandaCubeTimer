@@ -53,7 +53,11 @@ public partial class CountingTimerViewModel : BaseViewModel
             };
             await _cubeTimerDb.Connection.InsertAsync(currentSolve);
             
-            LastSolveTimeStore.LastSolveTime = ElapsedTime;
+            // check if solve is in database and refreshing it (why not)
+            // passing it as a parameter back to TimerViewModel for display and further manipulation
+            //var test = await _cubeTimerDb.Connection.Table<PuzzleSolve>().ToListAsync();
+            PuzzleSolve checkedFromDb = await _cubeTimerDb.Connection.Table<PuzzleSolve>().Where(x => x.Id == currentSolve.Id).FirstAsync();
+            LastSolveStore.LastPuzzleSolve = checkedFromDb;
             await Shell.Current.GoToAsync($"{nameof(TimerView)}", false);
         }
         catch (Exception ex)
@@ -66,8 +70,6 @@ public partial class CountingTimerViewModel : BaseViewModel
         {
             
         }
-        
-
     }
     
     

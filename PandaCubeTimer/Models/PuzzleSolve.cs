@@ -6,7 +6,7 @@ namespace PandaCubeTimer.Models;
 public class PuzzleSolve
 {   
     [PrimaryKey, AutoIncrement]
-    public int SolveId { get; set; }
+    public int Id { get; set; }
 
     /// <summary>
     /// Puzzle to which this solve is belong

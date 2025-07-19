@@ -17,6 +17,11 @@ namespace PandaCubeTimer.Data
         public CubeTimerDb()
         {
             _connection = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
+            
+            // for migration while developing 🤷 
+            // _connection.DropTableAsync<PuzzleSolve>();
+            // _connection.DropTableAsync<Session>();
+            // _connection.DropTableAsync<Discipline>();
 
             _connection.CreateTableAsync<Session>();
             _connection.CreateTableAsync<PuzzleSolve>();

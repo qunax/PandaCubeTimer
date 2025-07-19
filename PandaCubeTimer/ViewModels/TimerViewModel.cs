@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PandaCubeTimer.Converters;
 using PandaCubeTimer.Data;
 using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Models;
@@ -10,22 +11,42 @@ using TNoodle.Puzzles;
 
 namespace PandaCubeTimer.ViewModels;
 
-[QueryProperty($"{nameof(TimerViewModel.LastSolveTime)}", "LastSolveTime")]
 public partial class TimerViewModel : BaseViewModel
 {
+    private const string DEFAULT_TIME_TEXT = "Tap to start";
+    
+    
+    private SolveTimeConverter _solveTimeConverter;
+    private readonly CubeTimerDb _cubeTimerDb;
+    
     [ObservableProperty]
     private string _scramble = null!;
     
     [ObservableProperty]
-    private string _lastSolveTime;
+    [NotifyPropertyChangedFor(nameof(ArePenaltiesVisible))]
+    [NotifyPropertyChangedFor(nameof(TimeTextToDisplay))]
+    private PuzzleSolve? _currentlyMadeSolve;
     
-    private readonly CubeTimerDb _cubeTimerDb;
+    public string TimeTextToDisplay
+    {
+        get
+        {
+            if(CurrentlyMadeSolve is null)
+                return DEFAULT_TIME_TEXT;
+
+            return _solveTimeConverter?.DoubleToStringSeconds(CurrentlyMadeSolve?.SolveTimeSeconds) ?? "Unexpected Error Occured";
+        }
+    }
+
+    public bool ArePenaltiesVisible => CurrentlyMadeSolve != null;
 
 
+    
     public TimerViewModel(CubeTimerDb db)
     {
+        _solveTimeConverter = new SolveTimeConverter(); 
         _cubeTimerDb = db;
-        _lastSolveTime = LastSolveTimeStore.LastSolveTime ??  "Tap to start";
+        _currentlyMadeSolve = LastSolveStore.LastPuzzleSolve;
         
         ClearNavStack();
     }
@@ -35,7 +56,7 @@ public partial class TimerViewModel : BaseViewModel
     [RelayCommand]
     private async Task StartTimerAsync()
     {
-         List<PuzzleSolve> test = await _cubeTimerDb.Connection.Table<PuzzleSolve>().ToListAsync();
+         //List<PuzzleSolve> test = await _cubeTimerDb.Connection.Table<PuzzleSolve>().ToListAsync();
         if (IsBusy)
             return;
 
@@ -68,6 +89,36 @@ public partial class TimerViewModel : BaseViewModel
             string scramble = puzzle.GenerateWcaScramble(random);
             Scramble = scramble;
         });
+    }
+
+    [RelayCommand]
+    private async Task PenalizeLastSolve(SolvePenalty penalty)
+    {
+        PuzzleSolve currentlyMadeSolve = await _cubeTimerDb.Connection.Table<PuzzleSolve>().OrderBy(s => s.DateTime).FirstOrDefaultAsync();
+        if (CurrentlyMadeSolve == null)
+            return;
+        
+        switch (penalty)
+        {
+            case SolvePenalty.NoPenalty:
+                CurrentlyMadeSolve.IsPlusTwo = false;
+                CurrentlyMadeSolve.IsDNF = false;
+                break;
+            case SolvePenalty.DNF:
+                CurrentlyMadeSolve.IsPlusTwo = false;
+                CurrentlyMadeSolve.IsDNF = true;
+                break;
+            case SolvePenalty.PlusTwo:
+                CurrentlyMadeSolve.IsPlusTwo = true;
+                CurrentlyMadeSolve.IsDNF = false;
+                break;
+            case SolvePenalty.Delete:
+                await _cubeTimerDb.Connection.DeleteAsync(CurrentlyMadeSolve!);
+                CurrentlyMadeSolve = null;
+                return;
+        }
+
+        await _cubeTimerDb.Connection.UpdateAsync(CurrentlyMadeSolve);
     }
 
 

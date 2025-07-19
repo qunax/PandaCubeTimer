@@ -46,7 +46,7 @@ public partial class SolvesViewModel : BaseViewModel
         catch (Exception exception)
         {
             await Shell.Current.DisplayAlert("Error!", 
-                $"Unable to load monkeys:{exception.Message}", "Ok");
+                $"Unable to load solves: {exception.Message}", "Ok");
         }
         finally
         {
@@ -66,7 +66,6 @@ public partial class SolvesViewModel : BaseViewModel
     {
         SelectedPuzzleSolve = null;
     }
-    
     
     
     private async Task LoadSolvesFromDbAsync()
