@@ -14,8 +14,8 @@ public partial class CountingTimerViewModel : BaseViewModel
     //[NotifyPropertyChangedFor(nameof(CurrentCountingTime))]
     private Stopwatch _stopwatch = new();
     
-    [ObservableProperty]
-    private TimeSpan _elapsed;
+    // [ObservableProperty]
+    // private TimeSpan _elapsed;
 
     [ObservableProperty]
     private bool _isRunning;
@@ -44,7 +44,7 @@ public partial class CountingTimerViewModel : BaseViewModel
             PuzzleSolve currentSolve = new PuzzleSolve() { 
                 Discipline = "3x3",
                 SessionId = 0,
-                SolveTimeSeconds = _stopwatch.Elapsed.TotalSeconds,
+                SolveTimeSeconds = Stopwatch.Elapsed.TotalSeconds,
                 IsPlusTwo = false,
                 IsDNF = false,
                 Scramble = "test Scramble",
@@ -76,7 +76,7 @@ public partial class CountingTimerViewModel : BaseViewModel
     
     private void Start()
     {
-        _stopwatch.Restart();
+        Stopwatch.Restart();
 
         IsRunning = true;
 
@@ -84,9 +84,9 @@ public partial class CountingTimerViewModel : BaseViewModel
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                ElapsedTime = FormatElapsedTime(_stopwatch.Elapsed);
+                ElapsedTime = FormatElapsedTime(Stopwatch.Elapsed);
             });
-            return _isRunning;
+            return IsRunning;
         });
     }
 
@@ -94,7 +94,7 @@ public partial class CountingTimerViewModel : BaseViewModel
     
     private void Stop()
     {
-        _stopwatch.Stop();
+        Stopwatch.Stop();
         IsRunning = false;
     }
     

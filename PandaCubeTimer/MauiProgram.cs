@@ -25,6 +25,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<CubeTimerDb>();
 
         builder.Services.AddTransient<TimerView>();
+        builder.Services.AddTransient<InspectionView>();
         builder.Services.AddTransient<CountingTimerView>();
         builder.Services.AddTransient<SettingsView>();
         builder.Services.AddTransient<OLLTrainingsView>();
@@ -33,6 +34,7 @@ public static class MauiProgram
         builder.Services.AddTransient<StatsView>();
         
         builder.Services.AddTransient<TimerViewModel>();
+        builder.Services.AddTransient<InspectionViewModel>();
         builder.Services.AddTransient<CountingTimerViewModel>();
         builder.Services.AddTransient<SettingsViewModel>();
         builder.Services.AddTransient<SolvesViewModel>();

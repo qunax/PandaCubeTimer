@@ -63,7 +63,7 @@ public partial class TimerViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(CountingTimerView)}", false);
+            await Shell.Current.GoToAsync($"{nameof(InspectionView)}", false);
             //Dispose();
         }
         catch (Exception ex)
@@ -94,31 +94,49 @@ public partial class TimerViewModel : BaseViewModel
     [RelayCommand]
     private async Task PenalizeLastSolve(SolvePenalty penalty)
     {
-        PuzzleSolve currentlyMadeSolve = await _cubeTimerDb.Connection.Table<PuzzleSolve>().OrderBy(s => s.DateTime).FirstOrDefaultAsync();
-        if (CurrentlyMadeSolve == null)
+        if (IsBusy)
             return;
-        
-        switch (penalty)
-        {
-            case SolvePenalty.NoPenalty:
-                CurrentlyMadeSolve.IsPlusTwo = false;
-                CurrentlyMadeSolve.IsDNF = false;
-                break;
-            case SolvePenalty.DNF:
-                CurrentlyMadeSolve.IsPlusTwo = false;
-                CurrentlyMadeSolve.IsDNF = true;
-                break;
-            case SolvePenalty.PlusTwo:
-                CurrentlyMadeSolve.IsPlusTwo = true;
-                CurrentlyMadeSolve.IsDNF = false;
-                break;
-            case SolvePenalty.Delete:
-                await _cubeTimerDb.Connection.DeleteAsync(CurrentlyMadeSolve!);
-                CurrentlyMadeSolve = null;
-                return;
-        }
 
-        await _cubeTimerDb.Connection.UpdateAsync(CurrentlyMadeSolve);
+        try
+        {
+            IsBusy = true;
+            PuzzleSolve currentlyMadeSolve = await _cubeTimerDb.Connection.Table<PuzzleSolve>().OrderBy(s => s.DateTime)
+                .FirstOrDefaultAsync();
+            if (CurrentlyMadeSolve == null)
+                return;
+
+            switch (penalty)
+            {
+                case SolvePenalty.NoPenalty:
+                    CurrentlyMadeSolve.IsPlusTwo = false;
+                    CurrentlyMadeSolve.IsDNF = false;
+                    break;
+                case SolvePenalty.DNF:
+                    CurrentlyMadeSolve.IsPlusTwo = false;
+                    CurrentlyMadeSolve.IsDNF = true;
+                    break;
+                case SolvePenalty.PlusTwo:
+                    CurrentlyMadeSolve.IsPlusTwo = true;
+                    CurrentlyMadeSolve.IsDNF = false;
+                    break;
+                case SolvePenalty.Delete:
+                    await _cubeTimerDb.Connection.DeleteAsync(CurrentlyMadeSolve!);
+                    CurrentlyMadeSolve = null;
+                    return;
+            }
+
+            await _cubeTimerDb.Connection.UpdateAsync(CurrentlyMadeSolve);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("IM TRYING:" + ex.Message);
+            await Shell.Current.DisplayAlert("Error!",
+                $"Unable to penalize solve: {ex.Message}", "Ok");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
 

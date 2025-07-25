@@ -75,7 +75,15 @@
 
             <Frame.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding StartTimerCommand}"/>
+                
+                <!-- <PointerGestureRecognizer  PointerPressed="PointerGestureRecognizer_OnPointerPressed" -->
+                <!--                            PointerReleasedCommand="{Binding Start}"/> -->
             </Frame.GestureRecognizers>
+            
+            <!-- <Frame.Behaviors> -->
+            <!--     <toolkit:TouchBehavior TouchGestureCompleted="TouchBehavior_OnTouchGestureCompleted" -->
+            <!--     /> -->
+            <!-- </Frame.Behaviors> -->
 
             <Grid VerticalOptions="Center"
                   HorizontalOptions="Center" >

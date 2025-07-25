@@ -1,16 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
-             x:Class="PandaCubeTimer.Views.CountingTimerView"
-             x:DataType="viewModels:CountingTimerViewModel"
-             x:Name="AnimatedStopwatch"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PandaCubeTimer.Views.InspectionView"
+             x:DataType="viewModels:InspectionViewModel"
              Shell.TabBarIsVisible="False">
     
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Timer">
-            <MenuFlyoutItem Text="Stop Timer" Command="{Binding  StopTimerCommand}">
+            <MenuFlyoutItem Text="Start Timer" Command="{Binding  StartTimerCommand}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key=" " />
                 </MenuFlyoutItem.KeyboardAccelerators>
@@ -27,20 +27,22 @@
                HasShadow="False">
             
             <Frame.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding StopTimerCommand}" />
+                <!-- <TapGestureRecognizer Command="{Binding StopTimerCommand}" /> -->
+                <PointerGestureRecognizer  PointerPressedCommand="{Binding ChangeColorOnPressCommand}"
+                                           PointerReleasedCommand="{Binding StartTimerCommand}"/>
             </Frame.GestureRecognizers>
             
             <StackLayout HorizontalOptions="Center"
                          VerticalOptions="Center">
                 
-                <Label Text="{Binding ElapsedTime}"
+                <Label Text="{Binding RemainedTicks}"
                        FontSize="40"
+                       TextColor="{Binding TimerColor}"
                        HorizontalOptions="Center"
                        VerticalTextAlignment="Center"
                        VerticalOptions="Center"
-                       Scale="1.3"
-                       x:Name="TimeText" >
-                       <!-- Loaded="TimeText_OnLoaded"> -->
+                       x:Name="TimeText"
+                       Loaded="TimeText_OnLoaded">
                 </Label>
                 
             </StackLayout>
