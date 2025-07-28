@@ -13,11 +13,12 @@ namespace PandaCubeTimer.ViewModels;
 
 public partial class TimerViewModel : BaseViewModel
 {
-    private const string DEFAULT_TIME_TEXT = "Tap to start";
+    private const string DefaultTimeText = "Tap to start";
     
     
-    private SolveTimeConverter _solveTimeConverter;
+    private readonly SolveTimeConverter _solveTimeConverter;
     private readonly CubeTimerDb _cubeTimerDb;
+    private readonly IAppSettingsService _appSettingsService;
     
     [ObservableProperty]
     private string _scramble = null!;
@@ -32,9 +33,9 @@ public partial class TimerViewModel : BaseViewModel
         get
         {
             if(CurrentlyMadeSolve is null)
-                return DEFAULT_TIME_TEXT;
+                return DefaultTimeText;
 
-            return _solveTimeConverter?.DoubleToStringSeconds(CurrentlyMadeSolve?.SolveTimeSeconds) ?? "Unexpected Error Occured";
+            return _solveTimeConverter.DoubleToStringSeconds(CurrentlyMadeSolve?.SolveTimeSeconds) ?? "Unexpected Error Occured";
         }
     }
 
@@ -42,10 +43,11 @@ public partial class TimerViewModel : BaseViewModel
 
 
     
-    public TimerViewModel(CubeTimerDb db)
+    public TimerViewModel(CubeTimerDb db, IAppSettingsService appSettingsService)
     {
         _solveTimeConverter = new SolveTimeConverter(); 
         _cubeTimerDb = db;
+        _appSettingsService = appSettingsService;
         _currentlyMadeSolve = LastSolveStore.LastPuzzleSolve;
         
         ClearNavStack();
@@ -56,15 +58,21 @@ public partial class TimerViewModel : BaseViewModel
     [RelayCommand]
     private async Task StartTimerAsync()
     {
-         //List<PuzzleSolve> test = await _cubeTimerDb.Connection.Table<PuzzleSolve>().ToListAsync();
         if (IsBusy)
             return;
 
         try
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(InspectionView)}", false);
-            //Dispose();
+            if (_appSettingsService.IsInspectionTurnedOn)
+            {
+                await Shell.Current.GoToAsync($"{nameof(InspectionView)}", false);
+            }
+            else
+            {
+                await Shell.Current.GoToAsync($"{nameof(CountingTimerView)}", false);
+
+            }
         }
         catch (Exception ex)
         {

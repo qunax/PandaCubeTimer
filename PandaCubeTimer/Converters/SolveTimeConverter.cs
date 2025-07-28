@@ -25,10 +25,11 @@ public class SolveTimeConverter : IValueConverter
     /// <param name="value"></param>
     /// <param name="formatOverride"></param>
     /// <returns>Formatted String or "Error"</returns>
-    public string DoubleToStringSeconds(double? value, string? formatOverride = null)
+    public string? DoubleToStringSeconds(double? value, string? formatOverride = null)
     {
         if (value is null)
-            return "Error";
+            return null;
+            // return "Error";
         
         double seconds = value.Value;
         TimeSpan time = TimeSpan.FromSeconds(seconds);

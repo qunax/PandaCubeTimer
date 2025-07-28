@@ -13,9 +13,6 @@ public partial class CountingTimerViewModel : BaseViewModel
     [ObservableProperty]
     //[NotifyPropertyChangedFor(nameof(CurrentCountingTime))]
     private Stopwatch _stopwatch = new();
-    
-    // [ObservableProperty]
-    // private TimeSpan _elapsed;
 
     [ObservableProperty]
     private bool _isRunning;

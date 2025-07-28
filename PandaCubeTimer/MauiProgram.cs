@@ -23,6 +23,7 @@ public static class MauiProgram
             });
 
         builder.Services.AddSingleton<CubeTimerDb>();
+        builder.Services.AddSingleton<IAppSettingsService, AppSettingsService>();
 
         builder.Services.AddTransient<TimerView>();
         builder.Services.AddTransient<InspectionView>();
