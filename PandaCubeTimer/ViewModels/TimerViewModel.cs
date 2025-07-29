@@ -16,7 +16,7 @@ public partial class TimerViewModel : BaseViewModel
     private const string DefaultTimeText = "Tap to start";
     
     
-    private readonly SolveTimeConverter _solveTimeConverter;
+    private readonly SolveToTimeConverter _solveToTimeConverter;
     private readonly CubeTimerDb _cubeTimerDb;
     private readonly IAppSettingsService _appSettingsService;
     
@@ -35,7 +35,7 @@ public partial class TimerViewModel : BaseViewModel
             if(CurrentlyMadeSolve is null)
                 return DefaultTimeText;
 
-            return _solveTimeConverter.DoubleToStringSeconds(CurrentlyMadeSolve?.SolveTimeSeconds) ?? "Unexpected Error Occured";
+            return _solveToTimeConverter.PuzzleSolveToTimeToDisplay(CurrentlyMadeSolve);
         }
     }
 
@@ -45,7 +45,7 @@ public partial class TimerViewModel : BaseViewModel
     
     public TimerViewModel(CubeTimerDb db, IAppSettingsService appSettingsService)
     {
-        _solveTimeConverter = new SolveTimeConverter(); 
+        _solveToTimeConverter = new SolveToTimeConverter(); 
         _cubeTimerDb = db;
         _appSettingsService = appSettingsService;
         _currentlyMadeSolve = LastSolveStore.LastPuzzleSolve;
@@ -108,11 +108,10 @@ public partial class TimerViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            PuzzleSolve currentlyMadeSolve = await _cubeTimerDb.Connection.Table<PuzzleSolve>().OrderBy(s => s.DateTime)
-                .FirstOrDefaultAsync();
             if (CurrentlyMadeSolve == null)
                 return;
 
+            OnPropertyChanging(nameof(TimeTextToDisplay));
             switch (penalty)
             {
                 case SolvePenalty.NoPenalty:
@@ -133,6 +132,9 @@ public partial class TimerViewModel : BaseViewModel
                     return;
             }
 
+            // idk automatic update of this property doesnt work so had to 
+            // add manual raise of PropertyChanged (as well as PropertyChanging)
+            OnPropertyChanged(nameof(TimeTextToDisplay));
             await _cubeTimerDb.Connection.UpdateAsync(CurrentlyMadeSolve);
         }
         catch (Exception ex)

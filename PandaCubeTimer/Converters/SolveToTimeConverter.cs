@@ -1,8 +1,9 @@
 using System.Globalization;
+using PandaCubeTimer.Models;
 
 namespace PandaCubeTimer.Converters;
 
-public class SolveTimeConverter : IValueConverter
+public class SolveToTimeConverter :  IValueConverter
 {
     public const string DefaultFormatWithHours = @"h:\mm\:ss\.ff";
     public const string DefaultFormatWithMinutes = @"m\:ss\.ff";
@@ -10,7 +11,11 @@ public class SolveTimeConverter : IValueConverter
     
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return DoubleToStringSeconds((double?)value, (string?)parameter);
+        if(value == null)
+            //Exception?
+            return null;
+        
+        return PuzzleSolveToTimeToDisplay((PuzzleSolve)value, (string?)parameter);
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -18,25 +23,19 @@ public class SolveTimeConverter : IValueConverter
         throw new NotImplementedException();
     }
 
-    /// <summary>
-    /// converts double value to formatted string typo h:\mm\:ss\.ff
-    /// (shows hours/minutes only if they are present)
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="formatOverride"></param>
-    /// <returns>Formatted String or "Error"</returns>
-    public string? DoubleToStringSeconds(double? value, string? formatOverride = null)
+    public string PuzzleSolveToTimeToDisplay(PuzzleSolve puzzleSolve, string? formatOverride = null)
     {
-        if (value is null)
-            return null;
-            // return "Error";
+        if (puzzleSolve.IsDNF)
+            return "DNF";
         
-        double seconds = value.Value;
+        string plusTwoPenaltyToAdd = puzzleSolve.IsPlusTwo ? "+" : string.Empty;
+        
+        double seconds = puzzleSolve.SolveTimeSeconds;
         TimeSpan time = TimeSpan.FromSeconds(seconds);
             
         // allow override default formats for customization
         if (formatOverride is not null)
-            return time.ToString(formatOverride);
+            return time.ToString(formatOverride) +  plusTwoPenaltyToAdd;
 
         // custom format (if time should display minutes or hours)
         string format;
@@ -47,6 +46,6 @@ public class SolveTimeConverter : IValueConverter
         else 
             format = DefaultFormatWithoutMinutes;
             
-        return time.ToString(format);
+        return time.ToString(format) + plusTwoPenaltyToAdd;
     }
 }
