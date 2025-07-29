@@ -17,7 +17,7 @@ public partial class CountingTimerViewModel : BaseViewModel
     private Stopwatch _stopwatch = new();
 
     [ObservableProperty] 
-    private SolvePenalty _inspectionPenalty;
+    private SolvePenalty _inspectionPenalty = SolvePenalty.NoPenalty;
 
     [ObservableProperty]
     private bool _isRunning;
