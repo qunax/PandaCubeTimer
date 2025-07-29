@@ -29,7 +29,16 @@ public partial class InspectionViewModel : BaseViewModel
     public InspectionViewModel()
     {
         _remainedTicks = INSPECTION_TICKS;
-        _timerColor = Colors.White;
+        
+        if (Application.Current?.RequestedTheme == AppTheme.Dark)
+        {
+            _timerColor = Colors.White;
+        }
+        else
+        {
+            _timerColor = Colors.Black;
+        }
+        
         StartInspection();
     }
     
@@ -62,7 +71,7 @@ public partial class InspectionViewModel : BaseViewModel
     [RelayCommand]
     private async Task ChangeColorOnPress()
     {
-        this.TimerColor = Colors.Red;
+        this.TimerColor = Colors.Green;
     }
     
     
@@ -79,6 +88,15 @@ public partial class InspectionViewModel : BaseViewModel
             {
                 //ElapsedTime = FormatElapsedTime(_stopwatch.Elapsed);
                 RemainedTicks--;
+                
+                if (RemainedTicks == 7)
+                    TimerColor = Colors.Orange;
+
+                if (RemainedTicks == 3)
+                    TimerColor = Colors.Red;
+                
+                if(RemainedTicks <= 1)
+                    StopInspection();
             });
             return IsRunning;
         });
