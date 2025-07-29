@@ -3,10 +3,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PandaCubeTimer.Views.InspectionView"
              x:DataType="viewModels:InspectionViewModel"
              Shell.TabBarIsVisible="False">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InspectionPenaltyTextConverter x:Key="InspectionPenaltyTextConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Timer">
@@ -35,7 +42,7 @@
             <StackLayout HorizontalOptions="Center"
                          VerticalOptions="Center">
                 
-                <Label Text="{Binding RemainedTicks}"
+                <Label Text="{Binding RemainedTicks, Converter={StaticResource InspectionPenaltyTextConverter}}"
                        FontSize="40"
                        TextColor="{Binding TimerColor}"
                        HorizontalOptions="Center"

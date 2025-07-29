@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PandaCubeTimer.Models;
 using PandaCubeTimer.Views;
 
 namespace PandaCubeTimer.ViewModels;
@@ -17,6 +18,15 @@ public partial class InspectionViewModel : BaseViewModel
     
     [ObservableProperty]
     private int _remainedTicks;
+
+    /// <summary>
+    /// also shows if there's penalty
+    /// </summary>
+    [ObservableProperty] 
+    private string _remainedTicksText;
+
+    [ObservableProperty]
+    private SolvePenalty _inspectionPenalty = SolvePenalty.NoPenalty;
     
     [ObservableProperty]
     private bool _isRunning;
@@ -54,7 +64,10 @@ public partial class InspectionViewModel : BaseViewModel
         {
             IsBusy = true;
             StopInspection();
-            await Shell.Current.GoToAsync($"{nameof(CountingTimerView)}", false);
+            await Shell.Current.GoToAsync($"{nameof(CountingTimerView)}", false, new Dictionary<string, object>
+            {
+                {nameof(CountingTimerViewModel.InspectionPenalty), InspectionPenalty}
+            });
         }
         catch (Exception ex)
         {
@@ -69,7 +82,7 @@ public partial class InspectionViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task ChangeColorOnPress()
+    private void ChangeColorOnPress()
     {
         this.TimerColor = Colors.Green;
     }
@@ -94,9 +107,20 @@ public partial class InspectionViewModel : BaseViewModel
 
                 if (RemainedTicks == 3)
                     TimerColor = Colors.Red;
-                
-                if(RemainedTicks <= 1)
+
+                if (RemainedTicks == 0)
+                {
+                    InspectionPenalty = SolvePenalty.PlusTwo;
+                    RemainedTicksText = "+2";
+                }
+
+                if (RemainedTicks == -3)
+                {
+                    InspectionPenalty = SolvePenalty.DNF;
+                    RemainedTicksText = "DNF";
                     StopInspection();
+                }
+                    
             });
             return IsRunning;
         });

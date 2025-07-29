@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PandaCubeTimer.Data;
@@ -8,11 +9,15 @@ using PandaCubeTimer.Views;
 
 namespace PandaCubeTimer.ViewModels;
 
+[QueryProperty(nameof(CountingTimerViewModel.InspectionPenalty), nameof(CountingTimerViewModel.InspectionPenalty))]
 public partial class CountingTimerViewModel : BaseViewModel
 {
     [ObservableProperty]
     //[NotifyPropertyChangedFor(nameof(CurrentCountingTime))]
     private Stopwatch _stopwatch = new();
+
+    [ObservableProperty] 
+    private SolvePenalty _inspectionPenalty;
 
     [ObservableProperty]
     private bool _isRunning;
@@ -42,8 +47,8 @@ public partial class CountingTimerViewModel : BaseViewModel
                 Discipline = "3x3",
                 SessionId = 0,
                 SolveTimeSeconds = Stopwatch.Elapsed.TotalSeconds,
-                IsPlusTwo = false,
-                IsDNF = false,
+                IsPlusTwo = InspectionPenalty == SolvePenalty.PlusTwo,
+                IsDNF = InspectionPenalty == SolvePenalty.DNF,
                 Scramble = "test Scramble",
                 DateTime = DateTime.Now,
                 Comment = "test comment"
