@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace PandaCubeTimer.Converters;
 
-public class InspectionPenaltyTextConverter : IValueConverter
+public class RemainedTicksToInspectionTextConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

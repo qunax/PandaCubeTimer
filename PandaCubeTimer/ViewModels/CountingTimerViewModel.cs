@@ -9,15 +9,21 @@ using PandaCubeTimer.Views;
 
 namespace PandaCubeTimer.ViewModels;
 
-[QueryProperty(nameof(CountingTimerViewModel.InspectionPenalty), nameof(CountingTimerViewModel.InspectionPenalty))]
+//[QueryProperty(nameof(CountingTimerViewModel.InspectionPenalty), nameof(CountingTimerViewModel.InspectionPenalty))]
+//[QueryProperty(nameof(CountingTimerViewModel.CurrentSolveScramble), nameof(CountingTimerViewModel.CurrentSolveScramble))]
 public partial class CountingTimerViewModel : BaseViewModel
 {
+    private readonly CubeTimerDb _cubeTimerDb;
+    private readonly ILastSolveStore _lastSolveStore;
+    private SolvePenalty? _inspectionPenalty;
+    private readonly string _currentSolveScramble;
+    
     [ObservableProperty]
     //[NotifyPropertyChangedFor(nameof(CurrentCountingTime))]
     private Stopwatch _stopwatch = new();
 
-    [ObservableProperty] 
-    private SolvePenalty _inspectionPenalty = SolvePenalty.NoPenalty;
+    // [ObservableProperty] 
+    // private SolvePenalty _inspectionPenalty = SolvePenalty.NoPenalty;
 
     [ObservableProperty]
     private bool _isRunning;
@@ -25,13 +31,17 @@ public partial class CountingTimerViewModel : BaseViewModel
     [ObservableProperty]
     private string _elapsedTime;
 
-    private readonly CubeTimerDb _cubeTimerDb;
 
 
-
-    public CountingTimerViewModel(CubeTimerDb database)
+    public CountingTimerViewModel(CubeTimerDb database, ILastSolveStore lastSolveStore)
     {
         _cubeTimerDb = database;
+
+        //getting passed parameters from store
+        _inspectionPenalty = lastSolveStore.InspectionPenalty ?? SolvePenalty.NoPenalty;
+        _currentSolveScramble = lastSolveStore.SolveScramble ?? throw new NullReferenceException("Error when passing scramble while navigating.");
+        _lastSolveStore = lastSolveStore;
+        
         Start();
     }
 
@@ -47,9 +57,9 @@ public partial class CountingTimerViewModel : BaseViewModel
                 Discipline = "3x3",
                 SessionId = 0,
                 SolveTimeSeconds = Stopwatch.Elapsed.TotalSeconds,
-                IsPlusTwo = InspectionPenalty == SolvePenalty.PlusTwo,
-                IsDNF = InspectionPenalty == SolvePenalty.DNF,
-                Scramble = "test Scramble",
+                IsPlusTwo = _inspectionPenalty == SolvePenalty.PlusTwo,
+                IsDNF = _inspectionPenalty == SolvePenalty.DNF,
+                Scramble = _currentSolveScramble,
                 DateTime = DateTime.Now,
                 Comment = "test comment"
             };
@@ -57,9 +67,8 @@ public partial class CountingTimerViewModel : BaseViewModel
             
             // check if solve is in database and refreshing it (why not)
             // passing it as a parameter back to TimerViewModel for display and further manipulation
-            //var test = await _cubeTimerDb.Connection.Table<PuzzleSolve>().ToListAsync();
             PuzzleSolve checkedFromDb = await _cubeTimerDb.Connection.Table<PuzzleSolve>().Where(x => x.Id == currentSolve.Id).FirstAsync();
-            LastSolveStore.LastPuzzleSolve = checkedFromDb;
+            _lastSolveStore.LastPuzzleSolve = checkedFromDb;
             await Shell.Current.GoToAsync($"{nameof(TimerView)}", false);
         }
         catch (Exception ex)

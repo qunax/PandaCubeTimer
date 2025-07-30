@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Views;
 
@@ -11,7 +12,7 @@ public partial class InspectionViewModel : BaseViewModel
     private const int INSPECTION_TICKS = 15;
     
     
-    
+    private readonly ILastSolveStore _lastSolveStore;
     private readonly Stopwatch _stopwatch = new();
     
     
@@ -36,8 +37,9 @@ public partial class InspectionViewModel : BaseViewModel
     
     
     
-    public InspectionViewModel()
+    public InspectionViewModel(ILastSolveStore  lastSolveStore)
     {
+        _lastSolveStore = lastSolveStore;
         _remainedTicks = INSPECTION_TICKS;
         
         if (Application.Current?.RequestedTheme == AppTheme.Dark)
@@ -64,10 +66,8 @@ public partial class InspectionViewModel : BaseViewModel
         {
             IsBusy = true;
             StopInspection();
-            await Shell.Current.GoToAsync($"{nameof(CountingTimerView)}", false, new Dictionary<string, object>
-            {
-                {nameof(CountingTimerViewModel.InspectionPenalty), InspectionPenalty}
-            });
+            _lastSolveStore.InspectionPenalty = InspectionPenalty;
+            await Shell.Current.GoToAsync($"{nameof(CountingTimerView)}", false);
         }
         catch (Exception ex)
         {

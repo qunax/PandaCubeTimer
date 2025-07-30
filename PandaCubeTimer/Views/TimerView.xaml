@@ -5,10 +5,17 @@
              xmlns:local="clr-namespace:PandaCubeTimer.Models"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              x:DataType="viewModels:TimerViewModel"
              x:Class="PandaCubeTimer.Views.TimerView"
              Title="Timer">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InspectionPenaltyToAfterSolvePenaltyVisibilityConverter x:Key="InspectionPenaltyToAfterSolvePenaltyVisibilityConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Timer">
@@ -75,15 +82,7 @@
 
             <Frame.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding StartTimerCommand}"/>
-                
-                <!-- <PointerGestureRecognizer  PointerPressed="PointerGestureRecognizer_OnPointerPressed" -->
-                <!--                            PointerReleasedCommand="{Binding Start}"/> -->
             </Frame.GestureRecognizers>
-            
-            <!-- <Frame.Behaviors> -->
-            <!--     <toolkit:TouchBehavior TouchGestureCompleted="TouchBehavior_OnTouchGestureCompleted" -->
-            <!--     /> -->
-            <!-- </Frame.Behaviors> -->
 
             <Grid VerticalOptions="Center"
                   HorizontalOptions="Center" >
@@ -108,15 +107,19 @@
                                        IsVisible="{Binding ArePenaltiesVisible}">
                     <Button Text="DNF" Command="{Binding PenalizeLastSolveCommand}"
                             BackgroundColor="OrangeRed"
+                            IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.DNF}}"
                             CommandParameter="{x:Static local:SolvePenalty.DNF}"/>
                     <Button Text="+2" Command="{Binding PenalizeLastSolveCommand}"
                             BackgroundColor="Yellow"
+                            IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.PlusTwo}}"
                             CommandParameter="{x:Static local:SolvePenalty.PlusTwo}"/>
                     <Button Text="Delete" Command="{Binding PenalizeLastSolveCommand}"
                             BackgroundColor="Red"
+                            IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.Delete}}"
                             CommandParameter="{x:Static local:SolvePenalty.Delete}"/>
                     <Button Text="OK" Command="{Binding PenalizeLastSolveCommand}"
                             BackgroundColor="LawnGreen"
+                            IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.NoPenalty}}"
                             CommandParameter="{x:Static local:SolvePenalty.NoPenalty}"/>
                 </HorizontalStackLayout>
                 

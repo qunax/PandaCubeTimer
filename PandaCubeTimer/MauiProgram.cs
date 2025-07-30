@@ -2,6 +2,7 @@
 using MauiIcons.Material;
 using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data;
+using PandaCubeTimer.Helpers;
 using PandaCubeTimer.ViewModels;
 using PandaCubeTimer.Views;
 
@@ -24,6 +25,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<CubeTimerDb>();
         builder.Services.AddSingleton<IAppSettingsService, AppSettingsService>();
+        builder.Services.AddSingleton<ILastSolveStore, LastSolveStore>();
 
         builder.Services.AddTransient<TimerView>();
         builder.Services.AddTransient<InspectionView>();

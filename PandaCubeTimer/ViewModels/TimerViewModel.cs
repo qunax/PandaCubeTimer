@@ -19,6 +19,10 @@ public partial class TimerViewModel : BaseViewModel
     private readonly SolveToTimeConverter _solveToTimeConverter;
     private readonly CubeTimerDb _cubeTimerDb;
     private readonly IAppSettingsService _appSettingsService;
+    private readonly ILastSolveStore _lastSolveStore;
+    private readonly SolvePenalty? _lastSolveInspectionPenalty;
+    
+    
     
     [ObservableProperty]
     private string _scramble = null!;
@@ -40,15 +44,23 @@ public partial class TimerViewModel : BaseViewModel
     }
 
     public bool ArePenaltiesVisible => CurrentlyMadeSolve != null;
+    
+    public SolvePenalty LastSolveInspectionPenalty => _lastSolveInspectionPenalty ?? SolvePenalty.NoPenalty;
 
 
     
-    public TimerViewModel(CubeTimerDb db, IAppSettingsService appSettingsService)
+    public TimerViewModel(CubeTimerDb db, IAppSettingsService appSettingsService, ILastSolveStore lastSolveStore)
     {
         _solveToTimeConverter = new SolveToTimeConverter(); 
         _cubeTimerDb = db;
         _appSettingsService = appSettingsService;
-        _currentlyMadeSolve = LastSolveStore.LastPuzzleSolve;
+        
+        // copying some important info about solve and its inspection from previous pages
+        // done this way because of nevigation limitations (i have to clean stack navigating here
+        _lastSolveStore = lastSolveStore;
+        _currentlyMadeSolve = lastSolveStore.LastPuzzleSolve;
+        _lastSolveInspectionPenalty = lastSolveStore.InspectionPenalty;
+        
         
         ClearNavStack();
     }
@@ -64,6 +76,8 @@ public partial class TimerViewModel : BaseViewModel
         try
         {
             IsBusy = true;
+            _lastSolveStore.ClearData();
+            _lastSolveStore.SolveScramble = Scramble;
             if (_appSettingsService.IsInspectionTurnedOn)
             {
                 await Shell.Current.GoToAsync($"{nameof(InspectionView)}", false);
@@ -115,16 +129,34 @@ public partial class TimerViewModel : BaseViewModel
             switch (penalty)
             {
                 case SolvePenalty.NoPenalty:
-                    CurrentlyMadeSolve.IsPlusTwo = false;
-                    CurrentlyMadeSolve.IsDNF = false;
+                    //remain +2 if it was on inspection
+                    if (LastSolveInspectionPenalty == SolvePenalty.PlusTwo)
+                    {
+                        CurrentlyMadeSolve.IsPlusTwo = true;
+                        CurrentlyMadeSolve.IsDNF = false;
+                    }
+                    else
+                    {
+                        CurrentlyMadeSolve.IsPlusTwo = false;
+                        CurrentlyMadeSolve.IsDNF = false;   
+                    }
                     break;
                 case SolvePenalty.DNF:
                     CurrentlyMadeSolve.IsPlusTwo = false;
                     CurrentlyMadeSolve.IsDNF = true;
                     break;
                 case SolvePenalty.PlusTwo:
-                    CurrentlyMadeSolve.IsPlusTwo = true;
-                    CurrentlyMadeSolve.IsDNF = false;
+                    // +2 plus +2 gives DNF penalty
+                    if (LastSolveInspectionPenalty == SolvePenalty.PlusTwo)
+                    {
+                        CurrentlyMadeSolve.IsPlusTwo = false;
+                        CurrentlyMadeSolve.IsDNF = true;
+                    }
+                    else
+                    {
+                        CurrentlyMadeSolve.IsPlusTwo = true;
+                        CurrentlyMadeSolve.IsDNF = false;
+                    }
                     break;
                 case SolvePenalty.Delete:
                     await _cubeTimerDb.Connection.DeleteAsync(CurrentlyMadeSolve!);

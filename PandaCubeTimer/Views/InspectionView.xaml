@@ -11,7 +11,7 @@
     
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:InspectionPenaltyTextConverter x:Key="InspectionPenaltyTextConverter"/>
+            <converters:RemainedTicksToInspectionTextConverter x:Key="RemainedTicksToInspectionTextConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -42,7 +42,7 @@
             <StackLayout HorizontalOptions="Center"
                          VerticalOptions="Center">
                 
-                <Label Text="{Binding RemainedTicks, Converter={StaticResource InspectionPenaltyTextConverter}}"
+                <Label Text="{Binding RemainedTicks, Converter={StaticResource RemainedTicksToInspectionTextConverter}}"
                        FontSize="40"
                        TextColor="{Binding TimerColor}"
                        HorizontalOptions="Center"
