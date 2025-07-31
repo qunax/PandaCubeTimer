@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PandaCubeTimer.Data;
@@ -12,7 +11,7 @@ public partial class SolvesViewModel : BaseViewModel
     private readonly CubeTimerDb _database;
     
     [ObservableProperty]
-    private ObservableCollection<PuzzleSolve>? _puzzleSolves;
+    private ObservableCollection<PuzzleSolve> _puzzleSolves = new ObservableCollection<PuzzleSolve>();
     
     [ObservableProperty] 
     private bool _isRefreshing;
@@ -21,7 +20,7 @@ public partial class SolvesViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(IsOverlayVisible))]
     private PuzzleSolve? _selectedPuzzleSolve;
     
-    public bool IsOverlayVisible => _selectedPuzzleSolve != null;
+    public bool IsOverlayVisible => SelectedPuzzleSolve != null;
     
     
     
@@ -59,6 +58,17 @@ public partial class SolvesViewModel : BaseViewModel
     private void SelectPuzzleSolve(PuzzleSolve selectedSolve)
     {
         SelectedPuzzleSolve = selectedSolve;
+    }
+
+    [RelayCommand]
+    private async Task DeleteSelectedPuzzleSolve()
+    {
+        if (SelectedPuzzleSolve == null)
+            return;
+        
+        await _database.Connection.DeleteAsync(SelectedPuzzleSolve);
+        PuzzleSolves.Remove(SelectedPuzzleSolve);
+        SelectedPuzzleSolve = null;
     }
 
     [RelayCommand]
