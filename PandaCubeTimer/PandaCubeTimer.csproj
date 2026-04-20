@@ -56,7 +56,7 @@
         <MauiFont Include="Resources\Fonts\*" />
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />               
         
     </ItemGroup>
 
@@ -78,6 +78,91 @@
     <ItemGroup>
       <Folder Include="Data\Migrations\" />
       <Folder Include="Services\" />
+    </ItemGroup>
+
+    <!-- PLL Algorithms For Tutorials -->
+    <ItemGroup>
+      <MauiImage Include="Resources\Images\PLLs\aa_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\ab_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\e_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\f_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\ga_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\gb_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\gc_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\gd_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\h_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\ja_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\jb_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\na_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\nb_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\ra_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\rb_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\t_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\ua_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\ub_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\v_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\y_perm.png" />
+    </ItemGroup>
+
+    <!-- OLL Algorithms For Tutorials -->
+    <ItemGroup>
+      <MauiImage Include="Resources\Images\OLLs\oll1.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll2.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll3.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll4.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll5.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll6.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll7.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll8.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll9.png" />
+      <MauiImage Include="Resources\Images\OLLs\oll10.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll11.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll12.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll13.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll14.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll15.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll16.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll17.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll18.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll19.png" />
+      <MauiImage Include="Resources\Images\OLLs\oll20.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll21.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll22.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll23.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll24.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll25.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll26.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll27.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll28.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll29.png" />
+      <MauiImage Include="Resources\Images\OLLs\oll30.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll31.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll32.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll33.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll34.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll35.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll36.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll37.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll38.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll39.png" />
+      <MauiImage Include="Resources\Images\OLLs\oll40.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll41.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll42.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll43.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll44.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll45.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll46.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll47.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll48.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll49.png" />
+      <MauiImage Include="Resources\Images\OLLs\oll50.png" /> 
+      <MauiImage Include="Resources\Images\OLLs\oll51.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll52.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll53.png" />        
+      <MauiImage Include="Resources\Images\OLLs\oll54.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll55.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll56.png" />  
+      <MauiImage Include="Resources\Images\OLLs\oll57.png" /> 
     </ItemGroup>
 
 </Project>

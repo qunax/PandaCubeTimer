@@ -2,8 +2,33 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PandaCubeTimer.Views.StatsView">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             xmlns:models="clr-namespace:PandaCubeTimer.Models"
+             xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
+             x:Class="PandaCubeTimer.Views.StatsView"
+             x:DataType="viewModels:StatsViewModel">
     <ContentPage.Content>
-        <Label>Your Statistics</Label>
+        <ScrollView>
+            <StackLayout>
+                
+                <Label Text="Solve Count"/>
+                <Label Text="Best Single"/>
+                <Label Text="Session Mean"/>
+                <Label Text="CurrentStats:"/>
+                <Label Text="AO5"/>
+                <Label Text="AO12"/>
+                <Label Text="AO100"/>
+                <Label Text="BestStats:"/>
+                <Label Text="AO5"/>
+                <Label Text="AO12"/>
+                <Label Text="AO100"/>
+                <Label Text="TimeTrend (Graph)"/>
+                <Label Text="TimeDistribution (Graph?)"/>
+                
+                
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
