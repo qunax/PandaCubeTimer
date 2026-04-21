@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using PandaCubeTimer.Models.Tutorials;
 
 namespace PandaCubeTimer.ViewModels;
@@ -7,24 +9,46 @@ namespace PandaCubeTimer.ViewModels;
 public partial class PllTrainingsViewModel : BaseViewModel
 {
     [ObservableProperty]
-    private ObservableCollection<TutorialAlgoDTO> _algos = new();
+    [NotifyPropertyChangedFor(nameof(IsAlgsListEmpty))]
+    private ObservableCollection<TutorialAlgoDTO> _algs = new();
+    
+    [ObservableProperty]
+    private TutorialAlgoDTO? _selectedAlg;
+
+    public bool IsAlgsListEmpty => Algs.Count < 1; 
+    
     
     
     public PllTrainingsViewModel()
     {
-        FillWithPlls();
     }
 
-    private void FillWithPlls()
+    
+    
+    [RelayCommand]
+    private async Task LoadAlgorithmsAsync()
     {
-        Algos.Clear();
-        
-        Algos.Add(new TutorialAlgoDTO()
+        try
         {
-            Name = "Aa-perm",
-            Description = "Test Algo description",
-            Algorithm = "Test Algo algorithm",
-            AlgoImagePath = "aa-perm.png" 
-        });
+            await using var stream =
+                await FileSystem.OpenAppPackageFileAsync("all_pll_tutorial_algs.json");
+            using var reader = new StreamReader(stream);
+
+            var jsonContent = await reader.ReadToEndAsync();
+
+            var algorithms = JsonSerializer.Deserialize<List<TutorialAlgoDTO>>(jsonContent);
+            if (algorithms != null)
+            {
+                Algs.Clear();
+                foreach (var algo in algorithms)
+                {
+                    Algs.Add(algo);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 }

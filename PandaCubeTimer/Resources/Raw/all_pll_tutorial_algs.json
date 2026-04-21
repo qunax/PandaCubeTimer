@@ -1,0 +1,128 @@
+[
+  {
+    "Name": "Aa Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "x L2 D2 L' U' L D2 L' U L'",
+    "AlgoImagePath": "aa_perm.png"
+  },
+  {
+    "Name": "Ab Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "x' L2 D2 L U L' D2 L U' L",
+    "AlgoImagePath": "ab_perm.png"
+  },
+  {
+    "Name": "E Perm",
+    "Description": "Diagonal Corner Swap",
+    "Algorithm": "x' L' U L D' L' U' L D L' U' L D' L' U L D",
+    "AlgoImagePath": "e_perm.png"
+  },
+  {
+    "Name": "F Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
+    "AlgoImagePath": "f_perm.png"
+  },
+  {
+    "Name": "Ga Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "R2 U R' U R' U' R U' R2 U' D R' U R D'",
+    "AlgoImagePath": "ga_perm.png"
+  },
+  {
+    "Name": "Gb Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "R' U' R U D' R2 U R' U R U' R U' R2 D",
+    "AlgoImagePath": "gb_perm.png"
+  },
+  {
+    "Name": "Gc Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "R2 U' R U' R U R' U R2 U D' R U' R' D",
+    "AlgoImagePath": "gc_perm.png"
+  },
+  {
+    "Name": "Gd Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "R U R' U' D R2 U' R U' R' U R' U R2 D'",
+    "AlgoImagePath": "gd_perm.png"
+  },
+  {
+    "Name": "H Perm",
+    "Description": "Edges Only",
+    "Algorithm": "M2 U M2 U2 M2 U M2",
+    "AlgoImagePath": "h_perm.png"
+  },
+  {
+    "Name": "Ja Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "x R2 F R F' R U2 r' U r U2",
+    "AlgoImagePath": "ja_perm.png"
+  },
+  {
+    "Name": "Jb Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "R U R' F' R U R' U' R' F R2 U' R'",
+    "AlgoImagePath": "jb_perm.png"
+  },
+  {
+    "Name": "Na Perm",
+    "Description": "Diagonal Corner Swap",
+    "Algorithm": "R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'",
+    "AlgoImagePath": "na_perm.png"
+  },
+  {
+    "Name": "Nb Perm",
+    "Description": "Diagonal Corner Swap",
+    "Algorithm": "R' U R U' R' F' U' F R U R' F R' F' R U' R",
+    "AlgoImagePath": "nb_perm.png"
+  },
+  {
+    "Name": "Ra Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "R U' R' U' R U R D R' U' R D' R' U2 R'",
+    "AlgoImagePath": "ra_perm.png"
+  },
+  {
+    "Name": "Rb Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "R2 F R U R U' R' F' R U2 R' U2 R",
+    "AlgoImagePath": "rb_perm.png"
+  },
+  {
+    "Name": "T Perm",
+    "Description": "Adjacent Corner Swap",
+    "Algorithm": "R U R' U' R' F R2 U' R' U' R U R' F'",
+    "AlgoImagePath": "t_perm.png"
+  },
+  {
+    "Name": "Ua Perm",
+    "Description": "Edges Only",
+    "Algorithm": "M2 U M U2 M' U M2",
+    "AlgoImagePath": "ua_perm.png"
+  },
+  {
+    "Name": "Ub Perm",
+    "Description": "Edges Only",
+    "Algorithm": "M2 U' M U2 M' U' M2",
+    "AlgoImagePath": "ub_perm.png"
+  },
+  {
+    "Name": "V Perm",
+    "Description": "Diagonal Corner Swap",
+    "Algorithm": "R' U R' U' y R' F' R2 U' R' U R' F R F",
+    "AlgoImagePath": "v_perm.png"
+  },
+  {
+    "Name": "Y Perm",
+    "Description": "Diagonal Corner Swap",
+    "Algorithm": "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+    "AlgoImagePath": "y_perm.png"
+  },
+  {
+    "Name": "Z Perm",
+    "Description": "Edges Only",
+    "Algorithm": "M' U M2 U M2 U M' U2 M2",
+    "AlgoImagePath": "z_perm.png"
+  }
+]

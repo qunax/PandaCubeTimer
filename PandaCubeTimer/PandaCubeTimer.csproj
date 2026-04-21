@@ -164,5 +164,11 @@
       <MauiImage Include="Resources\Images\OLLs\oll56.png" />  
       <MauiImage Include="Resources\Images\OLLs\oll57.png" /> 
     </ItemGroup>
+    <ItemGroup>
+      <None Remove="Data\Tutorials\all_pll_tutorial_algs.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <MauiAsset Include="Resources\Raw\all_pll_tutorial_algs.json" />
+    </ItemGroup>
 
 </Project>

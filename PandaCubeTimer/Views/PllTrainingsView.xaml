@@ -2,8 +2,51 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PandaCubeTimer.Views.PLLTrainingsView">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             xmlns:models="clr-namespace:PandaCubeTimer.Models.Tutorials"
+             x:Class="PandaCubeTimer.Views.PLLTrainingsView"
+             x:DataType="viewModels:PllTrainingsViewModel">
+    
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding LoadAlgorithmsCommand}"/>
+    </ContentPage.Behaviors>
+    
     <ContentPage.Content>
-        <Label>PLL Algs</Label>
+        <Grid>
+            
+            <VerticalStackLayout HorizontalOptions="Center" 
+                                 VerticalOptions="Center" 
+                                 IsVisible="{Binding IsAlgsListEmpty}">
+                <Label Text="Unable to load PLL algorithms" TextColor="Gray"
+                       FontSize="15"/>
+            </VerticalStackLayout>
+        
+            <ListView ItemsSource="{Binding Algs}"
+                      SelectedItem="{Binding SelectedAlg}"
+                      IsVisible="{Binding IsAlgsListEmpty, Converter={toolkit:InvertedBoolConverter}}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TutorialAlgoDTO">
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Image Display -->
+                                <Image Source="{Binding AlgoImagePath}" 
+                                       HeightRequest="50" 
+                                       WidthRequest="50" 
+                                       Aspect="AspectFill" />
+                                <Label Grid.Column="1" 
+                                       Text="{Binding Name}" 
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
