@@ -5,6 +5,7 @@ using PandaCubeTimer.Data;
 using PandaCubeTimer.Helpers;
 using PandaCubeTimer.ViewModels;
 using PandaCubeTimer.Views;
+using Serilog;
 
 namespace PandaCubeTimer;
 
@@ -45,9 +46,8 @@ public static class MauiProgram
         builder.Services.AddTransient<PllTrainingsViewModel>();
         builder.Services.AddTransient<OllTrainingsViewModel>();
         
-#if DEBUG
-        builder.Logging.AddDebug();
-#endif
+        ConfigureLogging(builder);
+        
         var app = builder.Build();
         
         // Ensure database is created
@@ -56,5 +56,33 @@ public static class MauiProgram
         //db.Database.EnsureCreated();
 
         return app;
+    }
+
+    private static void ConfigureLogging(MauiAppBuilder builder)
+    {
+        string logDirectory = Path.Combine(FileSystem.AppDataDirectory, "Logs");
+        string logFilePath = Path.Combine(logDirectory, "app_log_.txt");
+        
+        // Настраиваем базовую конфигурацию Serilog
+        var loggerConfig = new LoggerConfiguration()
+            .MinimumLevel.Debug() // Для дебага ловим всё
+            .WriteTo.File(
+                path: logFilePath,
+                rollingInterval: RollingInterval.Day, // Новый файл каждый день
+                retainedFileCountLimit: 7,            // Храним только последние 7 дней
+                fileSizeLimitBytes: 10485760,         // Ограничение размера файла (10 МБ)
+                rollOnFileSizeLimit: true             // Если превысит 10мб, создаст новый
+            );
+
+        // Добавляем вывод в консоль Rider ТОЛЬКО если мы в режиме отладки
+#if DEBUG
+        loggerConfig.WriteTo.Debug(); 
+#endif
+
+        Log.Logger = loggerConfig.CreateLogger();
+        
+        // 3. Подключаем логгер к MAUI
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSerilog(dispose: true);
     }
 }

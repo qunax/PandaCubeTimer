@@ -2,12 +2,17 @@ using System.Collections.ObjectModel;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Models.Tutorials;
 
 namespace PandaCubeTimer.ViewModels;
 
 public partial class OllTrainingsViewModel : BaseViewModel
 {
+    private readonly ILogger _logger;
+    
+    
+    
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsAlgsListEmpty))]
     private ObservableCollection<TutorialAlgoDTO> _algs;
@@ -19,8 +24,10 @@ public partial class OllTrainingsViewModel : BaseViewModel
     
     
     
-    public OllTrainingsViewModel()
+    public OllTrainingsViewModel(ILogger<OllTrainingsViewModel> logger)
     {
+        _logger = logger;
+        
         Algs = new ObservableCollection<TutorialAlgoDTO>();
         //otherwise doesnt update value automatically:
         Algs.CollectionChanged += (s, e) =>
@@ -38,7 +45,7 @@ public partial class OllTrainingsViewModel : BaseViewModel
         {
             Algs.Clear();
             await using var stream =
-                await FileSystem.OpenAppPackageFileAsync("all_oll_tutorial_algs.json");
+                await FileSystem.OpenAppPackageFileAsync("all_oll_tutorial_alkgs.json");
             using var reader = new StreamReader(stream);
 
             var jsonContent = await reader.ReadToEndAsync();
@@ -54,7 +61,7 @@ public partial class OllTrainingsViewModel : BaseViewModel
         }
         catch (Exception ex)
         {
-            
+            _logger.LogError(ex, "Failed to load OLL algorithms.");
         }
     }
 }

@@ -2,12 +2,17 @@ using System.Collections.ObjectModel;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Models.Tutorials;
 
 namespace PandaCubeTimer.ViewModels;
 
 public partial class PllTrainingsViewModel : BaseViewModel
 {
+    private readonly ILogger _logger;
+    
+    
+    
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsAlgsListEmpty))]
     private ObservableCollection<TutorialAlgoDTO> _algs = new();
@@ -19,8 +24,10 @@ public partial class PllTrainingsViewModel : BaseViewModel
     
     
     
-    public PllTrainingsViewModel()
+    public PllTrainingsViewModel(ILogger<PllTrainingsViewModel> logger)
     {
+        _logger = logger;
+        
         Algs = new ObservableCollection<TutorialAlgoDTO>();
         //otherwise doesnt update value automatically:
         Algs.CollectionChanged += (s, e) =>
@@ -54,7 +61,7 @@ public partial class PllTrainingsViewModel : BaseViewModel
         }
         catch (Exception ex)
         {
-            
+            _logger.LogError(ex, "Failed to load PLL algorithms.");
         }
     }
 }
