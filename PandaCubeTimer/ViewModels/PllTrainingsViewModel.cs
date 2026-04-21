@@ -21,6 +21,12 @@ public partial class PllTrainingsViewModel : BaseViewModel
     
     public PllTrainingsViewModel()
     {
+        Algs = new ObservableCollection<TutorialAlgoDTO>();
+        //otherwise doesnt update value automatically:
+        Algs.CollectionChanged += (s, e) =>
+        {
+            OnPropertyChanged(nameof(IsAlgsListEmpty));
+        };
     }
 
     
@@ -30,6 +36,7 @@ public partial class PllTrainingsViewModel : BaseViewModel
     {
         try
         {
+            Algs.Clear();
             await using var stream =
                 await FileSystem.OpenAppPackageFileAsync("all_pll_tutorial_algs.json");
             using var reader = new StreamReader(stream);
@@ -39,7 +46,6 @@ public partial class PllTrainingsViewModel : BaseViewModel
             var algorithms = JsonSerializer.Deserialize<List<TutorialAlgoDTO>>(jsonContent);
             if (algorithms != null)
             {
-                Algs.Clear();
                 foreach (var algo in algorithms)
                 {
                     Algs.Add(algo);

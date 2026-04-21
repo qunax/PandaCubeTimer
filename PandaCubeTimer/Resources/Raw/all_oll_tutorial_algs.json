@@ -1,0 +1,344 @@
+[
+  {
+    "Name": "OLL 1",
+    "Description": "Dot",
+    "Algorithm": "R U2 R2 F R F' U2 R' F R F'",
+    "AlgoImagePath": "oll1.png"
+  },
+  {
+    "Name": "OLL 2",
+    "Description": "Dot",
+    "Algorithm": "r U r' U2 r U2 R' U2 R U' r'",
+    "AlgoImagePath": "oll2.png"
+  },
+  {
+    "Name": "OLL 3",
+    "Description": "Dot",
+    "Algorithm": "f R U R' U' f' U' F R U R' U' F'",
+    "AlgoImagePath": "oll3.png"
+  },
+  {
+    "Name": "OLL 4",
+    "Description": "Dot",
+    "Algorithm": "f R U R' U' f' U F R U R' U' F'",
+    "AlgoImagePath": "oll4.png"
+  },
+  {
+    "Name": "OLL 5",
+    "Description": "Square Shape",
+    "Algorithm": "r' U2 R U R' U r",
+    "AlgoImagePath": "oll5.png"
+  },
+  {
+    "Name": "OLL 6",
+    "Description": "Square Shape",
+    "Algorithm": "r U2 R' U' R U' r'",
+    "AlgoImagePath": "oll6.png"
+  },
+  {
+    "Name": "OLL 7",
+    "Description": "Small Lightning Bolt",
+    "Algorithm": "r U R' U R U2 r'",
+    "AlgoImagePath": "oll7.png"
+  },
+  {
+    "Name": "OLL 8",
+    "Description": "Small Lightning Bolt",
+    "Algorithm": "l' U' L U' L' U2 l",
+    "AlgoImagePath": "oll8.png"
+  },
+  {
+    "Name": "OLL 9",
+    "Description": "Small Lightning Bolt",
+    "Algorithm": "R U R' U' R' F R2 U R' U' F'",
+    "AlgoImagePath": "oll9.png"
+  },
+  {
+    "Name": "OLL 10",
+    "Description": "Small Lightning Bolt",
+    "Algorithm": "R U R' U R' F R F' R U2 R'",
+    "AlgoImagePath": "oll10.png"
+  },
+  {
+    "Name": "OLL 11",
+    "Description": "Lightning Bolt",
+    "Algorithm": "r U R' U R' F R F' R U2 r'",
+    "AlgoImagePath": "oll11.png"
+  },
+  {
+    "Name": "OLL 12",
+    "Description": "Lightning Bolt",
+    "Algorithm": "M' R' U' R U' R' U2 R U' R r'",
+    "AlgoImagePath": "oll12.png"
+  },
+  {
+    "Name": "OLL 13",
+    "Description": "Knight Move Shape",
+    "Algorithm": "F U R U' R2 F' R U R U' R'",
+    "AlgoImagePath": "oll13.png"
+  },
+  {
+    "Name": "OLL 14",
+    "Description": "Knight Move Shape",
+    "Algorithm": "R' F R U R' F' R F U' F'",
+    "AlgoImagePath": "oll14.png"
+  },
+  {
+    "Name": "OLL 15",
+    "Description": "Knight Move Shape",
+    "Algorithm": "l' U' l L' U' L U l' U l",
+    "AlgoImagePath": "oll15.png"
+  },
+  {
+    "Name": "OLL 16",
+    "Description": "Knight Move Shape",
+    "Algorithm": "r U r' R U R' U' r U' r'",
+    "AlgoImagePath": "oll16.png"
+  },
+  {
+    "Name": "OLL 17",
+    "Description": "Dot",
+    "Algorithm": "F R' F' R2 r' U R U' R' U' M'",
+    "AlgoImagePath": "oll17.png"
+  },
+  {
+    "Name": "OLL 18",
+    "Description": "Dot",
+    "Algorithm": "r U R' U R U2 r2 U' R U' R' U2 r",
+    "AlgoImagePath": "oll18.png"
+  },
+  {
+    "Name": "OLL 19",
+    "Description": "Dot",
+    "Algorithm": "r' R U R U R' U' M' R' F R F'",
+    "AlgoImagePath": "oll19.png"
+  },
+  {
+    "Name": "OLL 20",
+    "Description": "Dot",
+    "Algorithm": "r U R' U' M2 U R U' R' U' M'",
+    "AlgoImagePath": "oll20.png"
+  },
+  {
+    "Name": "OLL 21",
+    "Description": "Cross",
+    "Algorithm": "R U2 R' U' R U R' U' R U' R'",
+    "AlgoImagePath": "oll21.png"
+  },
+  {
+    "Name": "OLL 22",
+    "Description": "Cross",
+    "Algorithm": "R U2 R2 U' R2 U' R2 U2 R",
+    "AlgoImagePath": "oll22.png"
+  },
+  {
+    "Name": "OLL 23",
+    "Description": "Cross",
+    "Algorithm": "R2 D' R U2 R' D R U2 R",
+    "AlgoImagePath": "oll23.png"
+  },
+  {
+    "Name": "OLL 24",
+    "Description": "Cross",
+    "Algorithm": "r U R' U' r' F R F'",
+    "AlgoImagePath": "oll24.png"
+  },
+  {
+    "Name": "OLL 25",
+    "Description": "Cross",
+    "Algorithm": "F R' F' r U R U' r'",
+    "AlgoImagePath": "oll25.png"
+  },
+  {
+    "Name": "OLL 26",
+    "Description": "Cross",
+    "Algorithm": "R U2 R' U' R U' R'",
+    "AlgoImagePath": "oll26.png"
+  },
+  {
+    "Name": "OLL 27",
+    "Description": "Cross",
+    "Algorithm": "R U R' U R U2 R'",
+    "AlgoImagePath": "oll27.png"
+  },
+  {
+    "Name": "OLL 28",
+    "Description": "All Corners Oriented",
+    "Algorithm": "M' U M U2 M' U M",
+    "AlgoImagePath": "oll28.png"
+  },
+  {
+    "Name": "OLL 29",
+    "Description": "Awkward Shape",
+    "Algorithm": "R U R' U' R U' R' F' U' F R U R'",
+    "AlgoImagePath": "oll29.png"
+  },
+  {
+    "Name": "OLL 30",
+    "Description": "Awkward Shape",
+    "Algorithm": "F R' F R2 U' R' U' R U R' F2",
+    "AlgoImagePath": "oll30.png"
+  },
+  {
+    "Name": "OLL 31",
+    "Description": "P Shape",
+    "Algorithm": "R' U' F U R U' R' F' R",
+    "AlgoImagePath": "oll31.png"
+  },
+  {
+    "Name": "OLL 32",
+    "Description": "P Shape",
+    "Algorithm": "S R U R' U' R' F R f'",
+    "AlgoImagePath": "oll32.png"
+  },
+  {
+    "Name": "OLL 33",
+    "Description": "T Shape",
+    "Algorithm": "R U R' U' R' F R F'",
+    "AlgoImagePath": "oll33.png"
+  },
+  {
+    "Name": "OLL 34",
+    "Description": "C Shape",
+    "Algorithm": "R U R2 U' R' F R U R U' F'",
+    "AlgoImagePath": "oll34.png"
+  },
+  {
+    "Name": "OLL 35",
+    "Description": "Fish Shape",
+    "Algorithm": "R U2 R2 F R F' R U2 R'",
+    "AlgoImagePath": "oll35.png"
+  },
+  {
+    "Name": "OLL 36",
+    "Description": "Fish Shape",
+    "Algorithm": "L' U' L U' L' U L U L F' L' F",
+    "AlgoImagePath": "oll36.png"
+  },
+  {
+    "Name": "OLL 37",
+    "Description": "Fish Shape",
+    "Algorithm": "F R' F' R U R U' R'",
+    "AlgoImagePath": "oll37.png"
+  },
+  {
+    "Name": "OLL 38",
+    "Description": "W Shape",
+    "Algorithm": "R U R' U R U' R' U' R' F R F'",
+    "AlgoImagePath": "oll38.png"
+  },
+  {
+    "Name": "OLL 39",
+    "Description": "W Shape",
+    "Algorithm": "L F' L' U' L U F U' L'",
+    "AlgoImagePath": "oll39.png"
+  },
+  {
+    "Name": "OLL 40",
+    "Description": "W Shape",
+    "Algorithm": "R' F R U R' U' F' U R",
+    "AlgoImagePath": "oll40.png"
+  },
+  {
+    "Name": "OLL 41",
+    "Description": "Awkward Shape",
+    "Algorithm": "R U R' U R U2 R' F R U R' U' F'",
+    "AlgoImagePath": "oll41.png"
+  },
+  {
+    "Name": "OLL 42",
+    "Description": "Awkward Shape",
+    "Algorithm": "R' U' R U' R' U2 R F R U R' U' F'",
+    "AlgoImagePath": "oll42.png"
+  },
+  {
+    "Name": "OLL 43",
+    "Description": "P Shape",
+    "Algorithm": "F' U' L' U L F",
+    "AlgoImagePath": "oll43.png"
+  },
+  {
+    "Name": "OLL 44",
+    "Description": "P Shape",
+    "Algorithm": "F U R U' R' F'",
+    "AlgoImagePath": "oll44.png"
+  },
+  {
+    "Name": "OLL 45",
+    "Description": "T Shape",
+    "Algorithm": "F R U R' U' F'",
+    "AlgoImagePath": "oll45.png"
+  },
+  {
+    "Name": "OLL 46",
+    "Description": "C Shape",
+    "Algorithm": "R' U' R' F R F' U R",
+    "AlgoImagePath": "oll46.png"
+  },
+  {
+    "Name": "OLL 47",
+    "Description": "Small L Shape",
+    "Algorithm": "R' U' R' F R F' R' F R F' U R",
+    "AlgoImagePath": "oll47.png"
+  },
+  {
+    "Name": "OLL 48",
+    "Description": "Small L Shape",
+    "Algorithm": "F R U R' U' R U R' U' F'",
+    "AlgoImagePath": "oll48.png"
+  },
+  {
+    "Name": "OLL 49",
+    "Description": "Small L Shape",
+    "Algorithm": "r U' r2 U r2 U r2 U' r",
+    "AlgoImagePath": "oll49.png"
+  },
+  {
+    "Name": "OLL 50",
+    "Description": "Small L Shape",
+    "Algorithm": "r' U r2 U' r2 U' r2 U r'",
+    "AlgoImagePath": "oll50.png"
+  },
+  {
+    "Name": "OLL 51",
+    "Description": "I Shape",
+    "Algorithm": "F U R U' R' U R U' R' F'",
+    "AlgoImagePath": "oll51.png"
+  },
+  {
+    "Name": "OLL 52",
+    "Description": "I Shape",
+    "Algorithm": "R U R' U R U' B U' B' R'",
+    "AlgoImagePath": "oll52.png"
+  },
+  {
+    "Name": "OLL 53",
+    "Description": "Small L Shape",
+    "Algorithm": "r' U' R U' R' U R U' R' U2 r",
+    "AlgoImagePath": "oll53.png"
+  },
+  {
+    "Name": "OLL 54",
+    "Description": "Small L Shape",
+    "Algorithm": "r U R' U R U' R' U R U2 r'",
+    "AlgoImagePath": "oll54.png"
+  },
+  {
+    "Name": "OLL 55",
+    "Description": "I Shape",
+    "Algorithm": "R U2 R2 U' R U' R' U2 F R F'",
+    "AlgoImagePath": "oll55.png"
+  },
+  {
+    "Name": "OLL 56",
+    "Description": "I Shape",
+    "Algorithm": "F R U R' U' R F' r U R' U' r'",
+    "AlgoImagePath": "oll56.png"
+  },
+  {
+    "Name": "OLL 57",
+    "Description": "H Shape",
+    "Algorithm": "R U R' U' M' U R U' r'",
+    "AlgoImagePath": "oll57.png"
+  }
+]
