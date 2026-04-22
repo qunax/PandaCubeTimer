@@ -14,26 +14,21 @@ public partial class OllTrainingsViewModel : BaseViewModel
     
     
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsAlgsListEmpty))]
-    private ObservableCollection<TutorialAlgoDTO> _algs;
+    private ObservableCollection<TutorialAlgoDTO> _algs = new();
     
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsAlgOpened))]
     private TutorialAlgoDTO? _selectedAlg;
 
-    public bool IsAlgsListEmpty => Algs.Count < 1; 
+    
+    
+    public bool IsAlgOpened => SelectedAlg != null;
     
     
     
     public OllTrainingsViewModel(ILogger<OllTrainingsViewModel> logger)
     {
         _logger = logger;
-        
-        Algs = new ObservableCollection<TutorialAlgoDTO>();
-        //otherwise doesnt update value automatically:
-        Algs.CollectionChanged += (s, e) =>
-        {
-            OnPropertyChanged(nameof(IsAlgsListEmpty));
-        };
     }
 
     
@@ -41,11 +36,19 @@ public partial class OllTrainingsViewModel : BaseViewModel
     [RelayCommand]
     private async Task LoadAlgorithmsAsync()
     {
+        if(IsBusy)
+            return;
+        
+        if (Algs.Count == 57)
+            return;
+
         try
         {
+            IsBusy = true;
             Algs.Clear();
+            
             await using var stream =
-                await FileSystem.OpenAppPackageFileAsync("all_oll_tutorial_alkgs.json");
+                await FileSystem.OpenAppPackageFileAsync("all_oll_tutorial_algs.json");
             using var reader = new StreamReader(stream);
 
             var jsonContent = await reader.ReadToEndAsync();
@@ -63,5 +66,21 @@ public partial class OllTrainingsViewModel : BaseViewModel
         {
             _logger.LogError(ex, "Failed to load OLL algorithms.");
         }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private void SelectAlgorithm(TutorialAlgoDTO algo)
+    {
+        SelectedAlg = algo;
+    }
+    
+    [RelayCommand]
+    private void CloseSelectedAlg()
+    {
+        SelectedAlg = null;
     }
 }

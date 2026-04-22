@@ -16,37 +16,135 @@
         
         <Grid>
             
-            <VerticalStackLayout HorizontalOptions="Center" 
-                                 VerticalOptions="Center" 
-                                 IsVisible="{Binding IsAlgsListEmpty}">
-                <Label Text="Unable to load OLL algorithms" TextColor="Gray"
-                       FontSize="15"/>
-            </VerticalStackLayout>
-        
-            <ListView ItemsSource="{Binding Algs}"
-                      SelectedItem="{Binding SelectedAlg}"
-                      IsVisible="{Binding IsAlgsListEmpty, Converter={toolkit:InvertedBoolConverter}}">
-                <ListView.ItemTemplate>
+            <!-- ALL ALGORITHMS  -->
+            <CollectionView ItemsSource="{Binding Algs}"
+                            SelectedItem="{Binding SelectedAlg}">
+                <CollectionView.EmptyView>
+                    <Label Text="Unable to load OLL algorithms" TextColor="Gray"
+                           FontSize="15"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
+                </CollectionView.EmptyView>
+                    
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="3" />
+                </CollectionView.ItemsLayout>
+                
+                <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:TutorialAlgoDTO">
-                        <ViewCell>
-                            <Grid Padding="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <!-- Image Display -->
-                                <Image Source="{Binding AlgoImagePath}" 
-                                       HeightRequest="50" 
-                                       WidthRequest="50" 
-                                       Aspect="AspectFill" />
-                                <Label Grid.Column="1" 
-                                       Text="{Binding Name}" 
-                                       VerticalOptions="Center" />
-                            </Grid>
-                        </ViewCell>
+                        
+                        <Grid Padding="2">
+                            <Frame Padding="0">
+                                
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding}"
+                                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:OllTrainingsViewModel}}, Path= SelectAlgorithmCommand}"/>
+                                </Frame.GestureRecognizers>
+                                
+                                <VerticalStackLayout Padding="10"
+                                                     HorizontalOptions="Center"
+                                                     VerticalOptions="Center"
+                                                     Background="{AppThemeBinding Light=White, Dark=#171717}">
+                                    <Image Source="{Binding AlgoImagePath}" />
+                                    <Label Text="{Binding Name}" 
+                                           FontAutoScalingEnabled="True"
+                                           FontAttributes="Bold"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+                        
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+                
+            </CollectionView>    
+            
+            <!-- SELECTED ALGORITHM -->
+            <Grid IsVisible="{Binding IsAlgOpened}"
+                  BackgroundColor="Transparent"
+                  InputTransparent="False">
+                <BoxView Color="Gray" 
+                         Opacity="0.5"/>
+                
+                <!-- <Grid.GestureRecognizers> -->
+                <!--     <TapGestureRecognizer Command="{Binding ClosePuzzleSolveCommand}"/> -->
+                <!-- </Grid.GestureRecognizers> -->
+                
+                <Frame VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       WidthRequest="300"
+                       HeightRequest="500"
+                       Padding="20">
+                    
+                    <Grid RowDefinitions="50, Auto, *">
+                        <Label Grid.Row="0"
+                               Text="{Binding SelectedAlg.Name}"
+                               FontAttributes="Bold"
+                               FontFamily="Bold"
+                               FontSize="20"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Center"/>
+                
+                        <Button Text="X"
+                                Grid.Row="0"
+                                VerticalOptions="Center"
+                                HorizontalOptions="End"
+                                Command="{Binding CloseSelectedAlgCommand}"/>
+                        
+                        <!-- Separator -->
+                        <BoxView Grid.Row="1"
+                            HeightRequest="1"
+                            Color="LightGray"
+                            HorizontalOptions="Fill"
+                            Margin="0,10" />
+                        
+                        
+                    
+                        <ScrollView Grid.Row="2"
+                                    Orientation="Vertical"
+                                    Margin="0,20,0,0">
+                            <StackLayout >
+                                
+                                <Image Source="{Binding SelectedAlg.AlgoImagePath}" 
+                                />
+                        
+                                <Label Text="{Binding SelectedAlg.Algorithm}"
+                                       FontAttributes="Bold"
+                                       FontFamily="Bold"
+                                       FontSize="20"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0, 20, 0, 10"/>
+                                
+                                <Label Text="{Binding SelectedAlg.Description}"
+                                       FontAttributes="Italic"
+                                       FontSize="15"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0, 20, 0, 0"/>
+                                
+                            </StackLayout>
+                        </ScrollView>
+                    </Grid>
+                </Frame>
+                
+            </Grid>
+            
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"/>   
             
         </Grid>
         

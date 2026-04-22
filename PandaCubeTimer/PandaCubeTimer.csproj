@@ -56,7 +56,8 @@
         <MauiFont Include="Resources\Fonts\*" />
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />               
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />    
+                      
         
     </ItemGroup>
 
@@ -105,6 +106,7 @@
       <MauiImage Include="Resources\Images\PLLs\ub_perm.png" />
       <MauiImage Include="Resources\Images\PLLs\v_perm.png" />
       <MauiImage Include="Resources\Images\PLLs\y_perm.png" />
+      <MauiImage Include="Resources\Images\PLLs\z_perm.png" /> 
     </ItemGroup>
 
     <!-- OLL Algorithms For Tutorials -->
@@ -167,9 +169,7 @@
       <MauiImage Include="Resources\Images\OLLs\oll56.png" />  
       <MauiImage Include="Resources\Images\OLLs\oll57.png" /> 
     </ItemGroup>
-    <ItemGroup>
-      <None Remove="Data\Tutorials\all_pll_tutorial_algs.json" />
-    </ItemGroup>
+    
     <ItemGroup>
       <MauiAsset Include="Resources\Raw\all_pll_tutorial_algs.json" />
     </ItemGroup>
