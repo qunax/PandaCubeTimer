@@ -10,4 +10,5 @@ public static class WcaDisciplines
     public const string Square1 = "sq1";
     public const string Clock = "clock";
     public const string OneHanded = "333oh";
+    public const string Custom = "cstm";
 }

@@ -36,7 +36,8 @@ namespace PandaCubeTimer.Data.Repositories
                 new() { Id = WcaDisciplines.Megaminx, Name = "Megaminx" },
                 new() { Id = WcaDisciplines.Square1, Name = "Square-1" },
                 new() { Id = WcaDisciplines.Clock, Name = "Rubik's Clock" },
-                new() { Id = WcaDisciplines.OneHanded, Name = "3x3x3 One-Handed" }
+                new() { Id = WcaDisciplines.OneHanded, Name = "3x3x3 One-Handed" },
+                new() { Id = WcaDisciplines.Custom, Name = "Custom discipline" }
             };
             await _connection.InsertAllAsync(defaultDisciplines);
             

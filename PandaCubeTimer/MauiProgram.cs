@@ -43,6 +43,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PLLTrainingsView>();
         builder.Services.AddTransient<SolvesView>();
         builder.Services.AddTransient<StatsView>();
+        builder.Services.AddTransient<SessionsView>();
         
         builder.Services.AddTransient<TimerViewModel>();
         builder.Services.AddTransient<InspectionViewModel>();
@@ -52,6 +53,7 @@ public static class MauiProgram
         builder.Services.AddTransient<StatsViewModel>();
         builder.Services.AddTransient<PllTrainingsViewModel>();
         builder.Services.AddTransient<OllTrainingsViewModel>();
+        builder.Services.AddTransient<SessionsViewModel>();
         
         ConfigureLogging(builder);
         
@@ -103,6 +105,6 @@ public static class MauiProgram
         await disciplineRepository.SeedDisciplinesAsync();
         
         SessionRepository sessionRepository = services.GetRequiredService<SessionRepository>();
-        await sessionRepository.SeedDefaultSession();
+        await sessionRepository.SeedDefaultSessionAsync();
     }
 }

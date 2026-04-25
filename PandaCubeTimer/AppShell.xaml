@@ -21,6 +21,10 @@
             Title="Stats"
             ContentTemplate="{DataTemplate views:StatsView}"
             Route="Stats"/>
+        <ShellContent
+            Title="Sessions"
+            ContentTemplate="{DataTemplate views:SessionsView}"
+            Route="Sessions"/>
     </FlyoutItem>
     
     <FlyoutItem Title="Trainings">

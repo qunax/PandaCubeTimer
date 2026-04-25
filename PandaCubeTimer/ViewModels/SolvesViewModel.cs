@@ -36,7 +36,7 @@ public partial class SolvesViewModel : BaseViewModel
     
 
     [RelayCommand]
-    private async Task LoadSolves()
+    private async Task LoadSolvesAsync()
     {
         if(IsBusy)
             return;

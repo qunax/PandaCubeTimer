@@ -19,7 +19,7 @@ namespace PandaCubeTimer.Data.Repositories
         
         
         
-        public async Task SeedDefaultSession()
+        public async Task SeedDefaultSessionAsync()
         {
             int count = await _connection.Table<Session>().CountAsync();
             if (count != 0)
@@ -31,6 +31,11 @@ namespace PandaCubeTimer.Data.Repositories
             await _connection.InsertAsync(defaultSession);
             
             _logger.LogInformation("Default session added.");
+        }
+
+        public async Task<List<Session>> GetAllSessionsAsync()
+        {
+            return await _connection.Table<Session>().ToListAsync();
         }
     }
 }

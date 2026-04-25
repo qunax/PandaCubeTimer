@@ -17,5 +17,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute($"{nameof(PLLTrainingsView)}", typeof(PLLTrainingsView));
         Routing.RegisterRoute($"{nameof(SolvesView)}", typeof(SolvesView));
         Routing.RegisterRoute($"{nameof(StatsView)}", typeof(StatsView));
+        Routing.RegisterRoute($"{nameof(SessionsView)}", typeof(SessionsView));
     }
 }
