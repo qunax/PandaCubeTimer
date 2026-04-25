@@ -4,8 +4,8 @@ namespace PandaCubeTimer.Models;
 
 public class Discipline
 {
-    [PrimaryKey, AutoIncrement]
-    public int Id { get; set; }
+    [PrimaryKey]
+    public string Id { get; set; }
 
     /// <summary>
     /// discipline name (should somehow correlate with TNoodle library ~ mapping?) 

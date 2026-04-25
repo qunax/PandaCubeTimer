@@ -54,8 +54,8 @@ public partial class CountingTimerViewModel : BaseViewModel
         try
         {
             PuzzleSolve currentSolve = new PuzzleSolve() { 
-                Discipline = "3x3",
-                SessionId = 0,
+                DisciplineId = WcaDisciplines.Cube3x3,
+                SessionId = _cubeTimerDb.Connection.Table<Session>().FirstOrDefaultAsync().Result.Id,
                 SolveTimeSeconds = Stopwatch.Elapsed.TotalSeconds,
                 IsPlusTwo = _inspectionPenalty == SolvePenalty.PlusTwo,
                 IsDNF = _inspectionPenalty == SolvePenalty.DNF,

@@ -4,19 +4,18 @@ using TNoodle.Puzzles;
 namespace PandaCubeTimer.Models;
 
 public class PuzzleSolve
-{   
-    [PrimaryKey, AutoIncrement]
-    public int Id { get; set; }
+{
+    [PrimaryKey] public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
     /// Puzzle to which this solve is belong
     /// </summary>
-    public string Discipline { get; set; } = null!;
+    public string DisciplineId { get; set; } = null!;
     
     /// <summary>
     /// Session in which this solve was made
     /// </summary>
-    public int SessionId { get; set; }
+    public Guid SessionId { get; set; }
 
     /// <summary>
     /// Navigation property

@@ -2,7 +2,9 @@
 using MauiIcons.Material;
 using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data;
+using PandaCubeTimer.Data.Repositories;
 using PandaCubeTimer.Helpers;
+using PandaCubeTimer.Services;
 using PandaCubeTimer.ViewModels;
 using PandaCubeTimer.Views;
 using Serilog;
@@ -26,7 +28,12 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<CubeTimerDb>();
         builder.Services.AddSingleton<IAppSettingsService, AppSettingsService>();
+        builder.Services.AddTransient<ISolveStatsService, SolveStatsService>();
         builder.Services.AddSingleton<ILastSolveStore, LastSolveStore>();
+
+        builder.Services.AddTransient<DisciplineRepository>();
+        builder.Services.AddTransient<SessionRepository>();
+        builder.Services.AddTransient<PuzzleSolveRepository>();
 
         builder.Services.AddTransient<TimerView>();
         builder.Services.AddTransient<InspectionView>();
@@ -50,10 +57,11 @@ public static class MauiProgram
         
         var app = builder.Build();
         
-        // Ensure database is created
-        //using var scope = app.Services.CreateScope();
-        //var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        //db.Database.EnsureCreated();
+        
+
+        
+
+        Task.Run(async () => await IntializeDbAsync(app.Services)).Wait();
 
         return app;
     }
@@ -84,5 +92,17 @@ public static class MauiProgram
         // 3. Подключаем логгер к MAUI
         builder.Logging.ClearProviders();
         builder.Logging.AddSerilog(dispose: true);
+    }
+
+    private static async Task IntializeDbAsync(IServiceProvider services)
+    {
+        CubeTimerDb db = services.GetRequiredService<CubeTimerDb>();
+        await db.InitializeAsync();
+        
+        DisciplineRepository disciplineRepository = services.GetRequiredService<DisciplineRepository>();
+        await disciplineRepository.SeedDisciplinesAsync();
+        
+        SessionRepository sessionRepository = services.GetRequiredService<SessionRepository>();
+        await sessionRepository.SeedDefaultSession();
     }
 }

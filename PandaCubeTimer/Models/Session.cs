@@ -4,8 +4,7 @@ namespace PandaCubeTimer.Models;
 
 public class Session
 {
-    [PrimaryKey, AutoIncrement]
-    public int Id { get; set; }
+    [PrimaryKey] public Guid Id { get; set; } = Guid.NewGuid();
 
     public string SessionName { get; set; } = null!;
 
