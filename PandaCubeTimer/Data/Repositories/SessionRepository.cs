@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Models;
+using PandaCubeTimer.Models.DTOs;
 using SQLite;
 
 namespace PandaCubeTimer.Data.Repositories
@@ -24,18 +25,29 @@ namespace PandaCubeTimer.Data.Repositories
             int count = await _connection.Table<Session>().CountAsync();
             if (count != 0)
                 return;
-
             
             Session defaultSession = new Session();
-            defaultSession.SessionName = "Default";
+            defaultSession.Name = "Default";
+            defaultSession.DisciplineId = WcaDisciplines.Cube3x3;
             await _connection.InsertAsync(defaultSession);
             
             _logger.LogInformation("Default session added.");
         }
 
-        public async Task<List<Session>> GetAllSessionsAsync()
+        public async Task<List<SessionDTO>> GetAllSessionsAsync()
         {
-            return await _connection.Table<Session>().ToListAsync();
+            string sql = @"
+        SELECT 
+            s.Id, 
+            s.Name, 
+            s.DisciplineId, 
+            d.Name AS DisciplineName
+        FROM Session s
+        INNER JOIN Discipline d ON s.DisciplineId = d.Id";
+
+            // SQLite сама сделает джойн под капотом и вернет готовый плоский список
+            return await _connection.QueryAsync<SessionDTO>(sql);
+            //return await _connection.Table<Session>().ToListAsync();
         }
     }
 }

@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data.Repositories;
 using PandaCubeTimer.Models;
+using PandaCubeTimer.Models.DTOs;
 
 namespace PandaCubeTimer.ViewModels;
 
@@ -18,10 +19,10 @@ public partial class SessionsViewModel : BaseViewModel
     private bool _isRefreshing;
     
     [ObservableProperty]
-    private ObservableCollection<Session> _sessions = new();
+    private ObservableCollection<SessionDTO> _sessions = new();
     
     [ObservableProperty]
-    private Session? _selectedSession;
+    private SessionDTO? _selectedSession;
     
     
     
@@ -60,7 +61,7 @@ public partial class SessionsViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void SelectSession(Session session)
+    private void SelectSession(SessionDTO session)
     {
         this.SelectedSession = session;
     }
@@ -70,7 +71,7 @@ public partial class SessionsViewModel : BaseViewModel
 
     private async Task LoadSessionsFromDbAsync()
     {
-        List<Session> sessions = await _sessionRepository.GetAllSessionsAsync();
-        Sessions = new ObservableCollection<Session>(sessions);
+        List<SessionDTO> sessions = await _sessionRepository.GetAllSessionsAsync();
+        Sessions = new ObservableCollection<SessionDTO>(sessions);
     }
 }

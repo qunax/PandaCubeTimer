@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
              xmlns:models="clr-namespace:PandaCubeTimer.Models"
+             xmlns:dtos="clr-namespace:PandaCubeTimer.Models.DTOs"
              xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:SessionsViewModel"
@@ -26,14 +27,25 @@
                                 SelectedItem="{Binding SelectedSession}">
                     
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Session">
+                        <DataTemplate x:DataType="dtos:SessionDTO">
                             <Grid>
                                 <Frame>
                                     <!-- <Frame.GestureRecognizers> -->
                                     <!--     <TapGestureRecognizer CommandParameter="{Binding}" -->
                                     <!--                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/> -->
                                     <!-- </Frame.GestureRecognizers> -->
-                                    <Label Text="{Binding SessionName}"></Label>
+                                    <HorizontalStackLayout Padding="0"
+                                                         HorizontalOptions="Center"
+                                                         VerticalOptions="Center"
+                                                         Background="{AppThemeBinding Light=White, Dark=#171717}">
+                                        
+                                        <Label Text="{Binding DisciplineName}"
+                                               Padding="0"
+                                               FontAutoScalingEnabled="True"
+                                               FontAttributes="Bold"></Label>
+                                        <Label Text="{Binding Name}"></Label>
+                                        
+                                    </HorizontalStackLayout>
                                 </Frame>
                             </Grid>
                         </DataTemplate>
