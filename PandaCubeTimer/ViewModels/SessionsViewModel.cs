@@ -1,10 +1,12 @@
 using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data.Repositories;
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Models.DTOs;
+using PandaCubeTimer.Views.Popups;
 
 namespace PandaCubeTimer.ViewModels;
 
@@ -12,6 +14,7 @@ public partial class SessionsViewModel : BaseViewModel
 {
     private readonly ILogger<SessionsViewModel> _logger;
     private readonly SessionRepository _sessionRepository;
+    private readonly DisciplineRepository _disciplineRepository;
     
     
     
@@ -26,9 +29,12 @@ public partial class SessionsViewModel : BaseViewModel
     
     
     
-    public SessionsViewModel(SessionRepository repository, ILogger<SessionsViewModel> logger)
+    public SessionsViewModel(SessionRepository repository,
+        DisciplineRepository disciplineRepository, 
+        ILogger<SessionsViewModel> logger)
     {
         _sessionRepository = repository;
+        _disciplineRepository = disciplineRepository;
         _logger = logger;
     }
 
@@ -64,6 +70,21 @@ public partial class SessionsViewModel : BaseViewModel
     private void SelectSession(SessionDTO session)
     {
         this.SelectedSession = session;
+    }
+    
+    [RelayCommand]
+    public async Task AddSessionAsync()
+    {
+        var disciplines = await _disciplineRepository.GetAllDisciplinesAsync();
+
+        var popup = new NewSessionPopup(disciplines);
+        var result = await Shell.Current.CurrentPage.ShowPopupAsync(popup);
+
+        if (result is Session newSession)
+        {
+            await _sessionRepository.InsertAsync(newSession);
+            await LoadSessionsFromDbAsync();
+        }
     }
 
 

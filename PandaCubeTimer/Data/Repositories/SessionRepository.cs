@@ -49,5 +49,10 @@ namespace PandaCubeTimer.Data.Repositories
             return await _connection.QueryAsync<SessionDTO>(sql);
             //return await _connection.Table<Session>().ToListAsync();
         }
+
+        public async Task InsertAsync(Session session)
+        {
+            await _connection.InsertAsync(session);
+        }
     }
 }

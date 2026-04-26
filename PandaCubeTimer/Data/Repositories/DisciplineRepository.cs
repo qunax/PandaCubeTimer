@@ -43,5 +43,10 @@ namespace PandaCubeTimer.Data.Repositories
             
             _logger.LogInformation("Seeding disciplines is finished.");
         }
+
+        public async Task<List<Discipline>> GetAllDisciplinesAsync()
+        {
+            return await _connection.Table<Discipline>().ToListAsync();
+        }
     }
 }

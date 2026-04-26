@@ -23,12 +23,17 @@
                          Padding="5">
                 
                 <CollectionView Background="Transparent"
+                                SelectionMode="Single" 
                                 ItemsSource="{Binding Sessions}"
                                 SelectedItem="{Binding SelectedSession}">
                     
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="dtos:SessionDTO">
-                            <Grid>
+                            <Border Padding="15,0" 
+                                    Stroke="{AppThemeBinding Light=LightGray, Dark=#444}" 
+                                    StrokeShape="RoundRectangle 8"
+                                    BackgroundColor="Transparent"
+                                    VerticalOptions="Center">
                                 <Frame>
                                     <!-- <Frame.GestureRecognizers> -->
                                     <!--     <TapGestureRecognizer CommandParameter="{Binding}" -->
@@ -46,14 +51,41 @@
                                         <Label Text="{Binding Name}"></Label>
                                         
                                     </HorizontalStackLayout>
+                                    
+                                    
                                 </Frame>
-                            </Grid>
+                                
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal" />
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#2196F3" />
+                                                <Setter Property="Stroke" Value="#2196F3" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     
                 </CollectionView>
                 
             </RefreshView>
+            
+            <Button Text="+"
+                    Command="{Binding AddSessionCommand}"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    CornerRadius="30" 
+                    BackgroundColor="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}"
+                    TextColor="White"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    Margin="0, 0, 20, 20" />
             
             <ActivityIndicator IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}"

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui"
+               xmlns:views="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="PandaCubeTimer.Views.Popups.NewSessionPopup">
+
+    <Border StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light=White, Dark=#212121}"
+            Padding="20" VerticalOptions="Center">
+        <VerticalStackLayout Spacing="15">
+            <Label Text="New Session" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <VerticalStackLayout Spacing="2">
+                <Entry x:Name="NameEntry" 
+                       Placeholder="Name (e.g. 3x3 Practice)" 
+                       TextChanged="OnNameEntryTextChanged" />
+               
+                <Label x:Name="NameErrorLabel" 
+                       Text="Please enter a session name" 
+                       TextColor="Red" 
+                       FontSize="12" 
+                       IsVisible="False" />
+            </VerticalStackLayout>
+
+            <Label Text="Choose the discipline:" TextColor="Gray" FontSize="14" />
+
+            <CollectionView x:Name="DisciplinePicker" 
+                            SelectionMode="Single" 
+                            HeightRequest="50">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="15,0" 
+                                Stroke="{AppThemeBinding Light=LightGray, Dark=#444}" 
+                                StrokeShape="RoundRectangle 8"
+                                BackgroundColor="Transparent"
+                                VerticalOptions="Center"
+                                HeightRequest="40">
+                            
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal" />
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#2196F3" />
+                                            <Setter TargetName="DisciplineText" Property="Label.TextColor" Value="White" />
+                                            <Setter Property="Stroke" Value="#2196F3" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Label x:Name="DisciplineText" 
+                                   Text="{Binding Name}" 
+                                   VerticalOptions="Center" 
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,10,0,0">
+                <Button Grid.Column="0" Text="Cancel" Clicked="OnCancelClicked" BackgroundColor="Transparent" TextColor="Gray" />
+                <Button Grid.Column="1" Text="Create" Clicked="OnCreateClicked" FontAttributes="Bold" />
+            </Grid>
+        </VerticalStackLayout>
+    </Border>
+</views:Popup>
