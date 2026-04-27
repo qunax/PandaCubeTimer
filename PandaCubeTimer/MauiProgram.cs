@@ -4,7 +4,9 @@ using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data;
 using PandaCubeTimer.Data.Repositories;
 using PandaCubeTimer.Helpers;
+using PandaCubeTimer.Messages;
 using PandaCubeTimer.Services;
+using PandaCubeTimer.Stores;
 using PandaCubeTimer.ViewModels;
 using PandaCubeTimer.Views;
 using Serilog;
@@ -30,6 +32,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IAppSettingsService, AppSettingsService>();
         builder.Services.AddTransient<ISolveStatsService, SolveStatsService>();
         builder.Services.AddSingleton<ILastSolveStore, LastSolveStore>();
+        builder.Services.AddSingleton<ActiveSessionStore>();
 
         builder.Services.AddTransient<DisciplineRepository>();
         builder.Services.AddTransient<SessionRepository>();

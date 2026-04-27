@@ -1,10 +1,5 @@
 ﻿using PandaCubeTimer.Models;
 using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PandaCubeTimer.Data.Repositories
 {
@@ -20,23 +15,27 @@ namespace PandaCubeTimer.Data.Repositories
         }
 
 
-        /// <summary>
-        /// Gets all puzzle solves from local db
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IList<PuzzleSolve>> GetAllPuzzleSolvesAsync()
+        public async Task<List<PuzzleSolve>> GetSessionPuzzleSolvesAsync(Guid sessionId)
         {
-            return await _connection.Table<PuzzleSolve>().ToListAsync();
+            return await _connection.Table<PuzzleSolve>()
+                                    .Where(ps => ps.SessionId == sessionId)
+                                    .OrderByDescending(s => s.DateTime)
+                                    .ToListAsync();
+        }
+
+        public async Task<PuzzleSolve> GetPuzzleSolveAsync(Guid solveId)
+        {
+            return await _connection.Table<PuzzleSolve>().Where(x => x.Id == solveId).FirstAsync();
         }
         
-        /// <summary>
-        /// Returns number of rows added to the table
-        /// </summary>
-        /// <param name="solveToCreate"></param>
-        /// <returns></returns>
         public async Task<int> CreatePuzzleSolveAsync(PuzzleSolve solveToCreate)
         {
             return await _connection.InsertAsync(solveToCreate);
+        }
+
+        public async Task DeletePuzzleSolveAsync(PuzzleSolve solveToDelete)
+        {
+            await _connection.DeleteAsync(solveToDelete);
         }
     }
 }

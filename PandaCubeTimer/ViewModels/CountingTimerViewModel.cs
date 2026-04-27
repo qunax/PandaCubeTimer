@@ -1,10 +1,11 @@
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PandaCubeTimer.Data;
+using PandaCubeTimer.Data.Repositories;
 using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Models;
+using PandaCubeTimer.Stores;
 using PandaCubeTimer.Views;
 
 namespace PandaCubeTimer.ViewModels;
@@ -13,17 +14,15 @@ namespace PandaCubeTimer.ViewModels;
 //[QueryProperty(nameof(CountingTimerViewModel.CurrentSolveScramble), nameof(CountingTimerViewModel.CurrentSolveScramble))]
 public partial class CountingTimerViewModel : BaseViewModel
 {
-    private readonly CubeTimerDb _cubeTimerDb;
+    //private readonly CubeTimerDb _cubeTimerDb;
+    private readonly PuzzleSolveRepository  _puzzleSolveRepository;
     private readonly ILastSolveStore _lastSolveStore;
+    private readonly ActiveSessionStore  _activeSessionStore;
     private SolvePenalty? _inspectionPenalty;
     private readonly string _currentSolveScramble;
     
     [ObservableProperty]
-    //[NotifyPropertyChangedFor(nameof(CurrentCountingTime))]
     private Stopwatch _stopwatch = new();
-
-    // [ObservableProperty] 
-    // private SolvePenalty _inspectionPenalty = SolvePenalty.NoPenalty;
 
     [ObservableProperty]
     private bool _isRunning;
@@ -33,9 +32,12 @@ public partial class CountingTimerViewModel : BaseViewModel
 
 
 
-    public CountingTimerViewModel(CubeTimerDb database, ILastSolveStore lastSolveStore)
+    public CountingTimerViewModel(PuzzleSolveRepository puzzleSolveRepository,
+                                  ILastSolveStore lastSolveStore,
+                                  ActiveSessionStore activeSessionStore)
     {
-        _cubeTimerDb = database;
+        _puzzleSolveRepository = puzzleSolveRepository;
+        _activeSessionStore = activeSessionStore;
 
         //getting passed parameters from store
         _inspectionPenalty = lastSolveStore.InspectionPenalty ?? SolvePenalty.NoPenalty;
@@ -55,7 +57,7 @@ public partial class CountingTimerViewModel : BaseViewModel
         {
             PuzzleSolve currentSolve = new PuzzleSolve() { 
                 DisciplineId = WcaDisciplines.Cube3x3,
-                SessionId = _cubeTimerDb.Connection.Table<Session>().FirstOrDefaultAsync().Result.Id,
+                SessionId = _activeSessionStore.CurrentSession.Id,
                 SolveTimeSeconds = Stopwatch.Elapsed.TotalSeconds,
                 IsPlusTwo = _inspectionPenalty == SolvePenalty.PlusTwo,
                 IsDNF = _inspectionPenalty == SolvePenalty.DNF,
@@ -63,11 +65,11 @@ public partial class CountingTimerViewModel : BaseViewModel
                 DateTime = DateTime.Now,
                 Comment = "test comment"
             };
-            await _cubeTimerDb.Connection.InsertAsync(currentSolve);
+            await _puzzleSolveRepository.CreatePuzzleSolveAsync(currentSolve);
             
             // check if solve is in database and refreshing it (why not)
             // passing it as a parameter back to TimerViewModel for display and further manipulation
-            PuzzleSolve checkedFromDb = await _cubeTimerDb.Connection.Table<PuzzleSolve>().Where(x => x.Id == currentSolve.Id).FirstAsync();
+            PuzzleSolve checkedFromDb = await _puzzleSolveRepository.GetPuzzleSolveAsync(currentSolve.Id);
             _lastSolveStore.LastPuzzleSolve = checkedFromDb;
             await Shell.Current.GoToAsync($"{nameof(TimerView)}", false);
         }

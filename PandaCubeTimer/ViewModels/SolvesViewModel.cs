@@ -1,15 +1,21 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using PandaCubeTimer.Converters;
-using PandaCubeTimer.Data;
+using PandaCubeTimer.Data.Repositories;
+using PandaCubeTimer.Messages;
 using PandaCubeTimer.Models;
+using PandaCubeTimer.Stores;
 
 namespace PandaCubeTimer.ViewModels;
 
 public partial class SolvesViewModel : BaseViewModel
 {
-    private readonly CubeTimerDb _database;
+    private readonly PuzzleSolveRepository  _puzzleSolveRepository;
+    private readonly ActiveSessionStore _activeSessionStore;
+    
+    
     
     [ObservableProperty]
     private ObservableCollection<PuzzleSolve> _puzzleSolves = new ObservableCollection<PuzzleSolve>();
@@ -28,9 +34,36 @@ public partial class SolvesViewModel : BaseViewModel
     
     
     
-    public SolvesViewModel(CubeTimerDb database)
+    public SolvesViewModel(PuzzleSolveRepository puzzleSolveRepository,
+                           ActiveSessionStore  activeSessionStore)
     {
-        _database = database;
+        _puzzleSolveRepository = puzzleSolveRepository;
+        _activeSessionStore = activeSessionStore;
+        
+        ConfigureMessageRecieving();
+    }
+
+    private void ConfigureMessageRecieving()
+    {
+        // reload solves for selected session:
+        WeakReferenceMessenger.Default.Register<ActiveSessionChangedMessage>(this, (r, m) =>
+        {
+            OnActiveSessionChangedReceived(m.Value);
+        });
+    }
+
+    
+    
+    private async void OnActiveSessionChangedReceived(Session messageValue)
+    {
+        try
+        {
+            await LoadSolvesAsync();
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 
     
@@ -44,7 +77,7 @@ public partial class SolvesViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            await LoadSolvesFromDbAsync();
+            await LoadSolvesFromDbAsync(_activeSessionStore.CurrentSession.Id);
         }
         catch (Exception exception)
         {
@@ -75,7 +108,7 @@ public partial class SolvesViewModel : BaseViewModel
 
         try
         {
-            await _database.Connection.DeleteAsync(SelectedPuzzleSolve);
+            await _puzzleSolveRepository.DeletePuzzleSolveAsync(SelectedPuzzleSolve);
             PuzzleSolves.Remove(SelectedPuzzleSolve);
             SelectedPuzzleSolve = null;
         }
@@ -128,9 +161,10 @@ public partial class SolvesViewModel : BaseViewModel
     }
     
     
-    private async Task LoadSolvesFromDbAsync()
+    
+    private async Task LoadSolvesFromDbAsync(Guid sessionId)
     {
-        List<PuzzleSolve> solvesList = await _database.Connection.Table<PuzzleSolve>().OrderByDescending(s => s.DateTime).ToListAsync();
+        List<PuzzleSolve> solvesList = await _puzzleSolveRepository.GetSessionPuzzleSolvesAsync(sessionId);
         PuzzleSolves = new ObservableCollection<PuzzleSolve>(solvesList);
     }
 }

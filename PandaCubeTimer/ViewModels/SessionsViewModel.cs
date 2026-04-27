@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data.Repositories;
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Models.DTOs;
+using PandaCubeTimer.Stores;
 using PandaCubeTimer.Views.Popups;
 
 namespace PandaCubeTimer.ViewModels;
@@ -15,6 +16,7 @@ public partial class SessionsViewModel : BaseViewModel
     private readonly ILogger<SessionsViewModel> _logger;
     private readonly SessionRepository _sessionRepository;
     private readonly DisciplineRepository _disciplineRepository;
+    private readonly ActiveSessionStore _activeSessionStore;
     
     
     
@@ -31,11 +33,15 @@ public partial class SessionsViewModel : BaseViewModel
     
     public SessionsViewModel(SessionRepository repository,
         DisciplineRepository disciplineRepository, 
+        ActiveSessionStore activeSessionStore,
         ILogger<SessionsViewModel> logger)
     {
         _sessionRepository = repository;
         _disciplineRepository = disciplineRepository;
+        _activeSessionStore = activeSessionStore;
         _logger = logger;
+        
+        
     }
 
     
@@ -70,6 +76,7 @@ public partial class SessionsViewModel : BaseViewModel
     private void SelectSession(SessionDTO session)
     {
         this.SelectedSession = session;
+        _activeSessionStore.SetSession(session);
     }
     
     [RelayCommand]

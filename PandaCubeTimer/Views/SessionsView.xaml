@@ -24,8 +24,7 @@
                 
                 <CollectionView Background="Transparent"
                                 SelectionMode="Single" 
-                                ItemsSource="{Binding Sessions}"
-                                SelectedItem="{Binding SelectedSession}">
+                                ItemsSource="{Binding Sessions}">
                     
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="dtos:SessionDTO">
@@ -35,10 +34,10 @@
                                     BackgroundColor="Transparent"
                                     VerticalOptions="Center">
                                 <Frame>
-                                    <!-- <Frame.GestureRecognizers> -->
-                                    <!--     <TapGestureRecognizer CommandParameter="{Binding}" -->
-                                    <!--                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/> -->
-                                    <!-- </Frame.GestureRecognizers> -->
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding}"
+                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/>
+                                    </Frame.GestureRecognizers>
                                     <HorizontalStackLayout Padding="0"
                                                          HorizontalOptions="Center"
                                                          VerticalOptions="Center"
