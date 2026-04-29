@@ -5,11 +5,13 @@ using PandaCubeTimer.Data;
 using PandaCubeTimer.Data.Repositories;
 using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Messages;
+using PandaCubeTimer.Models;
 using PandaCubeTimer.Services;
 using PandaCubeTimer.Stores;
 using PandaCubeTimer.ViewModels;
 using PandaCubeTimer.Views;
 using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace PandaCubeTimer;
 
@@ -46,7 +48,8 @@ public static class MauiProgram
         builder.Services.AddTransient<PLLTrainingsView>();
         builder.Services.AddTransient<SolvesView>();
         builder.Services.AddTransient<StatsView>();
-        builder.Services.AddTransient<SessionsView>();
+        
+        builder.Services.AddSingleton<SessionsView>();
         
         builder.Services.AddTransient<TimerViewModel>();
         builder.Services.AddTransient<InspectionViewModel>();
@@ -56,7 +59,8 @@ public static class MauiProgram
         builder.Services.AddTransient<StatsViewModel>();
         builder.Services.AddTransient<PllTrainingsViewModel>();
         builder.Services.AddTransient<OllTrainingsViewModel>();
-        builder.Services.AddTransient<SessionsViewModel>();
+        
+        builder.Services.AddSingleton<SessionsViewModel>();
         
         ConfigureLogging(builder);
         
@@ -67,6 +71,7 @@ public static class MauiProgram
         
 
         Task.Run(async () => await IntializeDbAsync(app.Services)).Wait();
+        Task.Run(async () => await InitializeStartupSessionAsync(app.Services)).Wait();
 
         return app;
     }
@@ -109,5 +114,27 @@ public static class MauiProgram
         
         SessionRepository sessionRepository = services.GetRequiredService<SessionRepository>();
         await sessionRepository.SeedDefaultSessionAsync();
+    }
+
+    private static async Task InitializeStartupSessionAsync(IServiceProvider services)
+    {
+        var appSettingsService = services.GetRequiredService<IAppSettingsService>();
+        var sessionRepository = services.GetRequiredService<SessionRepository>();
+        var activeSessionStore = services.GetRequiredService<ActiveSessionStore>();
+        
+        Guid sessionId = Guid.Parse(appSettingsService.StartupSessionId);
+        
+        Session sessionById;
+        try
+        {
+            sessionById = await sessionRepository.GetSessionByIdAsync(sessionId);
+        }
+        catch (Exception ex)
+        {
+            Log.Logger.Error("Failed to get session by id: " + ex.Message);
+            sessionById = await sessionRepository.GetSessionByIdAsync(Session.DefaultSessionId);
+        }
+        
+        activeSessionStore.SetSession(sessionById);
     }
 }

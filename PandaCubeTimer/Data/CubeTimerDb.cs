@@ -16,9 +16,9 @@ namespace PandaCubeTimer.Data
         public async Task InitializeAsync()
         {
             // for migration while developing 🤷 
-            await _connection.DropTableAsync<PuzzleSolve>();
-            await _connection.DropTableAsync<Session>();
-            await _connection.DropTableAsync<Discipline>();
+            // await _connection.DropTableAsync<PuzzleSolve>();
+            // await _connection.DropTableAsync<Session>();
+            // await _connection.DropTableAsync<Discipline>();
 
             await _connection.CreateTableAsync<Session>();
             await _connection.CreateTableAsync<PuzzleSolve>();

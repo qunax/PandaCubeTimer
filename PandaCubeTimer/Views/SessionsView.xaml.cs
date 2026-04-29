@@ -14,4 +14,19 @@ public partial class SessionsView : ContentPage
         InitializeComponent();
         BindingContext = sessionsViewModel;
     }
+    
+    // protected override void OnAppearing()
+    // {
+    //     base.OnAppearing();
+    //
+    //     // Как только страница появляется, проверяем, выбрана ли сессия во ViewModel
+    //     if (BindingContext is SessionsViewModel vm && vm.SelectedSession != null)
+    //     {
+    //         // Быстро сбрасываем и возвращаем SelectedItem в UI.
+    //         // Так как навигация теперь висит на TapGestureRecognizer, 
+    //         // этот трюк НЕ вызовет случайного перехода на экран таймера!
+    //         SessionsList.SelectedItem = null;
+    //         SessionsList.SelectedItem = vm.SelectedSession;
+    //     }
+    // }
 }

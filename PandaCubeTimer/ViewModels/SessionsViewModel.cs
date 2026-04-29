@@ -2,8 +2,10 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data.Repositories;
+using PandaCubeTimer.Messages;
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Models.DTOs;
 using PandaCubeTimer.Stores;
@@ -41,7 +43,23 @@ public partial class SessionsViewModel : BaseViewModel
         _activeSessionStore = activeSessionStore;
         _logger = logger;
         
-        
+        ConfigureMessageRecieving();
+    }
+    
+    private void ConfigureMessageRecieving()
+    {
+        // reload solves for selected session:
+        WeakReferenceMessenger.Default.Register<ActiveSessionChangedMessage>(this, (r, m) =>
+        {
+            OnActiveSessionChangedReceived(m.Value);
+        });
+    }
+    
+    
+    
+    private async void OnActiveSessionChangedReceived(Session messageValue)
+    {
+        this.SelectedSession = Sessions.FirstOrDefault(s => s.Id == messageValue.Id);
     }
 
     
@@ -99,7 +117,7 @@ public partial class SessionsViewModel : BaseViewModel
 
     private async Task LoadSessionsFromDbAsync()
     {
-        List<SessionDTO> sessions = await _sessionRepository.GetAllSessionsAsync();
+        List<SessionDTO> sessions = await _sessionRepository.GetAllSessionsDTOsAsync();
         Sessions = new ObservableCollection<SessionDTO>(sessions);
     }
 }

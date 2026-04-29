@@ -24,48 +24,56 @@
                 
                 <CollectionView Background="Transparent"
                                 SelectionMode="Single" 
-                                ItemsSource="{Binding Sessions}">
+                                x:Name="SessionsList"
+                                ItemsSource="{Binding Sessions}"
+                                SelectedItem="{Binding SelectedSession, Mode=TwoWay}">
                     
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="dtos:SessionDTO">
-                            <Border Padding="15,0" 
-                                    Stroke="{AppThemeBinding Light=LightGray, Dark=#444}" 
-                                    StrokeShape="RoundRectangle 8"
-                                    BackgroundColor="Transparent"
-                                    VerticalOptions="Center">
-                                <Frame>
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding}"
-                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/>
-                                    </Frame.GestureRecognizers>
-                                    <HorizontalStackLayout Padding="0"
-                                                         HorizontalOptions="Center"
-                                                         VerticalOptions="Center"
-                                                         Background="{AppThemeBinding Light=White, Dark=#171717}">
-                                        
-                                        <Label Text="{Binding DisciplineName}"
-                                               Padding="0"
-                                               FontAutoScalingEnabled="True"
-                                               FontAttributes="Bold"></Label>
-                                        <Label Text="{Binding Name}"></Label>
-                                        
-                                    </HorizontalStackLayout>
+                            <Frame>
+                                
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding}"
+                                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/>
+                                </Frame.GestureRecognizers>
+                                
+                                <HorizontalStackLayout Padding="0"
+                                                     HorizontalOptions="Center"
+                                                     VerticalOptions="Center"
+                                                     Background="{AppThemeBinding Light=White, Dark=#171717}">
                                     
+                                    <Label x:Name="DisciplineNameLabel"
+                                           Text="{Binding DisciplineName}"
+                                           Padding="0"
+                                           FontAutoScalingEnabled="True"
+                                           FontAttributes="Bold"></Label>
+                                    <Line VerticalOptions="Center"
+                                          BackgroundColor="Blue"></Line>
+                                    <Label x:Name="SessionNameLabel"
+                                           Text="{Binding Name}"></Label>
                                     
-                                </Frame>
+                                </HorizontalStackLayout>
                                 
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup Name="CommonStates">
-                                        <VisualState Name="Normal" />
+                                        <VisualState Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#2A2A2A}" />
+                                                <Setter TargetName="SessionNameLabel" Property="Label.TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+                                                <Setter TargetName="DisciplineNameLabel" Property="Label.TextColor" Value="Gray" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                            
                                         <VisualState Name="Selected">
                                             <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#2196F3" />
-                                                <Setter Property="Stroke" Value="#2196F3" />
+                                                <Setter Property="BackgroundColor" Value="#2196F3" /> 
+                                                <Setter TargetName="SessionNameLabel" Property="Label.TextColor" Value="White" />
+                                                <Setter TargetName="DisciplineNameLabel" Property="Label.TextColor" Value="#E0E0E0" />
                                             </VisualState.Setters>
                                         </VisualState>
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
-                            </Border>
+                            </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     

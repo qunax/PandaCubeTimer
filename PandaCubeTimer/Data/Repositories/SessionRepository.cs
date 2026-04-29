@@ -27,6 +27,7 @@ namespace PandaCubeTimer.Data.Repositories
                 return;
             
             Session defaultSession = new Session();
+            defaultSession.Id = Session.DefaultSessionId;
             defaultSession.Name = "Default";
             defaultSession.DisciplineId = WcaDisciplines.Cube3x3;
             await _connection.InsertAsync(defaultSession);
@@ -34,7 +35,7 @@ namespace PandaCubeTimer.Data.Repositories
             _logger.LogInformation("Default session added.");
         }
 
-        public async Task<List<SessionDTO>> GetAllSessionsAsync()
+        public async Task<List<SessionDTO>> GetAllSessionsDTOsAsync()
         {
             string sql = @"
         SELECT 
@@ -48,6 +49,11 @@ namespace PandaCubeTimer.Data.Repositories
             // SQLite сама сделает джойн под капотом и вернет готовый плоский список
             return await _connection.QueryAsync<SessionDTO>(sql);
             //return await _connection.Table<Session>().ToListAsync();
+        }
+
+        public async Task<Session> GetSessionByIdAsync(Guid id)
+        {
+            return await _connection.GetAsync<Session>(id);
         }
 
         public async Task InsertAsync(Session session)
