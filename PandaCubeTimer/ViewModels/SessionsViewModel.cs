@@ -90,9 +90,9 @@ public partial class SessionsViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void SelectSession(SessionDTO session)
+    private async Task SelectSessionAsync(SessionDTO session)
     {
-        _activeSessionStore.SetSession(session.ToModel());
+        await _activeSessionStore.SetSessionAsync(session.ToModel());
         UpdateActiveSessionSelectedState();
     }
     
@@ -107,7 +107,7 @@ public partial class SessionsViewModel : BaseViewModel
         if (result is Session newSession)
         {
             await _sessionRepository.InsertAsync(newSession);
-            _activeSessionStore.SetSession(newSession);
+            await _activeSessionStore.SetSessionAsync(newSession);
             await LoadSessionsAsync();
         }
     }

@@ -9,7 +9,9 @@ using PandaCubeTimer.Models;
 using PandaCubeTimer.Services;
 using PandaCubeTimer.Stores;
 using PandaCubeTimer.ViewModels;
+using PandaCubeTimer.ViewModels.ControlsVMs;
 using PandaCubeTimer.Views;
+using PandaCubeTimer.Views.Controls;
 using Serilog;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -49,6 +51,7 @@ public static class MauiProgram
         builder.Services.AddTransient<SolvesView>();
         builder.Services.AddTransient<StatsView>();
         
+        builder.Services.AddSingleton<ActiveSessionBar>();
         builder.Services.AddSingleton<SessionsView>();
         
         builder.Services.AddTransient<TimerViewModel>();
@@ -60,6 +63,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PllTrainingsViewModel>();
         builder.Services.AddTransient<OllTrainingsViewModel>();
         
+        builder.Services.AddSingleton<ActiveSessionBarViewModel>();
         builder.Services.AddSingleton<SessionsViewModel>();
         
         ConfigureLogging(builder);
@@ -135,6 +139,6 @@ public static class MauiProgram
             sessionById = await sessionRepository.GetSessionByIdAsync(Session.DefaultSessionId);
         }
         
-        activeSessionStore.SetSession(sessionById);
+        await activeSessionStore.SetSessionAsync(sessionById);
     }
 }

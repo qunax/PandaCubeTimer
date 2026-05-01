@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PandaCubeTimer.Models"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             xmlns:controls="clr-namespace:PandaCubeTimer.Views.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
@@ -35,100 +36,107 @@
         </MenuBarItem>
     </ContentPage.MenuBarItems>
     
-    <Grid Padding="5,15,5,5">
+    <Grid RowDefinitions="Auto, *">
         
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <controls:ActiveSessionBar x:Name="ActiveSessionBar" Grid.Row="0" />
         
-        <VerticalStackLayout Grid.Row="0"
-                             x:Name="Scramble"
-                             VerticalOptions="Center"
-                             HorizontalOptions="Center"
-                             Margin="0, 20, 0, 0">
+        <Grid Padding="5,15,5,5"
+              Grid.Row="1">
+        
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             
-            <Label x:Name="ScrambleText"
-                   Text="{Binding Scramble}"
-                   HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Center"
-                   FontSize="25">
-                <Label.Behaviors>
-                    <toolkit:EventToCommandBehavior
-                        EventName="Loaded"
-                        Command="{Binding GenerateScrambleCommand}"/>
-                </Label.Behaviors>    
-            </Label>
-            
-            <Button x:Name="RefreshScrambleButton"
-                    Text="{mi:Material Refresh, IconSize=Large}" 
-                    Command="{Binding GenerateScrambleCommand}"
-                    MaximumWidthRequest="60"
-                    MaximumHeightRequest="60"
-                    Margin="10"
-                    Padding="0"/>
-            
-        </VerticalStackLayout>
-            
-        <Frame  x:Name="SolveTime"
-                Grid.Row="1"
-                VerticalOptions="Fill"
-                HorizontalOptions="Fill"
-                Padding="0"
-                BackgroundColor="Transparent"
-                HasShadow="False"
-                BorderColor="Transparent" >
-
-            <Frame.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding StartTimerCommand}"/>
-            </Frame.GestureRecognizers>
-
-            <Grid VerticalOptions="Center"
-                  HorizontalOptions="Center" >
+            <VerticalStackLayout Grid.Row="0"
+                                 x:Name="Scramble"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Margin="0, 20, 0, 0">
                 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                
-                <Label Grid.Row="0" 
-                       Text="{Binding TimeTextToDisplay}"
-                       FontSize="40"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center"
+                <Label x:Name="ScrambleText"
+                       Text="{Binding Scramble}"
+                       HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
-                       VerticalOptions="Center"
-                       x:Name="LastTimeSolved" />
+                       FontSize="25">
+                    <Label.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="Loaded"
+                            Command="{Binding GenerateScrambleCommand}"/>
+                    </Label.Behaviors>    
+                </Label>
                 
-                <HorizontalStackLayout Grid.Row="1" 
-                                       VerticalOptions="Center"
-                                       HorizontalOptions="Center"
-                                       IsVisible="{Binding ArePenaltiesVisible}">
-                    <Button Text="DNF" Command="{Binding PenalizeLastSolveCommand}"
-                            BackgroundColor="OrangeRed"
-                            IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.DNF}}"
-                            CommandParameter="{x:Static local:SolvePenalty.DNF}"/>
-                    <Button Text="+2" Command="{Binding PenalizeLastSolveCommand}"
-                            BackgroundColor="Yellow"
-                            IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.PlusTwo}}"
-                            CommandParameter="{x:Static local:SolvePenalty.PlusTwo}"/>
-                    <Button Text="Delete" Command="{Binding PenalizeLastSolveCommand}"
-                            BackgroundColor="Red"
-                            IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.Delete}}"
-                            CommandParameter="{x:Static local:SolvePenalty.Delete}"/>
-                    <Button Text="OK" Command="{Binding PenalizeLastSolveCommand}"
-                            BackgroundColor="LawnGreen"
-                            IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.NoPenalty}}"
-                            CommandParameter="{x:Static local:SolvePenalty.NoPenalty}"/>
-                </HorizontalStackLayout>
+                <Button x:Name="RefreshScrambleButton"
+                        Text="{mi:Material Refresh, IconSize=Large}" 
+                        Command="{Binding GenerateScrambleCommand}"
+                        MaximumWidthRequest="60"
+                        MaximumHeightRequest="60"
+                        Margin="10"
+                        Padding="0"/>
+                
+            </VerticalStackLayout>
+                
+            <Frame  x:Name="SolveTime"
+                    Grid.Row="1"
+                    VerticalOptions="Fill"
+                    HorizontalOptions="Fill"
+                    Padding="0"
+                    BackgroundColor="Transparent"
+                    HasShadow="False"
+                    BorderColor="Transparent" >
+
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding StartTimerCommand}"/>
+                </Frame.GestureRecognizers>
+
+                <Grid VerticalOptions="Center"
+                      HorizontalOptions="Center" >
+                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Label Grid.Row="0" 
+                           Text="{Binding TimeTextToDisplay}"
+                           FontSize="40"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           x:Name="LastTimeSolved" />
+                    
+                    <HorizontalStackLayout Grid.Row="1" 
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Center"
+                                           IsVisible="{Binding ArePenaltiesVisible}">
+                        <Button Text="DNF" Command="{Binding PenalizeLastSolveCommand}"
+                                BackgroundColor="OrangeRed"
+                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.DNF}}"
+                                CommandParameter="{x:Static local:SolvePenalty.DNF}"/>
+                        <Button Text="+2" Command="{Binding PenalizeLastSolveCommand}"
+                                BackgroundColor="Yellow"
+                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.PlusTwo}}"
+                                CommandParameter="{x:Static local:SolvePenalty.PlusTwo}"/>
+                        <Button Text="Delete" Command="{Binding PenalizeLastSolveCommand}"
+                                BackgroundColor="Red"
+                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.Delete}}"
+                                CommandParameter="{x:Static local:SolvePenalty.Delete}"/>
+                        <Button Text="OK" Command="{Binding PenalizeLastSolveCommand}"
+                                BackgroundColor="LawnGreen"
+                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.NoPenalty}}"
+                                CommandParameter="{x:Static local:SolvePenalty.NoPenalty}"/>
+                    </HorizontalStackLayout>
+                    
+                </Grid>
+                
+            </Frame>
+                
+            <Grid Grid.Row="2">
                 
             </Grid>
-            
-        </Frame>
-            
-        <Grid Grid.Row="2">
-            
         </Grid>
+        
     </Grid>
 </ContentPage>

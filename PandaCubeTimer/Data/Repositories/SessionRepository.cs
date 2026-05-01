@@ -46,9 +46,23 @@ namespace PandaCubeTimer.Data.Repositories
         FROM Session s
         INNER JOIN Discipline d ON s.DisciplineId = d.Id";
 
-            // SQLite сама сделает джойн под капотом и вернет готовый плоский список
             return await _connection.QueryAsync<SessionDTO>(sql);
-            //return await _connection.Table<Session>().ToListAsync();
+        }
+
+        public async Task<SessionDTO?> GetSessionDTOByIdAsync(Guid id)
+        {
+            string sql = @"
+        SELECT 
+            s.Id, 
+            s.Name, 
+            s.DisciplineId, 
+            d.Name AS DisciplineName
+        FROM Session s
+        INNER JOIN Discipline d ON s.DisciplineId = d.Id
+        WHERE s.Id = ?"; 
+    
+            var sessionsListResult = await _connection.QueryAsync<SessionDTO>(sql, id);
+            return sessionsListResult.FirstOrDefault();
         }
 
         public async Task<Session> GetSessionByIdAsync(Guid id)

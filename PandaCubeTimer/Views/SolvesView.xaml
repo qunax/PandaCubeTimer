@@ -5,6 +5,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             xmlns:controls="clr-namespace:PandaCubeTimer.Views.Controls"
              xmlns:models="clr-namespace:PandaCubeTimer.Models"
              xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              x:Class="PandaCubeTimer.Views.SolvesView"
@@ -22,11 +23,14 @@
         <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding LoadSolvesCommand}"/>
     </ContentPage.Behaviors>
     
-    <Grid >
+    <Grid RowDefinitions="Auto, *">
+        
+        <controls:ActiveSessionBar x:Name="ActiveSessionBar" Grid.Row="0" />
         
         <RefreshView Command="{Binding LoadSolvesCommand}"
                      IsRefreshing="{Binding IsRefreshing}"
-                     Padding="5">
+                     Padding="5"
+                     Grid.Row="1">
             <CollectionView Background="Transparent"
                             ItemsSource="{Binding PuzzleSolves}">
                 
