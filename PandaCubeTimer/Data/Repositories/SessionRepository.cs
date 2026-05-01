@@ -35,7 +35,7 @@ namespace PandaCubeTimer.Data.Repositories
             _logger.LogInformation("Default session added.");
         }
 
-        public async Task<List<SessionDTO>> GetAllSessionsDTOsAsync()
+        public async Task<List<PandaCubeTimer.Models.DTOs.SessionDTO>> GetAllSessionsDTOsAsync()
         {
             string sql = @"
         SELECT 

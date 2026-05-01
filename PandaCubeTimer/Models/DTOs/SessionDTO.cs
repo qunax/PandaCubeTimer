@@ -1,8 +1,26 @@
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace PandaCubeTimer.Models.DTOs;
 
-public class SessionDTO : Session
+public partial class SessionDTO : ObservableObject, INotifyPropertyChanged
 {
-    public string? DisciplineName { get; set; }
+    [ObservableProperty] 
+    private Guid _id;
 
-    public ICollection<PuzzleSolve>? Solves { get; set; }
+    [ObservableProperty] 
+    private string _name = null!;
+    
+    [ObservableProperty] 
+    private string _disciplineId = null!;
+    
+    [ObservableProperty] 
+    private bool _isSelected;
+    
+    [ObservableProperty] 
+    private string? _disciplineName;
+    
+    [ObservableProperty] 
+    private ObservableCollection<PuzzleSolve>? _solves;
 }

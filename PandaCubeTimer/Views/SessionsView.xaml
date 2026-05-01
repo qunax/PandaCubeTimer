@@ -25,54 +25,62 @@
                 <CollectionView Background="Transparent"
                                 SelectionMode="Single" 
                                 x:Name="SessionsList"
-                                ItemsSource="{Binding Sessions}"
-                                SelectedItem="{Binding SelectedSession, Mode=TwoWay}">
+                                ItemsSource="{Binding Sessions}">
                     
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="dtos:SessionDTO">
-                            <Frame>
+                            <Frame Padding="15">
                                 
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer CommandParameter="{Binding}"
                                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/>
                                 </Frame.GestureRecognizers>
                                 
+                                <Frame.Triggers>
+                                    <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="BackgroundColor" Value="#2196F3" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="False">
+                                        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#2A2A2A}" />
+                                    </DataTrigger>
+                                </Frame.Triggers>
+                                
                                 <HorizontalStackLayout Padding="0"
-                                                     HorizontalOptions="Center"
-                                                     VerticalOptions="Center"
-                                                     Background="{AppThemeBinding Light=White, Dark=#171717}">
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"
+                                                       Background="Transparent">
                                     
                                     <Label x:Name="DisciplineNameLabel"
                                            Text="{Binding DisciplineName}"
                                            Padding="0"
                                            FontAutoScalingEnabled="True"
-                                           FontAttributes="Bold"></Label>
+                                           FontAttributes="Bold">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="TextColor" Value="#E0E0E0" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
+                                                <Setter Property="TextColor" Value="Gray" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
                                     <Line VerticalOptions="Center"
                                           BackgroundColor="Blue"></Line>
+
                                     <Label x:Name="SessionNameLabel"
-                                           Text="{Binding Name}"></Label>
+                                           Text="{Binding Name}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="TextColor" Value="White" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
+                                                <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
                                     
                                 </HorizontalStackLayout>
-                                
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup Name="CommonStates">
-                                        <VisualState Name="Normal">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#2A2A2A}" />
-                                                <Setter TargetName="SessionNameLabel" Property="Label.TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
-                                                <Setter TargetName="DisciplineNameLabel" Property="Label.TextColor" Value="Gray" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                            
-                                        <VisualState Name="Selected">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#2196F3" /> 
-                                                <Setter TargetName="SessionNameLabel" Property="Label.TextColor" Value="White" />
-                                                <Setter TargetName="DisciplineNameLabel" Property="Label.TextColor" Value="#E0E0E0" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

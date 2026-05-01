@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data.Repositories;
+using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Messages;
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Models.DTOs;
@@ -27,9 +28,6 @@ public partial class SessionsViewModel : BaseViewModel
     
     [ObservableProperty]
     private ObservableCollection<SessionDTO> _sessions = new();
-    
-    [ObservableProperty]
-    private SessionDTO? _selectedSession;
     
     
     
@@ -59,7 +57,7 @@ public partial class SessionsViewModel : BaseViewModel
     
     private async void OnActiveSessionChangedReceived(Session messageValue)
     {
-        this.SelectedSession = Sessions.FirstOrDefault(s => s.Id == messageValue.Id);
+        UpdateActiveSessionSelectedState();
     }
 
     
@@ -76,6 +74,7 @@ public partial class SessionsViewModel : BaseViewModel
             IsRefreshing = true;
             
             await LoadSessionsFromDbAsync();
+            UpdateActiveSessionSelectedState();
         }
         catch (Exception ex)
         {
@@ -93,8 +92,8 @@ public partial class SessionsViewModel : BaseViewModel
     [RelayCommand]
     private void SelectSession(SessionDTO session)
     {
-        this.SelectedSession = session;
-        _activeSessionStore.SetSession(session);
+        _activeSessionStore.SetSession(session.ToModel());
+        UpdateActiveSessionSelectedState();
     }
     
     [RelayCommand]
@@ -108,7 +107,8 @@ public partial class SessionsViewModel : BaseViewModel
         if (result is Session newSession)
         {
             await _sessionRepository.InsertAsync(newSession);
-            await LoadSessionsFromDbAsync();
+            _activeSessionStore.SetSession(newSession);
+            await LoadSessionsAsync();
         }
     }
 
@@ -119,5 +119,19 @@ public partial class SessionsViewModel : BaseViewModel
     {
         List<SessionDTO> sessions = await _sessionRepository.GetAllSessionsDTOsAsync();
         Sessions = new ObservableCollection<SessionDTO>(sessions);
+    }
+
+    private void UpdateActiveSessionSelectedState()
+    {
+        if (_activeSessionStore.CurrentSession is null)
+            return;
+        
+        foreach (var sessionDto in Sessions)
+        {
+            if (sessionDto.Id == _activeSessionStore.CurrentSession.Id)
+                sessionDto.IsSelected = true;
+            else
+                sessionDto.IsSelected = false;
+        }
     }
 }

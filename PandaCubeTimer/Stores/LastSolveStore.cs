@@ -1,6 +1,6 @@
 using PandaCubeTimer.Models;
 
-namespace PandaCubeTimer.Helpers;
+namespace PandaCubeTimer.Stores;
 
 public interface ILastSolveStore
 {
