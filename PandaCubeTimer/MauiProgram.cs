@@ -35,6 +35,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<CubeTimerDb>();
         builder.Services.AddSingleton<IAppSettingsService, AppSettingsService>();
         builder.Services.AddTransient<ISolveStatsService, SolveStatsService>();
+        builder.Services.AddTransient<IPandaCubeTimer_API>();
         builder.Services.AddSingleton<ILastSolveStore, LastSolveStore>();
         builder.Services.AddSingleton<ActiveSessionStore>();
 

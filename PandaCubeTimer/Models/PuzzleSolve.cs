@@ -10,7 +10,7 @@ public class PuzzleSolve
     /// <summary>
     /// Puzzle to which this solve is belong
     /// </summary>
-    public string DisciplineId { get; set; } = null!;
+    //public string DisciplineId { get; set; } = null!;
     
     /// <summary>
     /// Session in which this solve was made
@@ -52,5 +52,15 @@ public class PuzzleSolve
     /// Text annotations by user
     /// </summary>
     public string? Comment { get; set; }
+    
+    /// <summary>
+    /// soft deletion
+    /// </summary>
+    public bool IsDeleted { get; set; }
+    
+    /// <summary>
+    /// for detection of soft deletion
+    /// </summary>
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     // public Image ScrambledCube { get; set; }
 }
