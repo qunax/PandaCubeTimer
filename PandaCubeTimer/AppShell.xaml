@@ -47,4 +47,13 @@
         </Tab>
     </FlyoutItem>
     
+    <FlyoutItem Title="Login">
+        <Tab>
+            <ShellContent
+                Title="Log In"
+                ContentTemplate="{DataTemplate views:LoginPageView}"
+                Route="Login"/>
+        </Tab>
+    </FlyoutItem>
+    
 </Shell>

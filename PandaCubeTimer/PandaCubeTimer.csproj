@@ -24,7 +24,7 @@
         <ApplicationTitle>PandaCubeTimer</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.pandacubetimer</ApplicationId>
+        <ApplicationId>com.qunax.pandacubetimer</ApplicationId>
 
         <!-- Versions -->
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -41,6 +41,23 @@
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
       <CreatePackage>false</CreatePackage>
     </PropertyGroup>
+
+    <!-- Enable full Keychain access and automatic signing for iOS -->
+<!--    <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">-->
+<!--        <CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>-->
+<!--        <CodesignKey>Apple Development</CodesignKey>-->
+<!--        <CodesignProvision>Automatic</CodesignProvision>-->
+<!--    </PropertyGroup>-->
+
+    <!-- For local Mac Catalyst development, we disable the strict provisioning profile check -->
+    <!-- This allows the app to run on your machine without requiring a paid Apple Developer account -->
+    <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
+        <CodesignEntitlements>Platforms/MacCatalyst/Entitlements.plist</CodesignEntitlements>
+        <EnableCodeSigning>false</EnableCodeSigning>
+        <CodesignKey></CodesignKey>
+        <CodesignProvision></CodesignProvision>
+    </PropertyGroup>
+    
     <ItemGroup>
         <!-- App Icon -->
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -69,6 +86,7 @@
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
         <PackageReference Include="Refit" Version="8.0.0" />
+        <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="8.0.0-nblumhardt-02322" />

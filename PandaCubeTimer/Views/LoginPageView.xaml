@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+             xmlns:models="clr-namespace:PandaCubeTimer.Models.Tutorials"
+             x:Class="PandaCubeTimer.Views.LoginPageView"
+             x:DataType="viewModels:LoginPageViewModel">
+    <ContentPage.Content>
+        <VerticalStackLayout Spacing="25" 
+                             Padding="30" 
+                             VerticalOptions="Center">
+
+            <Label Text="🐼 PandaCube" 
+                   FontSize="36" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center" 
+                   Margin="0,0,0,30"/>
+
+            <Entry Placeholder="Enter username" 
+                   Text="{Binding Username}" 
+                   ClearButtonVisibility="WhileEditing"
+                   FontSize="16"
+                   Keyboard="Plain" 
+                   IsSpellCheckEnabled="False" 
+                   IsTextPredictionEnabled="False"/>
+
+            <Entry Placeholder="Enter Password" 
+                   Text="{Binding Password}" 
+                   IsPassword="True" 
+                   ClearButtonVisibility="WhileEditing"
+                   FontSize="16"/>
+
+            <Button Text="Login" 
+                    Command="{Binding LoginCommand}"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    Margin="0,20,0,0">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsBusy}" Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                               IsVisible="{Binding IsBusy}" 
+                               HorizontalOptions="Center"
+                               Margin="0,20,0,0"/>
+
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -13,6 +13,7 @@ using PandaCubeTimer.ViewModels.ControlsVMs;
 using PandaCubeTimer.Views;
 using PandaCubeTimer.Views.Controls;
 using Serilog;
+using Refit;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace PandaCubeTimer;
@@ -32,10 +33,17 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        builder.Services.AddRefitClient<IPandaCubeTimer_API>()
+            .ConfigureHttpClient(c => 
+            {
+                // Define the base URL of your API explicitly here.
+                // For Android Emulator, use 10.0.2.2. For iOS Simulator, use localhost.
+                c.BaseAddress = new Uri("http://localhost:5030"); 
+            });
+        
         builder.Services.AddSingleton<CubeTimerDb>();
         builder.Services.AddSingleton<IAppSettingsService, AppSettingsService>();
         builder.Services.AddTransient<ISolveStatsService, SolveStatsService>();
-        builder.Services.AddTransient<IPandaCubeTimer_API>();
         builder.Services.AddSingleton<ILastSolveStore, LastSolveStore>();
         builder.Services.AddSingleton<ActiveSessionStore>();
 
@@ -51,6 +59,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PLLTrainingsView>();
         builder.Services.AddTransient<SolvesView>();
         builder.Services.AddTransient<StatsView>();
+        builder.Services.AddTransient<LoginPageView>();
         
         builder.Services.AddSingleton<ActiveSessionBar>();
         builder.Services.AddSingleton<SessionsView>();
@@ -63,6 +72,7 @@ public static class MauiProgram
         builder.Services.AddTransient<StatsViewModel>();
         builder.Services.AddTransient<PllTrainingsViewModel>();
         builder.Services.AddTransient<OllTrainingsViewModel>();
+        builder.Services.AddTransient<LoginPageViewModel>();
         
         builder.Services.AddSingleton<ActiveSessionBarViewModel>();
         builder.Services.AddSingleton<SessionsViewModel>();
@@ -86,25 +96,22 @@ public static class MauiProgram
         string logDirectory = Path.Combine(FileSystem.AppDataDirectory, "Logs");
         string logFilePath = Path.Combine(logDirectory, "app_log_.txt");
         
-        // Настраиваем базовую конфигурацию Serilog
         var loggerConfig = new LoggerConfiguration()
-            .MinimumLevel.Debug() // Для дебага ловим всё
+            .MinimumLevel.Debug()
             .WriteTo.File(
                 path: logFilePath,
-                rollingInterval: RollingInterval.Day, // Новый файл каждый день
-                retainedFileCountLimit: 7,            // Храним только последние 7 дней
-                fileSizeLimitBytes: 10485760,         // Ограничение размера файла (10 МБ)
-                rollOnFileSizeLimit: true             // Если превысит 10мб, создаст новый
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 7,         
+                fileSizeLimitBytes: 10485760,     
+                rollOnFileSizeLimit: true    
             );
 
-        // Добавляем вывод в консоль Rider ТОЛЬКО если мы в режиме отладки
 #if DEBUG
         loggerConfig.WriteTo.Debug(); 
 #endif
 
         Log.Logger = loggerConfig.CreateLogger();
         
-        // 3. Подключаем логгер к MAUI
         builder.Logging.ClearProviders();
         builder.Logging.AddSerilog(dispose: true);
     }
