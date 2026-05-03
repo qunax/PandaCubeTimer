@@ -1,11 +1,11 @@
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Models.DTOs;
+using PandaCubeTimer.Services;
 
 namespace PandaCubeTimer.Helpers;
 
 public static class SessionMappers
 {
-    // Из Model в DTO
     public static SessionDTO ToDTO(this Session model)
     {
         return new SessionDTO
@@ -16,7 +16,6 @@ public static class SessionMappers
         };
     }
 
-    // Из DTO обратно в Model
     public static Session ToModel(this SessionDTO dto)
     {
         return new Session
@@ -24,6 +23,17 @@ public static class SessionMappers
             Id = dto.Id,
             Name = dto.Name,
             DisciplineId = dto.DisciplineId
+        };
+    }
+
+    public static Session ToModel(this SessionSyncDTO dto)
+    {
+        return new Session
+        {
+            Id = dto.Id,
+            Name = dto.Name,
+            DisciplineId = dto.DisciplineId,
+            IsDeleted = dto.IsDeleted
         };
     }
 }

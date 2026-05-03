@@ -63,25 +63,6 @@ public partial class LoginPageViewModel : BaseViewModel
             {
                 await _authStorageService.SaveAuthDataAsync(response.AccessToken, 
                     response.RefreshToken, response.UserId.ToString(), Username);
-                // Bypass SecureStorage (Keychain) for iOS Simulator AND Mac Catalyst
-                // because both require Apple Developer certificates for local debugging.
-                // and i dont have paid account
-                // bool bypassSecureStorage = (DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.DeviceType == DeviceType.Virtual) || 
-                //                            DeviceInfo.Platform == DevicePlatform.MacCatalyst;
-                //
-                // if (bypassSecureStorage)
-                // {
-                //     Preferences.Default.Set("access_token", response.AccessToken);
-                //     Preferences.Default.Set("refresh_token", response.RefreshToken);
-                //     Preferences.Default.Set("user_id", response.UserId.ToString());
-                // }
-                // else
-                // {
-                //     // Safe and encrypted storage for Android and real physical iPhones
-                //     await SecureStorage.Default.SetAsync("access_token", response.AccessToken);
-                //     await SecureStorage.Default.SetAsync("refresh_token", response.RefreshToken);
-                //     await SecureStorage.Default.SetAsync("user_id", response.UserId.ToString());
-                // }
                 
                 _userInfoStore.Username = response.Username;
                 await Shell.Current.GoToAsync("//Timer");

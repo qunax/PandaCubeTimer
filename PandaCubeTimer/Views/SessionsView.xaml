@@ -19,7 +19,7 @@
         <Grid>
             
             <RefreshView Command="{Binding LoadSessionsCommand}"
-                         IsRefreshing="{Binding IsRefreshing}"
+                         IsRefreshing="{Binding IsBusy}"
                          Padding="5">
                 
                 <CollectionView Background="Transparent"
@@ -89,18 +89,38 @@
                 
             </RefreshView>
             
-            <Button Text="+"
-                    Command="{Binding AddSessionCommand}"
-                    WidthRequest="60"
-                    HeightRequest="60"
-                    CornerRadius="30" 
-                    BackgroundColor="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}"
-                    TextColor="White"
-                    FontSize="28"
-                    FontAttributes="Bold"
-                    HorizontalOptions="End"
-                    VerticalOptions="End"
-                    Margin="0, 0, 20, 20" />
+            <!-- FLOATING ACTION BUTTONS -->
+            <VerticalStackLayout HorizontalOptions="End"
+                                 VerticalOptions="End"
+                                 Margin="0, 0, 20, 20"
+                                 Spacing="15">
+                
+                <!-- SYNC BUTTON -->
+                <Button Text="↻"
+                        Command="{Binding StartSyncFlowCommand}"
+                        WidthRequest="50"
+                        HeightRequest="50"
+                        CornerRadius="25" 
+                        BackgroundColor="{AppThemeBinding Light=#4CAF50, Dark=#81C784}"
+                        TextColor="White"
+                        FontSize="24"
+                        FontAttributes="Bold" 
+                        IsVisible="{Binding IsSyncVisible}"
+                        Shadow="{Shadow Brush=Black, Offset='0,4', Opacity=0.2}"/>
+
+                <!-- ADD BUTTON (Your existing one) -->
+                <Button Text="+"
+                        Command="{Binding AddSessionCommand}"
+                        WidthRequest="60"
+                        HeightRequest="60"
+                        CornerRadius="30" 
+                        BackgroundColor="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}"
+                        TextColor="White"
+                        FontSize="28"
+                        FontAttributes="Bold" 
+                        Shadow="{Shadow Brush=Black, Offset='0,4', Opacity=0.2}"/>
+                        
+            </VerticalStackLayout>
             
             <ActivityIndicator IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}"

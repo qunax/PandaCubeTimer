@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,6 +10,7 @@ using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Messages;
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Models.DTOs;
+using PandaCubeTimer.Services;
 using PandaCubeTimer.Stores;
 using PandaCubeTimer.Views.Popups;
 
@@ -17,34 +19,40 @@ namespace PandaCubeTimer.ViewModels;
 public partial class SessionsViewModel : BaseViewModel
 {
     private readonly ILogger<SessionsViewModel> _logger;
+    private readonly IPandaCubeTimer_API _pandaCubeTimerAPI;
     private readonly SessionRepository _sessionRepository;
     private readonly DisciplineRepository _disciplineRepository;
     private readonly ActiveSessionStore _activeSessionStore;
+    private readonly UserInfoStore _userInfoStore;
     
     
-    
-    [ObservableProperty] 
-    private bool _isRefreshing;
     
     [ObservableProperty]
     private ObservableCollection<SessionDTO> _sessions = new();
     
+    public bool IsSyncVisible => _userInfoStore.IsLoggedIn;
     
     
-    public SessionsViewModel(SessionRepository repository,
+    
+    public SessionsViewModel(IPandaCubeTimer_API api,
+        SessionRepository repository,
         DisciplineRepository disciplineRepository, 
         ActiveSessionStore activeSessionStore,
+        UserInfoStore userInfoStore,
         ILogger<SessionsViewModel> logger)
     {
+        _pandaCubeTimerAPI = api;
         _sessionRepository = repository;
         _disciplineRepository = disciplineRepository;
         _activeSessionStore = activeSessionStore;
+        _userInfoStore = userInfoStore;
         _logger = logger;
         
-        ConfigureMessageRecieving();
+        ConfigureMessageReceiving();
+        _userInfoStore.PropertyChanged += OnStorePropertyChanged;
     }
     
-    private void ConfigureMessageRecieving()
+    private void ConfigureMessageReceiving()
     {
         // reload solves for selected session:
         WeakReferenceMessenger.Default.Register<ActiveSessionChangedMessage>(this, (r, m) =>
@@ -54,6 +62,14 @@ public partial class SessionsViewModel : BaseViewModel
     }
     
     
+    
+    private void OnStorePropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(_userInfoStore.IsLoggedIn))
+        {
+            OnPropertyChanged(nameof(IsSyncVisible)); 
+        }
+    }
     
     private async void OnActiveSessionChangedReceived(Session messageValue)
     {
@@ -71,7 +87,6 @@ public partial class SessionsViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            IsRefreshing = true;
             
             await LoadSessionsFromDbAsync();
             UpdateActiveSessionSelectedState();
@@ -85,7 +100,6 @@ public partial class SessionsViewModel : BaseViewModel
         finally
         {
             IsBusy = false;
-            IsRefreshing = false;
         }
     }
 
@@ -109,6 +123,42 @@ public partial class SessionsViewModel : BaseViewModel
             await _sessionRepository.InsertAsync(newSession);
             await _activeSessionStore.SetSessionAsync(newSession);
             await LoadSessionsAsync();
+        }
+    }
+    
+    [RelayCommand]
+    private async Task StartSyncFlowAsync()
+    {
+        IsBusy = true;
+        
+        try
+        {
+            var sessionsToSync = await _sessionRepository.GetSessionsForSync();
+            var sessionsToAccept = await _pandaCubeTimerAPI.SyncFull(sessionsToSync);
+
+            foreach (var sessionDto in sessionsToAccept)
+            {
+                try
+                {
+                    await _sessionRepository.GetSessionByIdAsync(sessionDto.Id);
+                }
+                catch (Exception ex)
+                {
+                    await _sessionRepository.InsertAsync(sessionDto.ToModel());
+                    _logger.LogInformation($"Session from server added: {sessionDto.Id}");
+                }
+            }
+
+            await LoadSessionsFromDbAsync();
+            UpdateActiveSessionSelectedState();
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Sync Error", ex.Message, "OK");
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 

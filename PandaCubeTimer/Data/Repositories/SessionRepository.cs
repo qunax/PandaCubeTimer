@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Models;
 using PandaCubeTimer.Models.DTOs;
+using PandaCubeTimer.Services;
 using SQLite;
 
 namespace PandaCubeTimer.Data.Repositories
@@ -44,7 +45,8 @@ namespace PandaCubeTimer.Data.Repositories
             s.DisciplineId, 
             d.Name AS DisciplineName
         FROM Session s
-        INNER JOIN Discipline d ON s.DisciplineId = d.Id";
+        INNER JOIN Discipline d ON s.DisciplineId = d.Id
+        WHERE s.IsDeleted = 0";
 
             return await _connection.QueryAsync<SessionDTO>(sql);
         }
@@ -59,7 +61,7 @@ namespace PandaCubeTimer.Data.Repositories
             d.Name AS DisciplineName
         FROM Session s
         INNER JOIN Discipline d ON s.DisciplineId = d.Id
-        WHERE s.Id = ?"; 
+        WHERE s.Id = ? AND s.IsDeleted = 0"; 
     
             var sessionsListResult = await _connection.QueryAsync<SessionDTO>(sql, id);
             return sessionsListResult.FirstOrDefault();
@@ -73,6 +75,11 @@ namespace PandaCubeTimer.Data.Repositories
         public async Task InsertAsync(Session session)
         {
             await _connection.InsertAsync(session);
+        }
+
+        public async Task<List<SessionSyncDTO>> GetSessionsForSync()
+        {
+            return await _connection.QueryAsync<SessionSyncDTO>("SELECT * FROM Session");
         }
     }
 }
