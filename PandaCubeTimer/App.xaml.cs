@@ -1,11 +1,13 @@
-﻿namespace PandaCubeTimer;
+﻿using PandaCubeTimer.ViewModels;
+
+namespace PandaCubeTimer;
 
 public partial class App : Application
 {
-    public App()
+    public App(AppShellViewModel shellViewModel)
     {
         InitializeComponent();
 
-        MainPage = new AppShell();
+        MainPage = new AppShell(shellViewModel);
     }
 }

@@ -22,6 +22,7 @@ public partial class TimerViewModel : BaseViewModel
     private readonly IAppSettingsService _appSettingsService;
     private readonly ILastSolveStore _lastSolveStore;
     private readonly SolvePenalty? _lastSolveInspectionPenalty;
+    private readonly AppShellViewModel _appShellViewModel;
     
     
     
@@ -50,11 +51,15 @@ public partial class TimerViewModel : BaseViewModel
 
 
     
-    public TimerViewModel(CubeTimerDb db, IAppSettingsService appSettingsService, ILastSolveStore lastSolveStore)
+    public TimerViewModel(CubeTimerDb db, 
+        IAppSettingsService appSettingsService,
+        ILastSolveStore lastSolveStore,
+        AppShellViewModel appShellViewModel)
     {
         _solveToTimeConverter = new SolveToTimeConverter(); 
         _cubeTimerDb = db;
         _appSettingsService = appSettingsService;
+        _appShellViewModel = appShellViewModel;
         
         // copying some important info about solve and its inspection from previous pages
         // done this way because of nevigation limitations (i have to clean stack navigating here
@@ -191,7 +196,7 @@ public partial class TimerViewModel : BaseViewModel
         var stack = Shell.Current.Navigation.NavigationStack.ToArray();
         if (stack.Length > 1)
         {
-            Application.Current.MainPage = new AppShell();
+            Application.Current.MainPage = new AppShell(_appShellViewModel);
         }
     }
 }

@@ -2,6 +2,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Services;
+using PandaCubeTimer.Stores;
+using PandaCubeTimer.Views;
 
 namespace PandaCubeTimer.ViewModels;
 
@@ -9,6 +11,8 @@ public partial class LoginPageViewModel : BaseViewModel
 {
     private readonly ILogger<LoginPageViewModel> _logger;
     private readonly IPandaCubeTimer_API _api;
+    private readonly UserInfoStore _userInfoStore;
+    private readonly AuthStorageService _authStorageService;
 
     
     
@@ -20,9 +24,14 @@ public partial class LoginPageViewModel : BaseViewModel
 
     
     
-    public LoginPageViewModel(IPandaCubeTimer_API api, ILogger<LoginPageViewModel> logger)
+    public LoginPageViewModel(IPandaCubeTimer_API api,
+        UserInfoStore  userInfoStore,
+        AuthStorageService authStorageService,
+        ILogger<LoginPageViewModel> logger)
     {
         _api = api;
+        _userInfoStore = userInfoStore;
+        _authStorageService = authStorageService;
         _logger = logger;
     }
 
@@ -52,28 +61,30 @@ public partial class LoginPageViewModel : BaseViewModel
 
             if (response != null && !string.IsNullOrEmpty(response.AccessToken))
             {
-                
+                await _authStorageService.SaveAuthDataAsync(response.AccessToken, 
+                    response.RefreshToken, response.UserId.ToString(), Username);
                 // Bypass SecureStorage (Keychain) for iOS Simulator AND Mac Catalyst
                 // because both require Apple Developer certificates for local debugging.
                 // and i dont have paid account
-                bool bypassSecureStorage = (DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.DeviceType == DeviceType.Virtual) || 
-                                           DeviceInfo.Platform == DevicePlatform.MacCatalyst;
+                // bool bypassSecureStorage = (DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.DeviceType == DeviceType.Virtual) || 
+                //                            DeviceInfo.Platform == DevicePlatform.MacCatalyst;
+                //
+                // if (bypassSecureStorage)
+                // {
+                //     Preferences.Default.Set("access_token", response.AccessToken);
+                //     Preferences.Default.Set("refresh_token", response.RefreshToken);
+                //     Preferences.Default.Set("user_id", response.UserId.ToString());
+                // }
+                // else
+                // {
+                //     // Safe and encrypted storage for Android and real physical iPhones
+                //     await SecureStorage.Default.SetAsync("access_token", response.AccessToken);
+                //     await SecureStorage.Default.SetAsync("refresh_token", response.RefreshToken);
+                //     await SecureStorage.Default.SetAsync("user_id", response.UserId.ToString());
+                // }
                 
-                if (bypassSecureStorage)
-                {
-                    Preferences.Default.Set("access_token", response.AccessToken);
-                    Preferences.Default.Set("refresh_token", response.RefreshToken);
-                    Preferences.Default.Set("user_id", response.UserId.ToString());
-                }
-                else
-                {
-                    // Safe and encrypted storage for Android and real physical iPhones
-                    await SecureStorage.Default.SetAsync("access_token", response.AccessToken);
-                    await SecureStorage.Default.SetAsync("refresh_token", response.RefreshToken);
-                    await SecureStorage.Default.SetAsync("user_id", response.UserId.ToString());
-                }
-                
-                Application.Current.MainPage = new AppShell(); 
+                _userInfoStore.Username = response.Username;
+                await Shell.Current.GoToAsync("//Timer");
             }
         }
         catch (Exception ex)

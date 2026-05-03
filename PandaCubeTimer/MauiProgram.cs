@@ -39,13 +39,20 @@ public static class MauiProgram
                 // Define the base URL of your API explicitly here.
                 // For Android Emulator, use 10.0.2.2. For iOS Simulator, use localhost.
                 c.BaseAddress = new Uri("http://localhost:5030"); 
-            });
+            })
+            .AddHttpMessageHandler<AuthHeaderHandler>();;
         
         builder.Services.AddSingleton<CubeTimerDb>();
+        
+        builder.Services.AddTransient<AuthHeaderHandler>();
+        
         builder.Services.AddSingleton<IAppSettingsService, AppSettingsService>();
         builder.Services.AddTransient<ISolveStatsService, SolveStatsService>();
+        builder.Services.AddTransient<AuthStorageService>();
+        
         builder.Services.AddSingleton<ILastSolveStore, LastSolveStore>();
         builder.Services.AddSingleton<ActiveSessionStore>();
+        builder.Services.AddSingleton<UserInfoStore>();
 
         builder.Services.AddTransient<DisciplineRepository>();
         builder.Services.AddTransient<SessionRepository>();
@@ -60,7 +67,8 @@ public static class MauiProgram
         builder.Services.AddTransient<SolvesView>();
         builder.Services.AddTransient<StatsView>();
         builder.Services.AddTransient<LoginPageView>();
-        
+
+        builder.Services.AddSingleton<AppShellViewModel>();
         builder.Services.AddSingleton<ActiveSessionBar>();
         builder.Services.AddSingleton<SessionsView>();
         
@@ -87,6 +95,7 @@ public static class MauiProgram
 
         Task.Run(async () => await IntializeDbAsync(app.Services)).Wait();
         Task.Run(async () => await InitializeStartupSessionAsync(app.Services)).Wait();
+        Task.Run(async () => await LoadUserInfoAsync(app.Services)).Wait();
 
         return app;
     }
@@ -148,5 +157,24 @@ public static class MauiProgram
         }
         
         await activeSessionStore.SetSessionAsync(sessionById);
+    }
+
+    private static async Task LoadUserInfoAsync(IServiceProvider services)
+    {
+        var authService = services.GetRequiredService<AuthStorageService>();
+        var userInfoStore = services.GetRequiredService<UserInfoStore>();
+
+        var token = await authService.GetTokenAsync();
+        var refreshToken = await authService.GetRefreshTokenAsync();
+        var username = await authService.GetUsernameAsync();
+        if (string.IsNullOrEmpty(token)
+            || string.IsNullOrEmpty(refreshToken)
+            || string.IsNullOrEmpty(username))
+        {
+            await authService.ClearAuthDataAsync();
+            return;
+        }
+        
+        userInfoStore.Username = username;
     }
 }

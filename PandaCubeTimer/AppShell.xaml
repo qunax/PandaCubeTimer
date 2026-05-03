@@ -5,8 +5,49 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PandaCubeTimer"
     xmlns:views="clr-namespace:PandaCubeTimer.Views"
+    xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
+    Title="PandaCubeTimer"
+    x:DataType="viewModels:AppShellViewModel">
     
-    Title="PandaCubeTimer">
+    <!-- === FLYOUT HEADER (Changes based on auth state) === -->
+    <Shell.FlyoutHeader>
+        <Grid Padding="20" Margin="0, 20, 0, 10"
+              HeightRequest="100">
+            
+            <!-- BLOCK 1: USER IS LOGGED IN -->
+            <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedIn}">
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                    <Label Text="Logged in as:" FontSize="12" TextColor="Gray" />
+                    <Label Text="{Binding  UserInfoStore.Username}" FontSize="18" FontAttributes="Bold" />
+                </VerticalStackLayout>
+                
+                <Button Grid.Column="1" 
+                        Text="Logout" 
+                        Command="{Binding LogoutCommand}"
+                        BackgroundColor="Transparent" 
+                        TextColor="Red"
+                        Padding="10,5"/>
+            </Grid>
+
+            <!-- BLOCK 2: USER IS NOT LOGGED IN -->
+            <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedOut}">
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                    <Label Text="Not logged in" FontSize="18" FontAttributes="Bold" />
+                    <Label Text="Log in to save times" FontSize="12" TextColor="Gray" />
+                </VerticalStackLayout>
+                
+                <Button Grid.Column="1" 
+                        Text="Login" 
+                        Command="{Binding GoToLoginCommand}"
+                        BackgroundColor="#2B0B98" 
+                        TextColor="White"
+                        Padding="15,5"
+                        CornerRadius="8"
+                        VerticalOptions="Center"/>
+            </Grid>
+            
+        </Grid>
+    </Shell.FlyoutHeader>
     
     <FlyoutItem Title="Timer">
         <ShellContent
@@ -47,12 +88,11 @@
         </Tab>
     </FlyoutItem>
     
-    <FlyoutItem Title="Login">
+    <FlyoutItem Route="LoginFlyout" FlyoutItemIsVisible="False">
         <Tab>
-            <ShellContent
-                Title="Log In"
-                ContentTemplate="{DataTemplate views:LoginPageView}"
-                Route="Login"/>
+            <ShellContent 
+                Route="LoginPage" 
+                ContentTemplate="{DataTemplate views:LoginPageView}" />
         </Tab>
     </FlyoutItem>
     

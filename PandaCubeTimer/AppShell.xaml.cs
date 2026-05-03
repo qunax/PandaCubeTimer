@@ -5,7 +5,7 @@ namespace PandaCubeTimer;
 
 public partial class AppShell : Shell
 {
-    public AppShell()
+    public AppShell(AppShellViewModel viewModel)
     {
         InitializeComponent();
         
@@ -19,5 +19,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute($"{nameof(StatsView)}", typeof(StatsView));
         Routing.RegisterRoute($"{nameof(SessionsView)}", typeof(SessionsView));
         Routing.RegisterRoute($"{nameof(LoginPageView)}", typeof(LoginPageView));
+        
+        this.BindingContext = viewModel;
     }
 }
