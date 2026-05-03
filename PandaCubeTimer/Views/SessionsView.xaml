@@ -106,6 +106,7 @@
                                             FontSize="18"
                                             BackgroundColor="#F44336"
                                             TextColor="White"
+                                            IsVisible="{Binding CanDelete}"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=DeleteSessionCommand}"
                                             CommandParameter="{Binding}" />
 

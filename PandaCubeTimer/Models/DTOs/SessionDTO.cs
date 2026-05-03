@@ -23,4 +23,7 @@ public partial class SessionDTO : ObservableObject, INotifyPropertyChanged
     
     [ObservableProperty] 
     private ObservableCollection<PuzzleSolve>? _solves;
+    
+    public bool IsDefault => this.Id == Session.DefaultSessionId;
+    public bool CanDelete => !IsDefault;
 }

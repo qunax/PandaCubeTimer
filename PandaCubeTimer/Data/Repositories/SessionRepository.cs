@@ -23,17 +23,29 @@ namespace PandaCubeTimer.Data.Repositories
         
         public async Task SeedDefaultSessionAsync()
         {
-            int count = await _connection.Table<Session>().CountAsync();
+            int count = await _connection.Table<Session>().CountAsync(s => s.IsDeleted == false);
             if (count != 0)
                 return;
             
-            Session defaultSession = new Session();
-            defaultSession.Id = Session.DefaultSessionId;
-            defaultSession.Name = "Default";
-            defaultSession.DisciplineId = WcaDisciplines.Cube3x3;
-            await _connection.InsertAsync(defaultSession);
-            
-            _logger.LogInformation("Default session added.");
+            try
+            {
+                Session defaultSession = await _connection.GetAsync<Session>(Session.DefaultSessionId);
+                string sql = "UPDATE Session SET IsDeleted = 0 WHERE Id = @Id";
+                await _connection.ExecuteAsync(sql, defaultSession.Id);
+                
+                _logger.LogInformation("Default session restored from deleted.");
+            }
+            catch (Exception ex)
+            {
+                Session newDefaultSession = new Session();
+                newDefaultSession.Id = Session.DefaultSessionId;
+                newDefaultSession.Name = "Default";
+                newDefaultSession.DisciplineId = WcaDisciplines.Cube3x3;
+                newDefaultSession.IsDeleted = false;
+                await _connection.InsertAsync(newDefaultSession);
+                
+                _logger.LogInformation("Default session added.");
+            }
         }
 
         public async Task<List<PandaCubeTimer.Models.DTOs.SessionDTO>> GetAllSessionsDTOsAsync()
