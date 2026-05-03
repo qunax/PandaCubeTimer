@@ -12,5 +12,5 @@ public class Session
     
     public string DisciplineId { get; set; } = null!;
     
-    public bool IsDeleted { get; set; }
+    public bool IsDeleted { get; set; } = false;
 }

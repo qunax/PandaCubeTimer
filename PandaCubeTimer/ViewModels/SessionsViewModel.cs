@@ -24,8 +24,10 @@ public partial class SessionsViewModel : BaseViewModel
     private readonly DisciplineRepository _disciplineRepository;
     private readonly ActiveSessionStore _activeSessionStore;
     private readonly UserInfoStore _userInfoStore;
-    
-    
+
+
+    [ObservableProperty]
+    private bool _isRefreshing;
     
     [ObservableProperty]
     private ObservableCollection<SessionDTO> _sessions = new();
@@ -86,16 +88,7 @@ public partial class SessionsViewModel : BaseViewModel
         
         try
         {
-            IsBusy = true;
-            
-            await LoadSessionsFromDbAsync();
-            UpdateActiveSessionSelectedState();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error loading sessions");
-            await Shell.Current.DisplayAlert("Error!", 
-                $"Unable to load sessions: {ex.Message}", "Ok");
+            await LoadSessionsAndUpdateCurrentAsync();
         }
         finally
         {
@@ -106,23 +99,79 @@ public partial class SessionsViewModel : BaseViewModel
     [RelayCommand]
     private async Task SelectSessionAsync(SessionDTO session)
     {
-        await _activeSessionStore.SetSessionAsync(session.ToModel());
-        UpdateActiveSessionSelectedState();
+        if (IsBusy)
+            return;
+        
+        IsBusy = true;
+
+        try
+        {
+            await _activeSessionStore.SetSessionAsync(session.ToModel());
+            UpdateActiveSessionSelectedState();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error selecting session: " + ex.Message);
+            await Shell.Current.DisplayAlert("Error!", "Unable to select session: " + ex.Message, "Ok");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
     
     [RelayCommand]
-    public async Task AddSessionAsync()
+    private async Task AddSessionAsync()
     {
-        var disciplines = await _disciplineRepository.GetAllDisciplinesAsync();
-
-        var popup = new NewSessionPopup(disciplines);
-        var result = await Shell.Current.CurrentPage.ShowPopupAsync(popup);
-
-        if (result is Session newSession)
+        if (IsBusy)
+            return;
+        
+        IsBusy = true;
+        try
         {
-            await _sessionRepository.InsertAsync(newSession);
-            await _activeSessionStore.SetSessionAsync(newSession);
-            await LoadSessionsAsync();
+            var disciplines = await _disciplineRepository.GetAllDisciplinesAsync();
+
+            var popup = new NewSessionPopup(disciplines);
+            var result = await Shell.Current.CurrentPage.ShowPopupAsync(popup);
+
+            if (result is Session newSession)
+            {
+                await _sessionRepository.InsertAsync(newSession);
+                await _activeSessionStore.SetSessionAsync(newSession);
+                await LoadSessionsAndUpdateCurrentAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error adding session: " + ex.Message);
+            await Shell.Current.DisplayAlert("Error!", "Unable to add session", "Ok");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task DeleteSessionAsync(SessionDTO session)
+    {
+        if (IsBusy)
+            return;
+        
+        IsBusy = true;
+        try
+        {
+            await _sessionRepository.DeleteAsync(session.Id);
+            await LoadSessionsAndUpdateCurrentAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting session: " + ex.Message);
+            await Application.Current.MainPage.DisplayAlert("Session Deletion Error", ex.Message, "OK");
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
     
@@ -149,8 +198,7 @@ public partial class SessionsViewModel : BaseViewModel
                 }
             }
 
-            await LoadSessionsFromDbAsync();
-            UpdateActiveSessionSelectedState();
+            await LoadSessionsAndUpdateCurrentAsync();
         }
         catch (Exception ex)
         {
@@ -165,6 +213,27 @@ public partial class SessionsViewModel : BaseViewModel
 
 
 
+    private async Task LoadSessionsAndUpdateCurrentAsync()
+    {
+        try
+        {
+            IsRefreshing = true;
+
+            await LoadSessionsFromDbAsync();
+            UpdateActiveSessionSelectedState();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading sessions");
+            await Shell.Current.DisplayAlert("Error!",
+                $"Unable to load sessions: {ex.Message}", "Ok");
+        }
+        finally
+        {
+            IsRefreshing = false;
+        }
+    }
+    
     private async Task LoadSessionsFromDbAsync()
     {
         List<SessionDTO> sessions = await _sessionRepository.GetAllSessionsDTOsAsync();

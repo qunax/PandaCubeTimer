@@ -77,6 +77,12 @@ namespace PandaCubeTimer.Data.Repositories
             await _connection.InsertAsync(session);
         }
 
+        public async Task DeleteAsync(Guid id)
+        {
+            string sql = "UPDATE Session SET IsDeleted = 1 WHERE Id = @Id";
+            await _connection.ExecuteAsync(sql, id);
+        }
+
         public async Task<List<SessionSyncDTO>> GetSessionsForSync()
         {
             return await _connection.QueryAsync<SessionSyncDTO>("SELECT * FROM Session");
