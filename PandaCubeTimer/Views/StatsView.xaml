@@ -10,32 +10,69 @@
              xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              x:Class="PandaCubeTimer.Views.StatsView"
              x:DataType="viewModels:StatsViewModel">
+    
+    <ContentPage.Behaviors>
+            <toolkit:EventToCommandBehavior 
+                EventName="Appearing" 
+                Command="{Binding RefreshCommand}" />
+    </ContentPage.Behaviors>
+        
     <ContentPage.Content>
         <Grid RowDefinitions="Auto, *">
-            
+        
             <controls:ActiveSessionBar x:Name="ActiveSessionBar" Grid.Row="0" />
             
-            <ScrollView Grid.Row="1">
-                <StackLayout>
-                
-                    <Label Text="Solve Count"/>
-                    <Label Text="Best Single"/>
-                    <Label Text="Session Mean"/>
-                    <Label Text="CurrentStats:"/>
-                    <Label Text="AO5"/>
-                    <Label Text="AO12"/>
-                    <Label Text="AO100"/>
-                    <Label Text="BestStats:"/>
-                    <Label Text="AO5"/>
-                    <Label Text="AO12"/>
-                    <Label Text="AO100"/>
-                    <Label Text="TimeTrend (Graph)"/>
-                    <Label Text="TimeDistribution (Graph?)"/>
-                
-                
-                </StackLayout>
-            </ScrollView>
-            
+            <RefreshView Grid.Row="1"
+                         Command="{Binding RefreshCommand}"
+                         IsRefreshing="{Binding IsRefreshing}">
+                <ScrollView Padding="10">
+                    <VerticalStackLayout Spacing="15">
+                    
+                        <!-- Top Level Summary -->
+                        <Frame Style="{StaticResource CardStyle}">
+                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
+                                <VerticalStackLayout HorizontalOptions="Center">
+                                    <Label Text="{Binding SolveCount}" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                    <Label Text="Solves" FontSize="12" Opacity="0.7"/>
+                                </VerticalStackLayout>
+                                
+                                <VerticalStackLayout HorizontalOptions="Center">
+                                    <Label Text="{Binding BestSingle}" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                    <Label Text="Best" FontSize="12" Opacity="0.7"/>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout HorizontalOptions="Center">
+                                    <Label Text="{Binding SessionMean}" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                    <Label Text="Mean" FontSize="12" Opacity="0.7"/>
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                        </Frame>
+
+                        <!-- Current Averages Section -->
+                        <Label Text="Current Averages" FontAttributes="Bold" Margin="0,10,0,0"/>
+                        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                            <controls:StatBox Title="Ao5" Value="{Binding CurrentAo5}" Grid.Column="0"/>
+                            <controls:StatBox Title="Ao12" Value="{Binding CurrentAo12}" Grid.Column="1"/>
+                            <controls:StatBox Title="Ao100" Value="{Binding CurrentAo100}" Grid.Column="2"/>
+                        </Grid>
+
+                        <!-- Best Averages Section -->
+                        <Label Text="Personal Bests" FontAttributes="Bold" Margin="0,10,0,0"/>
+                        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                            <controls:StatBox Title="Best Ao5" Value="{Binding BestAo5}" Grid.Column="0" />
+                            <controls:StatBox Title="Best Ao12" Value="{Binding BestAo12}" Grid.Column="1" />
+                            <controls:StatBox Title="Best Ao100" Value="{Binding BestAo100}" Grid.Column="2" />
+                        </Grid>
+
+                        <!-- Graphs Placeholder -->
+                        <Label Text="Time Trend" FontAttributes="Bold" Margin="0,10,0,0"/>
+                        <Frame Style="{StaticResource CardStyle}">
+                            <Label Text="Graph Component (Microcharts) Goes Here" VerticalOptions="Center" HorizontalOptions="Center" Opacity="0.5"/>
+                        </Frame>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </RefreshView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -40,10 +40,10 @@ public partial class SolvesViewModel : BaseViewModel
         _puzzleSolveRepository = puzzleSolveRepository;
         _activeSessionStore = activeSessionStore;
         
-        ConfigureMessageRecieving();
+        ConfigureMessageReceiving();
     }
 
-    private void ConfigureMessageRecieving()
+    private void ConfigureMessageReceiving()
     {
         // reload solves for selected session:
         WeakReferenceMessenger.Default.Register<ActiveSessionChangedMessage>(this, (r, m) =>

@@ -5,6 +5,20 @@
              x:Class="PandaCubeTimer.App">
     <Application.Resources>
         <ResourceDictionary>
+            
+            <Style x:Key="CardStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FFFFFF, Dark=#1C1C1E}" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="Padding" Value="15" />
+                
+                <!-- Shadows pop nicely on Light mode, but look muddy/dirty on Dark mode -->
+                <Setter Property="HasShadow" Value="{AppThemeBinding Light=True, Dark=False}" />
+                
+                <!-- Light mode gets a very subtle edge, Dark mode stays borderless/clean -->
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light=#E5E5EA, Dark=Transparent}" />
+            </Style>
+            
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
