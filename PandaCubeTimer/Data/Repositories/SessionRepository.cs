@@ -47,23 +47,13 @@ namespace PandaCubeTimer.Data.Repositories
                 _logger.LogInformation("Default session added.");
             }
         }
-
-        public async Task<List<PandaCubeTimer.Models.DTOs.SessionDTO>> GetAllSessionsDTOsAsync()
+        
+        public async Task<Session?> GetSessionByIdAsync(Guid id)
         {
-            string sql = @"
-        SELECT 
-            s.Id, 
-            s.Name, 
-            s.DisciplineId, 
-            d.Name AS DisciplineName
-        FROM Session s
-        INNER JOIN Discipline d ON s.DisciplineId = d.Id
-        WHERE s.IsDeleted = 0";
-
-            return await _connection.QueryAsync<SessionDTO>(sql);
+            return await _connection.FindAsync<Session>(id);
         }
-
-        public async Task<SessionDTO?> GetSessionDTOByIdAsync(Guid id)
+        
+        public async Task<SessionInAppDTO?> GetSessionDTOByIdAsync(Guid id)
         {
             string sql = @"
         SELECT 
@@ -75,29 +65,61 @@ namespace PandaCubeTimer.Data.Repositories
         INNER JOIN Discipline d ON s.DisciplineId = d.Id
         WHERE s.Id = ? AND s.IsDeleted = 0"; 
     
-            var sessionsListResult = await _connection.QueryAsync<SessionDTO>(sql, id);
+            var sessionsListResult = await _connection.QueryAsync<SessionInAppDTO>(sql, id);
             return sessionsListResult.FirstOrDefault();
         }
 
-        public async Task<Session> GetSessionByIdAsync(Guid id)
+        public async Task<List<PandaCubeTimer.Models.DTOs.SessionInAppDTO>> GetAllSessionsDTOsAsync()
         {
-            return await _connection.GetAsync<Session>(id);
+            string sql = @"
+        SELECT 
+            s.Id, 
+            s.Name, 
+            s.DisciplineId, 
+            d.Name AS DisciplineName
+        FROM Session s
+        INNER JOIN Discipline d ON s.DisciplineId = d.Id
+        WHERE s.IsDeleted = 0";
+
+            return await _connection.QueryAsync<SessionInAppDTO>(sql);
+        }
+        
+        public async Task<List<Session>> GetUnsyncedSessionsAsync()
+        {
+            return await _connection.Table<Session>()
+                .Where(s => s.IsSynced == false)
+                .ToListAsync();
         }
 
         public async Task InsertAsync(Session session)
         {
             await _connection.InsertAsync(session);
         }
+        
+        /// <summary>
+        /// user has to control UpdatedAt and IsSynced properties by himself
+        /// </summary>
+        /// <param name="session"></param>
+        public async Task UpdateAsync(Session session)
+        {
+            await _connection.UpdateAsync(session);
+        }
+        
+        public async Task MarkAsSyncedAsync(Guid id)
+        {
+            string sql = "UPDATE Session SET IsSynced = 1, UpdatedAt = ? WHERE Id = ?";
+            await _connection.ExecuteAsync(sql, DateTime.UtcNow, id);
+        }
 
         public async Task DeleteAsync(Guid id)
         {
-            string sql = "UPDATE Session SET IsDeleted = 1 WHERE Id = @Id";
-            await _connection.ExecuteAsync(sql, id);
+            string sql = "UPDATE Session SET IsDeleted = 1, IsSynced = 0, UpdatedAt = ? WHERE Id = ?";
+            await _connection.ExecuteAsync(sql, DateTime.UtcNow, id);
         }
 
-        public async Task<List<SessionSyncDTO>> GetSessionsForSync()
-        {
-            return await _connection.QueryAsync<SessionSyncDTO>("SELECT * FROM Session");
-        }
+        // public async Task<List<SessionSyncDTO>> GetSessionsForSync()
+        // {
+        //     return await _connection.QueryAsync<SessionSyncDTO>("SELECT * FROM Session");
+        // }
     }
 }

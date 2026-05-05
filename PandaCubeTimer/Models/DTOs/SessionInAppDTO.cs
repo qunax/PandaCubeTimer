@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PandaCubeTimer.Models.DTOs;
 
-public partial class SessionDTO : ObservableObject, INotifyPropertyChanged
+public partial class SessionInAppDTO : ObservableObject, INotifyPropertyChanged
 {
     [ObservableProperty] 
     private Guid _id;

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Mapster;
 using MauiIcons.Material;
 using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data;
@@ -32,7 +33,21 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
+        
+        
+        
+        // --- GLOBAL MAPSTER CONFIGURATION ---
+        
+        // 1. Configure Mapster to convert DateTimeOffset (from API) to DateTime (for local SQLite)
+        TypeAdapterConfig.GlobalSettings.NewConfig<DateTimeOffset, DateTime>()
+            .MapWith(src => src.UtcDateTime);
 
+        // 2. Configure the reverse mapping (DateTime -> DateTimeOffset) for outgoing sync requests
+        TypeAdapterConfig.GlobalSettings.NewConfig<DateTime, DateTimeOffset>()
+            .MapWith(src => new DateTimeOffset(src, TimeSpan.Zero));
+
+        
+        
         builder.Services.AddRefitClient<IPandaCubeTimer_API>()
             .ConfigureHttpClient(c => 
             {
@@ -140,23 +155,10 @@ public static class MauiProgram
     private static async Task InitializeStartupSessionAsync(IServiceProvider services)
     {
         var appSettingsService = services.GetRequiredService<IAppSettingsService>();
-        var sessionRepository = services.GetRequiredService<SessionRepository>();
         var activeSessionStore = services.GetRequiredService<ActiveSessionStore>();
         
         Guid sessionId = Guid.Parse(appSettingsService.StartupSessionId);
-        
-        Session sessionById;
-        try
-        {
-            sessionById = await sessionRepository.GetSessionByIdAsync(sessionId);
-        }
-        catch (Exception ex)
-        {
-            Log.Logger.Error("Failed to get session by id: " + ex.Message);
-            sessionById = await sessionRepository.GetSessionByIdAsync(Session.DefaultSessionId);
-        }
-        
-        await activeSessionStore.SetSessionAsync(sessionById);
+        await activeSessionStore.SetSessionAsync(sessionId);
     }
 
     private static async Task LoadUserInfoAsync(IServiceProvider services)

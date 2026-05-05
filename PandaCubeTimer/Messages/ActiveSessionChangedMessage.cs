@@ -3,4 +3,4 @@ using PandaCubeTimer.Models;
 
 namespace PandaCubeTimer.Messages;
 
-public class ActiveSessionChangedMessage(Session value) : ValueChangedMessage<Session>(value);
+public class ActiveSessionChangedMessage(Session? value) : ValueChangedMessage<Session?>(value);

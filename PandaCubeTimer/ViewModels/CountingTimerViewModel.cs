@@ -62,10 +62,10 @@ public partial class CountingTimerViewModel : BaseViewModel
                 IsPlusTwo = _inspectionPenalty == SolvePenalty.PlusTwo,
                 IsDNF = _inspectionPenalty == SolvePenalty.DNF,
                 Scramble = _currentSolveScramble,
-                DateTime = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 Comment = "test comment"
             };
-            await _puzzleSolveRepository.CreatePuzzleSolveAsync(currentSolve);
+            await _puzzleSolveRepository.InsertAsync(currentSolve);
             
             // check if solve is in database and refreshing it (why not)
             // passing it as a parameter back to TimerViewModel for display and further manipulation

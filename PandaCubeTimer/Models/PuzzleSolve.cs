@@ -46,7 +46,12 @@ public class PuzzleSolve
     /// <summary>
     /// When the puzzleSolve was made
     /// </summary>
-    public DateTime DateTime { get; set; }
+    public DateTime CreatedAt { get; set; } =  DateTime.UtcNow;
+    
+    /// <summary>
+    /// for detection of soft deletion
+    /// </summary>
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     /// <summary>
     /// Text annotations by user
@@ -57,10 +62,11 @@ public class PuzzleSolve
     /// soft deletion
     /// </summary>
     public bool IsDeleted { get; set; }
-    
+
     /// <summary>
-    /// for detection of soft deletion
+    /// mark synchronization with API
     /// </summary>
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public bool IsSynced { get; set; } = false;
+
     // public Image ScrambledCube { get; set; }
 }

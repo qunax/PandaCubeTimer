@@ -27,7 +27,7 @@
                                 ItemsSource="{Binding Sessions}">
                     
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="dtos:SessionDTO">
+                        <DataTemplate x:DataType="dtos:SessionInAppDTO">
                             <Frame Padding="10,15"> 
                                 
                                 <Frame.GestureRecognizers>
@@ -83,18 +83,18 @@
                                     </HorizontalStackLayout>
 
                                     <!-- RIGHT: Sync Individual Session Button -->
-                                    <Button Grid.Column="1"
-                                            Text="↻"
-                                            WidthRequest="40"
-                                            HeightRequest="40"
-                                            CornerRadius="20"
-                                            Padding="0"
-                                            FontSize="18"
-                                            BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#424242}"
-                                            TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                                            IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=IsSyncVisible}"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SyncSingleSessionCommand}"
-                                            CommandParameter="{Binding}" />
+                                    <!-- <Button Grid.Column="1" -->
+                                    <!--         Text="↻" -->
+                                    <!--         WidthRequest="40" -->
+                                    <!--         HeightRequest="40" -->
+                                    <!--         CornerRadius="20" -->
+                                    <!--         Padding="0" -->
+                                    <!--         FontSize="18" -->
+                                    <!--         BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#424242}" -->
+                                    <!--         TextColor="{AppThemeBinding Light=Black, Dark=White}" -->
+                                    <!--         IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=IsSyncVisible}" -->
+                                    <!--         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SyncSingleSessionCommand}" -->
+                                    <!--         CommandParameter="{Binding}" /> -->
 
                                     <!-- RIGHT: Delete Session Button -->
                                     <Button Grid.Column="2"
@@ -126,7 +126,7 @@
                                  Spacing="15">
                 
                 <Button Text="↻"
-                        Command="{Binding StartSyncFlowCommand}"
+                        Command="{Binding SyncAllSessionsAndSolvesCommand}"
                         WidthRequest="50" HeightRequest="50" CornerRadius="25" 
                         BackgroundColor="{AppThemeBinding Light=#4CAF50, Dark=#81C784}"
                         TextColor="White" FontSize="24" FontAttributes="Bold" 

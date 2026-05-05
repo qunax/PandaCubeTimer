@@ -108,7 +108,7 @@ public partial class SolvesViewModel : BaseViewModel
 
         try
         {
-            await _puzzleSolveRepository.DeletePuzzleSolveAsync(SelectedPuzzleSolve);
+            await _puzzleSolveRepository.DeletePuzzleSolveAsync(SelectedPuzzleSolve.Id);
             PuzzleSolves.Remove(SelectedPuzzleSolve);
             SelectedPuzzleSolve = null;
         }

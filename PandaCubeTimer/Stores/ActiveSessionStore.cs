@@ -28,8 +28,8 @@ public class ActiveSessionStore : INotifyPropertyChanged
 
     
     
-    private SessionDTO? _sessionDTO;
-    public SessionDTO? CurrentSessionDTO
+    private SessionInAppDTO? _sessionDTO;
+    public SessionInAppDTO? CurrentSessionDTO
     {
         get => _sessionDTO;
         private set
@@ -59,12 +59,17 @@ public class ActiveSessionStore : INotifyPropertyChanged
     
     
     
-    public async Task SetSessionAsync(Session newSession)
+    public async Task SetSessionAsync(Guid sessionId)
     {
-        CurrentSession = newSession;
-        CurrentSessionDTO = await _sessionRepository.GetSessionDTOByIdAsync(newSession.Id);
+        // try to set session id and select default instead in the case of failure
+        // (default should never be deleted)
+        CurrentSession = await _sessionRepository.GetSessionByIdAsync(sessionId);
+        if (CurrentSession == null)
+            CurrentSession = await _sessionRepository.GetSessionByIdAsync(Session.DefaultSessionId);
+        
+        CurrentSessionDTO = await _sessionRepository.GetSessionDTOByIdAsync(CurrentSession!.Id);
             
-        WeakReferenceMessenger.Default.Send(new ActiveSessionChangedMessage(newSession));
-        _appSettingsService.StartupSessionId = CurrentSession.Id.ToString();
+        WeakReferenceMessenger.Default.Send(new ActiveSessionChangedMessage(CurrentSession));
+        _appSettingsService.StartupSessionId = CurrentSession?.Id.ToString() ?? Session.DefaultSessionId.ToString();
     }
 }

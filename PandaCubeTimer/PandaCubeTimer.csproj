@@ -82,6 +82,7 @@
         <PackageReference Include="AathifMahir.Maui.MauiIcons.Material" Version="2.0.0" />
         <PackageReference Include="CommunityToolkit.Maui" Version="8.0.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="Mapster" Version="9.0.0-pre01" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
@@ -100,6 +101,7 @@
 
     <ItemGroup>
       <Folder Include="Data\Migrations\" />
+      <Folder Include="Services\PandaCubeApi\" />
     </ItemGroup>
 
     <!-- PLL Algorithms For Tutorials -->

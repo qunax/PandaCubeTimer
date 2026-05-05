@@ -67,26 +67,6 @@ namespace PandaCubeTimer.Services
         /// <term>401</term>
         /// <description>Unauthorized</description>
         /// </item>
-        /// </list>
-        /// </exception>
-        [Headers("Accept: application/json, application/problem+json", "Content-Type: application/json")]
-        [Post("/api/sync/sessions/syncFull")]
-        Task<ICollection<SessionSyncDTO>> SyncFull([Body] IEnumerable<SessionSyncDTO> body);
-
-        /// <param name="sessionId">sessionId parameter</param>
-        /// <param name="body">body parameter</param>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">
-        /// Thrown when the request returns a non-success status code:
-        /// <list type="table">
-        /// <listheader>
-        /// <term>Status</term>
-        /// <description>Description</description>
-        /// </listheader>
-        /// <item>
-        /// <term>401</term>
-        /// <description>Unauthorized</description>
-        /// </item>
         /// <item>
         /// <term>403</term>
         /// <description>Forbidden</description>
@@ -94,8 +74,8 @@ namespace PandaCubeTimer.Services
         /// </list>
         /// </exception>
         [Headers("Accept: application/json, application/problem+json", "Content-Type: application/json")]
-        [Post("/api/sync/sessions/{sessionId}/solves")]
-        Task<SolveSyncResponse> Solves(System.Guid sessionId, [Body] SolveSyncRequest body);
+        [Post("/api/sync/completeTimerSync")]
+        Task<CompleteTimerSyncResponse> CompleteTimerSync([Body] CompleteTimerSyncRequest body);
 
 
     }
@@ -129,6 +109,42 @@ namespace PandaCubeTimer.Services
     using System = global::System;
 
     
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CompleteTimerSyncRequest
+    {
+
+        [JsonPropertyName("lastSyncTimeUtc")]
+        public System.DateTimeOffset LastSyncTimeUtc { get; set; }
+
+        [JsonPropertyName("unsyncedSessions")]
+        public ICollection<SessionDTO> UnsyncedSessions { get; set; }
+
+        [JsonPropertyName("unsyncedSolves")]
+        public ICollection<SolveDTO> UnsyncedSolves { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CompleteTimerSyncResponse
+    {
+
+        [JsonPropertyName("serverTimeUtc")]
+        public System.DateTimeOffset ServerTimeUtc { get; set; }
+
+        [JsonPropertyName("serverSessions")]
+        public ICollection<SessionDTO> ServerSessions { get; set; }
+
+        [JsonPropertyName("serverSolves")]
+        public ICollection<SolveDTO> ServerSolves { get; set; }
+
+        [JsonPropertyName("acknowledgedSessionIds")]
+        public ICollection<System.Guid> AcknowledgedSessionIds { get; set; }
+
+        [JsonPropertyName("acknowledgedSolveIds")]
+        public ICollection<System.Guid> AcknowledgedSolveIds { get; set; }
+
+    }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class LoginResponseDTO
@@ -179,7 +195,7 @@ namespace PandaCubeTimer.Services
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SessionSyncDTO
+    public partial class SessionDTO
     {
 
         [JsonPropertyName("id")]
@@ -194,6 +210,12 @@ namespace PandaCubeTimer.Services
         [JsonPropertyName("isDeleted")]
         public bool IsDeleted { get; set; }
 
+        [JsonPropertyName("createdAt")]
+        public System.DateTimeOffset CreatedAt { get; set; }
+
+        [JsonPropertyName("updatedAt")]
+        public System.DateTimeOffset UpdatedAt { get; set; }
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -202,6 +224,9 @@ namespace PandaCubeTimer.Services
 
         [JsonPropertyName("id")]
         public System.Guid Id { get; set; }
+
+        [JsonPropertyName("sessionId")]
+        public System.Guid SessionId { get; set; }
 
         [JsonPropertyName("solveTimeSeconds")]
         public double SolveTimeSeconds { get; set; }
@@ -215,8 +240,8 @@ namespace PandaCubeTimer.Services
         [JsonPropertyName("scramble")]
         public string Scramble { get; set; }
 
-        [JsonPropertyName("dateTime")]
-        public System.DateTimeOffset DateTime { get; set; }
+        [JsonPropertyName("createdAt")]
+        public System.DateTimeOffset CreatedAt { get; set; }
 
         [JsonPropertyName("comment")]
         public string Comment { get; set; }
@@ -226,30 +251,6 @@ namespace PandaCubeTimer.Services
 
         [JsonPropertyName("updatedAt")]
         public System.DateTimeOffset UpdatedAt { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SolveSyncRequest
-    {
-
-        [JsonPropertyName("lastSyncTimeUtc")]
-        public System.DateTimeOffset LastSyncTimeUtc { get; set; }
-
-        [JsonPropertyName("clientChanges")]
-        public ICollection<SolveDTO> ClientChanges { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SolveSyncResponse
-    {
-
-        [JsonPropertyName("serverTimeUtc")]
-        public System.DateTimeOffset ServerTimeUtc { get; set; }
-
-        [JsonPropertyName("serverChanges")]
-        public ICollection<SolveDTO> ServerChanges { get; set; }
 
     }
 
