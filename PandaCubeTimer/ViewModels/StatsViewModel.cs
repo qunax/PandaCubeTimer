@@ -1,7 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Microcharts;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using PandaCubeTimer.Data.Repositories;
 using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Messages;
@@ -9,6 +12,7 @@ using PandaCubeTimer.Models;
 using PandaCubeTimer.Services;
 using PandaCubeTimer.Stores;      
 using SkiaSharp;
+using LinearGradientPaint = Microsoft.Maui.Graphics.LinearGradientPaint;
 
 namespace PandaCubeTimer.ViewModels;
 
@@ -36,8 +40,19 @@ public partial class StatsViewModel : BaseViewModel
     [ObservableProperty] private string _bestAo12 = "-";
     [ObservableProperty] private string _bestAo100 = "-";
 
-    // Chart
+    // Charts
     [ObservableProperty] private Chart _timeTrendChart;
+    [ObservableProperty] private Chart _timeDistributionChart;
+    
+    // --- LiveCharts2: Time Trend Properties ---
+    [ObservableProperty] private ISeries[] _timeTrendSeries;
+    [ObservableProperty] private Axis[] _timeTrendXAxes;
+    [ObservableProperty] private Axis[] _timeTrendYAxes;
+
+    // --- LiveCharts2: Time Distribution Properties ---
+    [ObservableProperty] private ISeries[] _timeDistributionSeries;
+    [ObservableProperty] private Axis[] _timeDistributionXAxes;
+    [ObservableProperty] private Axis[] _timeDistributionYAxes;
 
     
     
@@ -127,43 +142,109 @@ public partial class StatsViewModel : BaseViewModel
         BestAo100 = _solveStatsService.CalculateBestAverageOf(solves, 100);
 
         // Update the Graph
+        UpdateTimeDistributionChart(validSolves);
         UpdateTimeTrendChart(validSolves);
     }
-
     
-
     
-
-    
-
     private void UpdateTimeTrendChart(List<PuzzleSolve> validSolves)
     {
         var recentSolves = validSolves.TakeLast(50).ToList();
-        var entries = new List<ChartEntry>();
+        if (!recentSolves.Any()) return;
 
-        for (int i = 0; i < recentSolves.Count; i++)
+        // 1. Theme Check
+        bool isDarkMode = Application.Current?.RequestedTheme == AppTheme.Dark;
+        SKColor axisTextColor = isDarkMode ? SKColor.Parse("#A0A0A0") : SKColor.Parse("#666666");
+        SKColor gridLineColor = isDarkMode ? SKColor.Parse("#33FFFFFF") : SKColor.Parse("#20000000"); // Semi-transparent
+        SKColor primaryColor = SKColor.Parse("#B84B9E"); // The premium purple/pink
+
+        // 2. Setup Series (The Line)
+        TimeTrendSeries = new ISeries[]
         {
-            var solve = recentSolves[i];
-            entries.Add(new ChartEntry((float)solve.SolveTimeSeconds)
+            new LineSeries<double>
             {
-                Color = SKColor.Parse("#3498db"),
-                Label = i % 5 == 0 ? (i + 1).ToString() : "", 
-                ValueLabel = solve.SolveTimeSeconds.FormatTime()
-            });
-        }
-
-        TimeTrendChart = new LineChart
-        {
-            Entries = entries,
-            LineMode = LineMode.Spline,
-            LineSize = 6,
-            PointMode = PointMode.Circle,
-            PointSize = 12,
-            BackgroundColor = SKColors.Transparent,
-            LabelTextSize = 24,
-            ValueLabelOrientation = Orientation.Horizontal
+                Values = recentSolves.Select(s => s.SolveTimeSeconds).ToArray(),
+                Fill = new LiveChartsCore.SkiaSharpView.Painting.LinearGradientPaint(
+                    new[] { primaryColor.WithAlpha(90), primaryColor.WithAlpha(0) }, // Gradient fade out
+                    new SKPoint(0.5f, 0), 
+                    new SKPoint(0.5f, 1)
+                ),
+                Stroke = new SolidColorPaint(primaryColor) { StrokeThickness = 3 },
+                GeometrySize = 0, // Hides the dots completely
+                LineSmoothness = 0.65, // Curves the line (Spline)
+                YToolTipLabelFormatter = (chartPoint) => $"{chartPoint.Coordinate.PrimaryValue:0.00} s" // Tooltip on tap
+            }
         };
+
+        // 3. Setup Y-Axis (Values on the left)
+        TimeTrendYAxes = new Axis[]
+        {
+            new Axis
+            {
+                LabelsPaint = new SolidColorPaint(axisTextColor),
+                TextSize = 12,
+                Labeler = value => value.ToString("0.0"), // Formats labels like "10.4"
+                SeparatorsPaint = new SolidColorPaint(gridLineColor)
+                {
+                    StrokeThickness = 1,
+                    PathEffect = new DashEffect(new float[] { 6, 6 }) // Dashed background lines
+                }
+            }
+        };
+
+        // 4. Setup X-Axis (Hidden, like in your reference image)
+        TimeTrendXAxes = new Axis[] { new Axis { IsVisible = false } };
     }
+
+    private void UpdateTimeDistributionChart(List<PuzzleSolve> validSolves)
+    {
+        // Group by seconds
+        var distribution = validSolves
+            .GroupBy(s => (int)Math.Floor(s.SolveTimeSeconds))
+            .OrderBy(g => g.Key)
+            .ToList();
+
+        if (!distribution.Any()) return;
+
+        bool isDarkMode = Application.Current?.RequestedTheme == AppTheme.Dark;
+        SKColor axisTextColor = isDarkMode ? SKColor.Parse("#A0A0A0") : SKColor.Parse("#666666");
+        SKColor barColor = SKColor.Parse("#B84B9E");
+
+        var values = distribution.Select(g => (double)g.Count()).ToArray();
+        var labels = distribution.Select(g => $"{g.Key}+").ToArray();
+
+        // 1. Setup Series (The Bars)
+        TimeDistributionSeries = new ISeries[]
+        {
+            new ColumnSeries<double>
+            {
+                Values = values,
+                MaxBarWidth = 10, // Very thin, elegant bars
+                Fill = new SolidColorPaint(barColor),
+                DataLabelsPaint = new SolidColorPaint(barColor), // Labels on top of bars
+                DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Top,
+                DataLabelsSize = 12,
+                DataLabelsFormatter = (point) => point.Coordinate.PrimaryValue.ToString() // Shows count integer
+            }
+        };
+
+        // 2. Setup X-Axis (Bottom labels like "9+", "10+")
+        TimeDistributionXAxes = new Axis[]
+        {
+            new Axis
+            {
+                Labels = labels,
+                LabelsPaint = new SolidColorPaint(axisTextColor),
+                TextSize = 12,
+                SeparatorsPaint = null // No grid lines behind bars
+            }
+        };
+
+        // 3. Setup Y-Axis (Hidden, because values are on top of bars)
+        TimeDistributionYAxes = new Axis[] { new Axis { IsVisible = false } };
+    }
+
+    
 
     private void ResetStats()
     {
@@ -171,4 +252,85 @@ public partial class StatsViewModel : BaseViewModel
         BestSingle = SessionMean = CurrentAo5 = CurrentAo12 = CurrentAo100 = "-";
         BestAo5 = BestAo12 = BestAo100 = "-";
     }
+    
+    // private void UpdateTimeDistributionChart(List<PuzzleSolve> validSolves)
+    // {
+    //     bool isDarkMode = Application.Current?.RequestedTheme == AppTheme.Dark;
+    //
+    //     SKColor axisTextColor = isDarkMode ? SKColor.Parse("#A0A0A0") : SKColor.Parse("#666666");
+    //
+    //     var distribution = validSolves
+    //         .GroupBy(s => (int)Math.Floor(s.SolveTimeSeconds))
+    //         .OrderBy(g => g.Key)
+    //         .ToList();
+    //
+    //     var entries = new List<ChartEntry>();
+    //
+    //     for (int i = 0; i < distribution.Count; i++)
+    //     {
+    //         var group = distribution[i];
+    //     
+    //         float fraction = distribution.Count > 1 ? (float)i / (distribution.Count - 1) : 0;
+    //     
+    //         byte r = (byte)(233 - (233 - 138) * fraction); 
+    //         byte g = (byte)(30 - (30 - 43) * fraction);    
+    //         byte b = (byte)(99 - (99 - 226) * fraction);   
+    //         SKColor barColor = new SKColor(r, g, b);
+    //
+    //         entries.Add(new ChartEntry(group.Count())
+    //         {
+    //             Color = barColor,
+    //             Label = $"{group.Key}+", 
+    //             ValueLabel = group.Count().ToString(), 
+    //         
+    //             TextColor = axisTextColor, 
+    //             ValueLabelColor = barColor 
+    //         });
+    //     }
+    //
+    //     TimeDistributionChart = new BarChart
+    //     {
+    //         Entries = entries,
+    //         BackgroundColor = SKColors.Transparent,
+    //         LabelTextSize = 20,
+    //         Margin = 20,
+    //         ValueLabelOrientation = Orientation.Horizontal,
+    //         LabelColor = axisTextColor 
+    //     };
+    // }
+    //
+    // private void UpdateTimeTrendChart(List<PuzzleSolve> validSolves)
+    // {
+    //     bool isDarkMode = Application.Current?.RequestedTheme == AppTheme.Dark;
+    //     SKColor textColor = isDarkMode ? SKColor.Parse("#F2F2F7") : SKColor.Parse("#1C1C1E");
+    //     SKColor lineColor = SKColor.Parse("#B84B9E"); 
+    //
+    //     var recentSolves = validSolves.TakeLast(50).ToList();
+    //     var entries = new List<ChartEntry>();
+    //
+    //     for (int i = 0; i < recentSolves.Count; i++)
+    //     {
+    //         var solve = recentSolves[i];
+    //         entries.Add(new ChartEntry((float)solve.SolveTimeSeconds)
+    //         {
+    //             Color = lineColor,
+    //             Label = "", 
+    //             ValueLabel = "",
+    //             TextColor = textColor,
+    //             ValueLabelColor = textColor
+    //         });
+    //     }
+    //
+    //     TimeTrendChart = new LineChart
+    //     {
+    //         Entries = entries,
+    //         LineMode = LineMode.Spline,
+    //         LineSize = 4,             
+    //         PointMode = PointMode.None, 
+    //         LineAreaAlpha = 45,    
+    //         BackgroundColor = SKColors.Transparent,
+    //         LabelColor = textColor,   
+    //         Margin = 0
+    //     };
+    // }
 }

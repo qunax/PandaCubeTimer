@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Maui;
+using LiveChartsCore.SkiaSharpView.Maui;
 using Mapster;
 using MauiIcons.Material;
 using Microsoft.Extensions.Logging;
 using PandaCubeTimer.Data;
 using PandaCubeTimer.Data.Repositories;
 using PandaCubeTimer.Helpers;
-using PandaCubeTimer.Messages;
-using PandaCubeTimer.Models;
 using PandaCubeTimer.Services;
 using PandaCubeTimer.Stores;
 using PandaCubeTimer.ViewModels;
@@ -15,7 +14,7 @@ using PandaCubeTimer.Views;
 using PandaCubeTimer.Views.Controls;
 using Serilog;
 using Refit;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace PandaCubeTimer;
 
@@ -28,6 +27,8 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .UseMaterialMauiIcons()
+            .UseSkiaSharp()
+            .UseLiveCharts()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

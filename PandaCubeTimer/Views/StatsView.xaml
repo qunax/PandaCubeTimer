@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
              xmlns:controls="clr-namespace:PandaCubeTimer.Views.Controls"
              xmlns:models="clr-namespace:PandaCubeTimer.Models"
@@ -65,10 +66,37 @@
                         </Grid>
 
                         <!-- Graphs Placeholder -->
-                        <Label Text="Time Trend" FontAttributes="Bold" Margin="0,10,0,0"/>
-                        <Frame Style="{StaticResource CardStyle}">
-                            <Label Text="Graph Component (Microcharts) Goes Here" VerticalOptions="Center" HorizontalOptions="Center" Opacity="0.5"/>
+                        <Label Text="Time Trend" FontAttributes="Bold" Margin="0,15,0,5"/>
+                        <Frame HeightRequest="250" Style="{StaticResource CardStyle}" Padding="15">
+                            <lvc:CartesianChart
+                                Series="{Binding TimeTrendSeries}"
+                                XAxes="{Binding TimeTrendXAxes}"
+                                YAxes="{Binding TimeTrendYAxes}"
+                                TooltipPosition="Hidden" /> <!-- Set to 'Top' if you want popups on tap -->
                         </Frame>
+                        <!-- <Frame HeightRequest="200" Style="{StaticResource CardStyle}"> -->
+                        <!--     <microcharts:ChartView  -->
+                        <!--         Chart="{Binding TimeTrendChart}"  -->
+                        <!--         BackgroundColor="Transparent" -->
+                        <!--         HorizontalOptions="FillAndExpand"  -->
+                        <!--         VerticalOptions="FillAndExpand"/> -->
+                        <!-- </Frame> -->
+                        
+                        <Label Text="Time Distribution" FontAttributes="Bold" Margin="0,15,0,5"/>
+                        <Frame HeightRequest="250" Style="{StaticResource CardStyle}" Padding="15">
+                            <lvc:CartesianChart
+                                Series="{Binding TimeDistributionSeries}"
+                                XAxes="{Binding TimeDistributionXAxes}"
+                                YAxes="{Binding TimeDistributionYAxes}"
+                                TooltipPosition="Hidden" />
+                        </Frame>
+                        <!-- <Frame HeightRequest="200" Style="{StaticResource CardStyle}"> -->
+                        <!--     <microcharts:ChartView  -->
+                        <!--         Chart="{Binding TimeDistributionChart}"  -->
+                        <!--         BackgroundColor="Transparent" -->
+                        <!--         HorizontalOptions="FillAndExpand"  -->
+                        <!--         VerticalOptions="FillAndExpand"/> -->
+                        <!-- </Frame> -->
 
                     </VerticalStackLayout>
                 </ScrollView>
