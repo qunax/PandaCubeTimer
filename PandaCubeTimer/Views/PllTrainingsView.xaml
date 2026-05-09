@@ -36,7 +36,7 @@
                     <DataTemplate x:DataType="models:TutorialAlgoDTO">
                         
                         <Grid Padding="2">
-                            <Frame Padding="0">
+                            <Frame Padding="0" Style="{StaticResource CardStyle}">
                                 
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer CommandParameter="{Binding}"
@@ -45,8 +45,7 @@
                                 
                                 <VerticalStackLayout Padding="10"
                                                      HorizontalOptions="Center"
-                                                     VerticalOptions="Center"
-                                                     Background="{AppThemeBinding Light=White, Dark=#171717}">
+                                                     VerticalOptions="Center">
                                     <Image Source="{Binding AlgoImagePath}" />
                                     <Label Text="{Binding Name}" 
                                            FontAutoScalingEnabled="True"
@@ -79,7 +78,8 @@
                        HorizontalOptions="Center"
                        WidthRequest="300"
                        HeightRequest="500"
-                       Padding="20">
+                       Padding="20"
+                       Style="{StaticResource CardStyle}">
                     
                     <Grid RowDefinitions="50, Auto, *">
                         <Label Grid.Row="0"
