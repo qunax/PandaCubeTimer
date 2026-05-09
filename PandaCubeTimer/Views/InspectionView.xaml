@@ -28,33 +28,45 @@
     
     <Grid>
         
-        <Frame Padding="0"
-               BackgroundColor="Transparent"
-               BorderColor="Transparent"
-               HasShadow="False">
+        <Border StrokeThickness="0"
+                BackgroundColor="Transparent" 
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill">
             
-            <Frame.GestureRecognizers>
-                <!-- <TapGestureRecognizer Command="{Binding StopTimerCommand}" /> -->
-                <PointerGestureRecognizer  PointerPressedCommand="{Binding ChangeColorOnPressCommand}"
-                                           PointerReleasedCommand="{Binding StartTimerCommand}"/>
-            </Frame.GestureRecognizers>
+            <Label Text="{Binding RemainedTicks, Converter={StaticResource RemainedTicksToInspectionTextConverter}}"
+                   FontSize="60" 
+                   FontAttributes="Bold"
+                   TextColor="{Binding TimerColor}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   x:Name="TimeText" />
+        </Border>
+
+        <Button BackgroundColor="#01000000"
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill">
             
-            <StackLayout HorizontalOptions="Center"
-                         VerticalOptions="Center">
-                
-                <Label Text="{Binding RemainedTicks, Converter={StaticResource RemainedTicksToInspectionTextConverter}}"
-                       FontSize="40"
-                       TextColor="{Binding TimerColor}"
-                       HorizontalOptions="Center"
-                       VerticalTextAlignment="Center"
-                       VerticalOptions="Center"
-                       x:Name="TimeText"
-                       Loaded="TimeText_OnLoaded">
-                </Label>
-                
-            </StackLayout>
+            <Button.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="Pressed" 
+                                                Command="{Binding ChangeColorOnPressCommand}" />
+        
+                <toolkit:EventToCommandBehavior EventName="Released" 
+                                                Command="{Binding StartTimerCommand}" />
+            </Button.Behaviors>
             
-        </Frame>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#01000000" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </VisualStateManager.VisualStateGroups>
+        </Button>
         
     </Grid>
 </ContentPage>

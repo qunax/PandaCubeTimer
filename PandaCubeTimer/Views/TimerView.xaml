@@ -16,6 +16,23 @@
         <ResourceDictionary>
             <converters:InspectionPenaltyToAfterSolvePenaltyVisibilityConverter x:Key="InspectionPenaltyToAfterSolvePenaltyVisibilityConverter"/>
         </ResourceDictionary>
+        
+        <ResourceDictionary>
+            <Style x:Key="PenaltyButtonStyle" TargetType="Border">
+                <Setter Property="StrokeThickness" Value="2" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+                <Setter Property="WidthRequest" Value="75" />
+                <Setter Property="HeightRequest" Value="42" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource BlackEarsCard}}" />
+            </Style>
+
+            <Style x:Key="PenaltyLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+        </ResourceDictionary>
     </ContentPage.Resources>
     
     <ContentPage.MenuBarItems>
@@ -108,25 +125,60 @@
                            x:Name="LastTimeSolved" />
                     
                     <HorizontalStackLayout Grid.Row="1" 
-                                           VerticalOptions="Center"
-                                           HorizontalOptions="Center"
-                                           IsVisible="{Binding ArePenaltiesVisible}">
-                        <Button Text="DNF" Command="{Binding PenalizeLastSolveCommand}"
-                                BackgroundColor="OrangeRed"
-                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.DNF}}"
-                                CommandParameter="{x:Static local:SolvePenalty.DNF}"/>
-                        <Button Text="+2" Command="{Binding PenalizeLastSolveCommand}"
-                                BackgroundColor="Yellow"
-                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.PlusTwo}}"
-                                CommandParameter="{x:Static local:SolvePenalty.PlusTwo}"/>
-                        <Button Text="Delete" Command="{Binding PenalizeLastSolveCommand}"
-                                BackgroundColor="Red"
-                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.Delete}}"
-                                CommandParameter="{x:Static local:SolvePenalty.Delete}"/>
-                        <Button Text="OK" Command="{Binding PenalizeLastSolveCommand}"
-                                BackgroundColor="LawnGreen"
-                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.NoPenalty}}"
-                                CommandParameter="{x:Static local:SolvePenalty.NoPenalty}"/>
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       Spacing="12" 
+                       IsVisible="{Binding ArePenaltiesVisible}"
+                       Margin="0, 15, 0, 0">
+
+                        <Border Style="{StaticResource PenaltyButtonStyle}"
+                                Stroke="{StaticResource ChineseSeal}"
+                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.DNF}}">
+                            <Border.Shadow>
+                                <Shadow Brush="{StaticResource ChineseSeal}" Offset="0,0" Radius="8" Opacity="0.3" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PenalizeLastSolveCommand}" CommandParameter="{x:Static local:SolvePenalty.DNF}" />
+                            </Border.GestureRecognizers>
+                            <Label Style="{StaticResource PenaltyLabelStyle}" Text="DNF" TextColor="{StaticResource ChineseSeal}" />
+                        </Border>
+
+                        <Border Style="{StaticResource PenaltyButtonStyle}"
+                                Stroke="#FF8C00"
+                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.PlusTwo}}">
+                            <Border.Shadow>
+                                <Shadow Brush="#FF8C00" Offset="0,0" Radius="8" Opacity="0.3" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PenalizeLastSolveCommand}" CommandParameter="{x:Static local:SolvePenalty.PlusTwo}" />
+                            </Border.GestureRecognizers>
+                            <Label Style="{StaticResource PenaltyLabelStyle}" Text="+2" TextColor="#FF8C00" />
+                        </Border>
+
+                        <Border Style="{StaticResource PenaltyButtonStyle}"
+                                Stroke="{StaticResource Gray500}"
+                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.Delete}}">
+                            <Border.Shadow>
+                                <Shadow Brush="{StaticResource Gray500}" Offset="0,0" Radius="8" Opacity="0.3" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PenalizeLastSolveCommand}" CommandParameter="{x:Static local:SolvePenalty.Delete}" />
+                            </Border.GestureRecognizers>
+                            <Label Style="{StaticResource PenaltyLabelStyle}" Text="Delete" TextColor="{StaticResource Gray500}" />
+                        </Border>
+
+                        <Border Style="{StaticResource PenaltyButtonStyle}"
+                                Stroke="{StaticResource BambooGreen}"
+                                IsVisible="{Binding CurrentlyMadeSolve, Converter={StaticResource InspectionPenaltyToAfterSolvePenaltyVisibilityConverter}, ConverterParameter={x:Static local:SolvePenalty.NoPenalty}}">
+                            <Border.Shadow>
+                                <Shadow Brush="{StaticResource BambooGreen}" Offset="0,0" Radius="10" Opacity="0.4" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PenalizeLastSolveCommand}" CommandParameter="{x:Static local:SolvePenalty.NoPenalty}" />
+                            </Border.GestureRecognizers>
+                            <Label Style="{StaticResource PenaltyLabelStyle}" Text="OK" TextColor="{StaticResource BambooGreen}" />
+                        </Border>
+
                     </HorizontalStackLayout>
                     
                 </Grid>

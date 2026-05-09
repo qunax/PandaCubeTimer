@@ -18,7 +18,7 @@
                
                 <Label x:Name="NameErrorLabel" 
                        Text="Please enter a session name" 
-                       TextColor="Red" 
+                       TextColor="{StaticResource ChineseSeal}" 
                        FontSize="12" 
                        IsVisible="False" />
             </VerticalStackLayout>
@@ -46,9 +46,9 @@
                                     <VisualState Name="Normal" />
                                     <VisualState Name="Selected">
                                         <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="#2196F3" />
+                                            <Setter Property="BackgroundColor" Value="{StaticResource BambooGreen}" />
                                             <Setter TargetName="DisciplineText" Property="Label.TextColor" Value="White" />
-                                            <Setter Property="Stroke" Value="#2196F3" />
+                                            <Setter Property="Stroke" Value="{StaticResource BambooGreen}" />
                                         </VisualState.Setters>
                                     </VisualState>
                                 </VisualStateGroup>
