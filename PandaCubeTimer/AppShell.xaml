@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PandaCubeTimer"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
     xmlns:views="clr-namespace:PandaCubeTimer.Views"
     xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
     Title="PandaCubeTimer"
@@ -11,78 +12,94 @@
     
     <!-- === FLYOUT HEADER (Changes based on auth state) === -->
     <Shell.FlyoutHeader>
-    <Grid Padding="20, 30, 20, 10" HeightRequest="110">
-        
-        <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedIn}" VerticalOptions="Center">
+        <Grid Padding="20, 30, 20, 10" HeightRequest="110">
             
-            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
-                <Label Text="Logged in as" 
-                       TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" 
-                       FontSize="13" />
-                <Label Text="{Binding UserInfoStore.Username}" 
-                       TextColor="{AppThemeBinding Light={StaticResource BlackEars}, Dark={StaticResource WhiteWool}}" 
-                       FontSize="20" 
-                       FontAttributes="Bold" />
-            </VerticalStackLayout>
-            
-            <Button Grid.Column="1" 
-                    Text="Logout" 
-                    Command="{Binding LogoutCommand}"
-                    BackgroundColor="Transparent" 
-                    TextColor="{StaticResource ChineseSeal}"
-                    FontAttributes="Bold"
-                    Padding="10,5"
-                    VerticalOptions="Center"/>
-        </Grid>
+            <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedIn}" VerticalOptions="Center">
+                
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                    <Label Text="Logged in as" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" 
+                           FontSize="13" />
+                    <Label Text="{Binding UserInfoStore.Username}" 
+                           TextColor="{AppThemeBinding Light={StaticResource BlackEars}, Dark={StaticResource WhiteWool}}" 
+                           FontSize="20" 
+                           FontAttributes="Bold" />
+                </VerticalStackLayout>
+                
+                <Button Grid.Column="1" 
+                        Text="Logout" 
+                        Command="{Binding LogoutCommand}"
+                        BackgroundColor="Transparent" 
+                        TextColor="{StaticResource ChineseSeal}"
+                        FontAttributes="Bold"
+                        Padding="10,5"
+                        VerticalOptions="Center"/>
+            </Grid>
 
-        <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedOut}" VerticalOptions="Center">
-            
-            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
-                <Label Text="Not logged in" 
-                       TextColor="{AppThemeBinding Light={StaticResource BlackEars}, Dark={StaticResource WhiteWool}}" 
-                       FontSize="18" 
-                       FontAttributes="Bold" />
-                <Label Text="Log in to save times" 
-                       TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" 
-                       FontSize="13" />
-            </VerticalStackLayout>
-            
-            <Button Grid.Column="1" 
-                    Text="Login" 
-                    Command="{Binding GoToLoginCommand}"
-                    BackgroundColor="{StaticResource BambooGreen}" 
-                    TextColor="{StaticResource WhiteWool}"
-                    FontAttributes="Bold"
-                    Padding="20,8"
-                    CornerRadius="14"
-                    VerticalOptions="Center">
-                <Button.Shadow>
-                    <Shadow Brush="{StaticResource BambooGreen}" Offset="0,4" Radius="10" Opacity="0.4" />
-                </Button.Shadow>
-            </Button>
+            <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedOut}" VerticalOptions="Center">
+                
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                    <Label Text="Not logged in" 
+                           TextColor="{AppThemeBinding Light={StaticResource BlackEars}, Dark={StaticResource WhiteWool}}" 
+                           FontSize="18" 
+                           FontAttributes="Bold" />
+                    <Label Text="Log in to save times" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" 
+                           FontSize="13" />
+                </VerticalStackLayout>
+                
+                <Button Grid.Column="1" 
+                        Text="Login" 
+                        Command="{Binding GoToLoginCommand}"
+                        BackgroundColor="{StaticResource BambooGreen}" 
+                        TextColor="{StaticResource WhiteWool}"
+                        FontAttributes="Bold"
+                        Padding="20,8"
+                        CornerRadius="14"
+                        VerticalOptions="Center">
+                    <Button.Shadow>
+                        <Shadow Brush="{StaticResource BambooGreen}" Offset="0,4" Radius="10" Opacity="0.4" />
+                    </Button.Shadow>
+                </Button>
+                
+            </Grid>
             
         </Grid>
-        
-    </Grid>
-</Shell.FlyoutHeader>
+    </Shell.FlyoutHeader>
     
     <FlyoutItem Title="Timer">
         <ShellContent
             Title="Timer"
             ContentTemplate="{DataTemplate views:TimerView}"
-            Route="Timer" />
+            Route="Timer" >
+            <ShellContent.Icon>
+                <mi:Material Icon="Timer" IconColor="#9E9E9E" />
+            </ShellContent.Icon>
+        </ShellContent>
         <ShellContent
             Title="Solves"
             ContentTemplate="{DataTemplate views:SolvesView}"
-            Route="Solves"/>
+            Route="Solves" >
+            <ShellContent.Icon>
+                <mi:Material Icon="History" IconColor="#9E9E9E" />
+            </ShellContent.Icon>
+        </ShellContent>
         <ShellContent
             Title="Stats"
             ContentTemplate="{DataTemplate views:StatsView}"
-            Route="Stats"/>
+            Route="Stats" >
+            <ShellContent.Icon>
+                <mi:Material Icon="BarChart" IconColor="#9E9E9E" />
+            </ShellContent.Icon>
+        </ShellContent>
         <ShellContent
             Title="Sessions"
             ContentTemplate="{DataTemplate views:SessionsView}"
-            Route="Sessions"/>
+            Route="Sessions" >
+            <ShellContent.Icon>
+                <mi:Material Icon="Layers" IconColor="#9E9E9E" />
+            </ShellContent.Icon>
+        </ShellContent>
     </FlyoutItem>
     
     <FlyoutItem Title="Trainings">
