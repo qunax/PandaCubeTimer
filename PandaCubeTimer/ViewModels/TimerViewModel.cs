@@ -78,6 +78,9 @@ public partial class TimerViewModel : BaseViewModel
     {
         if (IsBusy)
             return;
+        
+        if(string.IsNullOrWhiteSpace(Scramble))
+            return;
 
         try
         {

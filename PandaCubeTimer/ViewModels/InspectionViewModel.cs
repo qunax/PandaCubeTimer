@@ -69,6 +69,7 @@ public partial class InspectionViewModel : BaseViewModel
             StopInspection();
             _lastSolveStore.InspectionPenalty = InspectionPenalty;
             await Shell.Current.GoToAsync($"{nameof(CountingTimerView)}", false);
+            RemoveInspectionViewFromNavigationStack();
         }
         catch (Exception ex)
         {
@@ -131,5 +132,12 @@ public partial class InspectionViewModel : BaseViewModel
     {
         _stopwatch.Stop();
         IsRunning = false;
+    }
+
+    private void RemoveInspectionViewFromNavigationStack()
+    {
+        var inspectionPage = Shell.Current.Navigation.NavigationStack[^2];
+        if(inspectionPage != null)
+            Shell.Current.Navigation.RemovePage(inspectionPage);
     }
 }
