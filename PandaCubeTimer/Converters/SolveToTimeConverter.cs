@@ -1,4 +1,5 @@
 using System.Globalization;
+using PandaCubeTimer.Helpers;
 using PandaCubeTimer.Models;
 
 namespace PandaCubeTimer.Converters;
@@ -29,23 +30,6 @@ public class SolveToTimeConverter :  IValueConverter
             return "DNF";
         
         string plusTwoPenaltyToAdd = puzzleSolve.IsPlusTwo ? "+" : string.Empty;
-        
-        double seconds = puzzleSolve.SolveTimeSeconds;
-        TimeSpan time = TimeSpan.FromSeconds(seconds);
-            
-        // allow override default formats for customization
-        if (formatOverride is not null)
-            return time.ToString(formatOverride) +  plusTwoPenaltyToAdd;
-
-        // custom format (if time should display minutes or hours)
-        string format;
-        if (time.TotalHours > 1)
-            format = DefaultFormatWithHours;
-        else if(time.TotalMinutes > 1)
-            format = DefaultFormatWithMinutes;
-        else 
-            format = DefaultFormatWithoutMinutes;
-            
-        return time.ToString(format) + plusTwoPenaltyToAdd;
+        return puzzleSolve.SolveTimeSeconds.FormatTime() + plusTwoPenaltyToAdd;
     }
 }

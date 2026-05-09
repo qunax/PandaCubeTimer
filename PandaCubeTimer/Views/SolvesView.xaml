@@ -52,7 +52,8 @@
                         
                         <Grid Padding="3">
                             <Frame HeightRequest="60"
-                                   Padding="0">
+                                   Padding="0"
+                                   Style="{StaticResource CardStyle}">
                                 
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer CommandParameter="{Binding}"
@@ -61,12 +62,12 @@
                                 
                                 <VerticalStackLayout Padding="0"
                                                      HorizontalOptions="Center"
-                                                     VerticalOptions="Center"
-                                      Background="{AppThemeBinding Light=White, Dark=#171717}">
+                                                     VerticalOptions="Center">
                                     <Label Text="{Binding Converter={StaticResource SolveToTimeConverter}}"
                                            Padding="0"
                                            FontAutoScalingEnabled="True"
                                            FontAttributes="Bold"
+                                           FontSize="16"
                                            HorizontalTextAlignment="Center"
                                            VerticalTextAlignment="Center"
                                            HorizontalOptions="Center"
@@ -78,7 +79,7 @@
                                            HorizontalOptions="Center"
                                            HorizontalTextAlignment="Center"
                                            FontAttributes="Italic"
-                                           FontSize="8"
+                                           FontSize="10"
                                            Margin="5, 3, 0, 0"/>
                                 </VerticalStackLayout>
                                 
@@ -93,9 +94,11 @@
         
         <Grid IsVisible="{Binding IsOverlayVisible}"
               BackgroundColor="Transparent"
-              InputTransparent="False">
+              InputTransparent="False"
+              Grid.Row="1">
             <BoxView Color="Gray" 
-                     Opacity="0.5"/>
+                     BackgroundColor="Black"
+                     Opacity="0.3"/>
             
             <!-- <Grid.GestureRecognizers> -->
             <!--     <TapGestureRecognizer Command="{Binding ClosePuzzleSolveCommand}"/> -->
@@ -105,7 +108,8 @@
                    HorizontalOptions="Center"
                    WidthRequest="300"
                    HeightRequest="500"
-                   Padding="20">
+                   Padding="20"
+                   Style="{StaticResource CardStyle}">
                 
                 <Grid RowDefinitions="50, Auto, *">
                     <Label Grid.Row="0"

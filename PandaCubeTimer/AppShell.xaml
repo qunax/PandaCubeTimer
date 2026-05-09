@@ -11,43 +11,60 @@
     
     <!-- === FLYOUT HEADER (Changes based on auth state) === -->
     <Shell.FlyoutHeader>
-        <Grid Padding="20" Margin="0, 20, 0, 10"
-              HeightRequest="100">
+    <Grid Padding="20, 30, 20, 10" HeightRequest="110">
+        
+        <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedIn}" VerticalOptions="Center">
             
-            <!-- BLOCK 1: USER IS LOGGED IN -->
-            <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedIn}">
-                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-                    <Label Text="Logged in as:" FontSize="12" TextColor="Gray" />
-                    <Label Text="{Binding  UserInfoStore.Username}" FontSize="18" FontAttributes="Bold" />
-                </VerticalStackLayout>
-                
-                <Button Grid.Column="1" 
-                        Text="Logout" 
-                        Command="{Binding LogoutCommand}"
-                        BackgroundColor="Transparent" 
-                        TextColor="Red"
-                        Padding="10,5"/>
-            </Grid>
+            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                <Label Text="Logged in as" 
+                       TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" 
+                       FontSize="13" />
+                <Label Text="{Binding UserInfoStore.Username}" 
+                       TextColor="{AppThemeBinding Light={StaticResource BlackEars}, Dark={StaticResource WhiteWool}}" 
+                       FontSize="20" 
+                       FontAttributes="Bold" />
+            </VerticalStackLayout>
+            
+            <Button Grid.Column="1" 
+                    Text="Logout" 
+                    Command="{Binding LogoutCommand}"
+                    BackgroundColor="Transparent" 
+                    TextColor="{StaticResource ChineseSeal}"
+                    FontAttributes="Bold"
+                    Padding="10,5"
+                    VerticalOptions="Center"/>
+        </Grid>
 
-            <!-- BLOCK 2: USER IS NOT LOGGED IN -->
-            <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedOut}">
-                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-                    <Label Text="Not logged in" FontSize="18" FontAttributes="Bold" />
-                    <Label Text="Log in to save times" FontSize="12" TextColor="Gray" />
-                </VerticalStackLayout>
-                
-                <Button Grid.Column="1" 
-                        Text="Login" 
-                        Command="{Binding GoToLoginCommand}"
-                        BackgroundColor="#2B0B98" 
-                        TextColor="White"
-                        Padding="15,5"
-                        CornerRadius="8"
-                        VerticalOptions="Center"/>
-            </Grid>
+        <Grid ColumnDefinitions="*, Auto" IsVisible="{Binding UserInfoStore.IsLoggedOut}" VerticalOptions="Center">
+            
+            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                <Label Text="Not logged in" 
+                       TextColor="{AppThemeBinding Light={StaticResource BlackEars}, Dark={StaticResource WhiteWool}}" 
+                       FontSize="18" 
+                       FontAttributes="Bold" />
+                <Label Text="Log in to save times" 
+                       TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" 
+                       FontSize="13" />
+            </VerticalStackLayout>
+            
+            <Button Grid.Column="1" 
+                    Text="Login" 
+                    Command="{Binding GoToLoginCommand}"
+                    BackgroundColor="{StaticResource BambooGreen}" 
+                    TextColor="{StaticResource WhiteWool}"
+                    FontAttributes="Bold"
+                    Padding="20,8"
+                    CornerRadius="14"
+                    VerticalOptions="Center">
+                <Button.Shadow>
+                    <Shadow Brush="{StaticResource BambooGreen}" Offset="0,4" Radius="10" Opacity="0.4" />
+                </Button.Shadow>
+            </Button>
             
         </Grid>
-    </Shell.FlyoutHeader>
+        
+    </Grid>
+</Shell.FlyoutHeader>
     
     <FlyoutItem Title="Timer">
         <ShellContent

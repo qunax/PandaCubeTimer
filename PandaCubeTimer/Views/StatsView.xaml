@@ -34,17 +34,17 @@
                             <HorizontalStackLayout HorizontalOptions="Center" Spacing="30">
                                 <VerticalStackLayout HorizontalOptions="Center">
                                     <Label Text="{Binding SolveCount}" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"/>
-                                    <Label Text="Solves" FontSize="12" Opacity="0.7"/>
+                                    <Label Text="Solves" FontSize="12" Opacity="0.7" HorizontalOptions="Center"/>
                                 </VerticalStackLayout>
                                 
                                 <VerticalStackLayout HorizontalOptions="Center">
                                     <Label Text="{Binding BestSingle}" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"/>
-                                    <Label Text="Best" FontSize="12" Opacity="0.7"/>
+                                    <Label Text="Best" FontSize="12" Opacity="0.7" HorizontalOptions="Center"/>
                                 </VerticalStackLayout>
 
                                 <VerticalStackLayout HorizontalOptions="Center">
                                     <Label Text="{Binding SessionMean}" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"/>
-                                    <Label Text="Mean" FontSize="12" Opacity="0.7"/>
+                                    <Label Text="Mean" FontSize="12" Opacity="0.7" HorizontalOptions="Center"/>
                                 </VerticalStackLayout>
                             </HorizontalStackLayout>
                         </Frame>
@@ -72,15 +72,11 @@
                                 Series="{Binding TimeTrendSeries}"
                                 XAxes="{Binding TimeTrendXAxes}"
                                 YAxes="{Binding TimeTrendYAxes}"
-                                TooltipPosition="Hidden" /> <!-- Set to 'Top' if you want popups on tap -->
+                                TooltipPosition="Hidden"
+                                BackgroundColor="{AppThemeBinding
+                                     Light={StaticResource White}, 
+                                     Dark= {StaticResource BlackEarsCard}}"/> <!-- Set to 'Top' if you want popups on tap -->
                         </Frame>
-                        <!-- <Frame HeightRequest="200" Style="{StaticResource CardStyle}"> -->
-                        <!--     <microcharts:ChartView  -->
-                        <!--         Chart="{Binding TimeTrendChart}"  -->
-                        <!--         BackgroundColor="Transparent" -->
-                        <!--         HorizontalOptions="FillAndExpand"  -->
-                        <!--         VerticalOptions="FillAndExpand"/> -->
-                        <!-- </Frame> -->
                         
                         <Label Text="Time Distribution" FontAttributes="Bold" Margin="0,15,0,5"/>
                         <Frame HeightRequest="250" Style="{StaticResource CardStyle}" Padding="15">
@@ -88,15 +84,11 @@
                                 Series="{Binding TimeDistributionSeries}"
                                 XAxes="{Binding TimeDistributionXAxes}"
                                 YAxes="{Binding TimeDistributionYAxes}"
-                                TooltipPosition="Hidden" />
+                                TooltipPosition="Hidden" 
+                                BackgroundColor="{AppThemeBinding
+                                     Light={StaticResource White}, 
+                                     Dark= {StaticResource BlackEarsCard}}"/>
                         </Frame>
-                        <!-- <Frame HeightRequest="200" Style="{StaticResource CardStyle}"> -->
-                        <!--     <microcharts:ChartView  -->
-                        <!--         Chart="{Binding TimeDistributionChart}"  -->
-                        <!--         BackgroundColor="Transparent" -->
-                        <!--         HorizontalOptions="FillAndExpand"  -->
-                        <!--         VerticalOptions="FillAndExpand"/> -->
-                        <!-- </Frame> -->
 
                     </VerticalStackLayout>
                 </ScrollView>

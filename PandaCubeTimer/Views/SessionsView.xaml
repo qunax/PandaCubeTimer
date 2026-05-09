@@ -19,99 +19,111 @@
             
             <RefreshView Command="{Binding LoadSessionsCommand}"
                          IsRefreshing="{Binding IsRefreshing}"
-                         Padding="5">
+                         Padding="5"
+                         >
                 
-                <CollectionView Background="Transparent"
-                                SelectionMode="Single" 
+                <CollectionView BackgroundColor="Transparent"
+                                SelectionMode="None" 
+                                
                                 x:Name="SessionsList"
                                 ItemsSource="{Binding Sessions}">
                     
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="dtos:SessionInAppDTO">
-                            <Frame Padding="10,15"> 
+                        <DataTemplate x:DataType="dtos:SessionInAppDTO"
+                                      >
+                            
+                            <SwipeView BackgroundColor="Transparent">
                                 
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer CommandParameter="{Binding}"
-                                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/>
-                                </Frame.GestureRecognizers>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItemView IsVisible="{Binding CanDelete}"
+                                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=DeleteSessionCommand}"
+                                                       CommandParameter="{Binding}">
+            
+                                            <Border BackgroundColor="{StaticResource ChineseSeal}"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 10" 
+                                                    WidthRequest="80"
+                                                    Margin="8, 0, 0, 0">
+                                                 <Label Text="Delete" 
+                                                        TextColor="{StaticResource WhiteWool}"
+                                                                FontAttributes="Bold"
+                                                                HorizontalOptions="Center"
+                                                                VerticalOptions="Center"/>
+                                            </Border>
+            
+                                        </SwipeItemView>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
                                 
-                                <Frame.Triggers>
-                                    <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="True">
-                                        <Setter Property="BackgroundColor" Value="#2196F3" />
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="False">
-                                        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#2A2A2A}" />
-                                    </DataTrigger>
-                                </Frame.Triggers>
+                                <Frame Style="{StaticResource CardStyle}"
+                                       Margin="2"> 
                                 
-                                <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="10" VerticalOptions="Center">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding}"
+                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/>
+                                        
+                                    </Frame.GestureRecognizers>
+                                    
+                                    <Frame.Triggers>
+                                        <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource BambooGreen}" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="False">
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding
+                                                 Light={StaticResource White},
+                                                  Dark={StaticResource BlackEarsCard}}" />
+                                        </DataTrigger>
+                                    </Frame.Triggers>
+                                    
+                                    <FlyoutBase.ContextFlyout>
+                                        <MenuFlyout>
+                                            <MenuFlyoutItem Text="Delete" 
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=DeleteSessionCommand}"
+                                                            CommandParameter="{Binding}">
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </FlyoutBase.ContextFlyout>
                                     
                                     <HorizontalStackLayout Grid.Column="0"
-                                                           Spacing="10"
-                                                           VerticalOptions="Center"
-                                                           Background="Transparent">
-                                        
-                                        <Label x:Name="DisciplineNameLabel"
-                                               Text="{Binding DisciplineName}"
-                                               VerticalOptions="Center"
-                                               FontAutoScalingEnabled="True"
-                                               FontAttributes="Bold">
-                                            <Label.Triggers>
-                                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
-                                                    <Setter Property="TextColor" Value="#E0E0E0" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
-                                                    <Setter Property="TextColor" Value="Gray" />
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
+                                                               Spacing="10"
+                                                               VerticalOptions="Center"
+                                                               Background="Transparent">
+                                            
+                                            <Label x:Name="DisciplineNameLabel"
+                                                   Text="{Binding DisciplineName}"
+                                                   VerticalOptions="Center"
+                                                   FontAutoScalingEnabled="True"
+                                                   FontAttributes="Bold">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="TextColor" Value="#E0E0E0" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
+                                                        <Setter Property="TextColor" Value="Gray" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
 
-                                        <Line VerticalOptions="Center" BackgroundColor="Blue" Y2="20" />
+                                            <Line VerticalOptions="Center" BackgroundColor="Blue" Y2="20" />
 
-                                        <Label x:Name="SessionNameLabel"
-                                               Text="{Binding Name}"
-                                               VerticalOptions="Center">
-                                            <Label.Triggers>
-                                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
-                                                    <Setter Property="TextColor" Value="White" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
-                                                    <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
-                                    </HorizontalStackLayout>
-
-                                    <!-- RIGHT: Sync Individual Session Button -->
-                                    <!-- <Button Grid.Column="1" -->
-                                    <!--         Text="↻" -->
-                                    <!--         WidthRequest="40" -->
-                                    <!--         HeightRequest="40" -->
-                                    <!--         CornerRadius="20" -->
-                                    <!--         Padding="0" -->
-                                    <!--         FontSize="18" -->
-                                    <!--         BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#424242}" -->
-                                    <!--         TextColor="{AppThemeBinding Light=Black, Dark=White}" -->
-                                    <!--         IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=IsSyncVisible}" -->
-                                    <!--         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SyncSingleSessionCommand}" -->
-                                    <!--         CommandParameter="{Binding}" /> -->
-
-                                    <!-- RIGHT: Delete Session Button -->
-                                    <Button Grid.Column="2"
-                                            Text="🗑"
-                                            WidthRequest="40"
-                                            HeightRequest="40"
-                                            CornerRadius="20"
-                                            Padding="0"
-                                            FontSize="18"
-                                            BackgroundColor="#F44336"
-                                            TextColor="White"
-                                            IsVisible="{Binding CanDelete}"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=DeleteSessionCommand}"
-                                            CommandParameter="{Binding}" />
-
-                                </Grid>
-                            </Frame>
+                                            <Label x:Name="SessionNameLabel"
+                                                   Text="{Binding Name}"
+                                                   VerticalOptions="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
+                                                        <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </HorizontalStackLayout>
+                                </Frame>
+                                
+                            </SwipeView>
+                            
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     
@@ -128,16 +140,14 @@
                 <Button Text="↻"
                         Command="{Binding SyncAllSessionsAndSolvesCommand}"
                         WidthRequest="50" HeightRequest="50" CornerRadius="25" 
-                        BackgroundColor="{AppThemeBinding Light=#4CAF50, Dark=#81C784}"
-                        TextColor="White" FontSize="24" FontAttributes="Bold" 
+                        FontSize="24" FontAttributes="Bold" 
                         IsVisible="{Binding IsSyncVisible}"
                         Shadow="{Shadow Brush=Black, Offset='0,4', Opacity=0.2}"/>
 
                 <Button Text="+"
                         Command="{Binding AddSessionCommand}"
                         WidthRequest="60" HeightRequest="60" CornerRadius="30" 
-                        BackgroundColor="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}"
-                        TextColor="White" FontSize="28" FontAttributes="Bold" 
+                        FontSize="28" FontAttributes="Bold" 
                         Shadow="{Shadow Brush=Black, Offset='0,4', Opacity=0.2}"/>
                         
             </VerticalStackLayout>

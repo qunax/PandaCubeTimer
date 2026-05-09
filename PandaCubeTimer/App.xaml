@@ -7,12 +7,23 @@
         <ResourceDictionary>
             
             <Style x:Key="CardStyle" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FFFFFF, Dark=#1C1C1E}" />
+                <Setter Property="BackgroundColor" 
+                        Value="{AppThemeBinding 
+                            Light={StaticResource White}, 
+                            Dark={StaticResource BlackEarsCard}}" />
                 <Setter Property="CornerRadius" Value="12" />
                 <Setter Property="Padding" Value="15" />
                 
                 <!-- Shadows pop nicely on Light mode, but look muddy/dirty on Dark mode -->
                 <Setter Property="HasShadow" Value="{AppThemeBinding Light=True, Dark=False}" />
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="{AppThemeBinding Light=#1A000000, Dark=Transparent}" 
+                                Offset="0, 8" 
+                                Radius="20" 
+                                Opacity="1" />
+                    </Setter.Value>
+                </Setter>
                 
                 <!-- Light mode gets a very subtle edge, Dark mode stays borderless/clean -->
                 <Setter Property="BorderColor" Value="{AppThemeBinding Light=#E5E5EA, Dark=Transparent}" />

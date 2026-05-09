@@ -149,8 +149,9 @@ public partial class StatsViewModel : BaseViewModel
     
     private void UpdateTimeTrendChart(List<PuzzleSolve> validSolves)
     {
-        var recentSolves = validSolves.TakeLast(50).ToList();
+        var recentSolves = validSolves.ToList();
         if (!recentSolves.Any()) return;
+        recentSolves.Reverse(); // reverse so the graph is from the oldest to the newest solve times
 
         // 1. Theme Check
         bool isDarkMode = Application.Current?.RequestedTheme == AppTheme.Dark;
@@ -183,7 +184,7 @@ public partial class StatsViewModel : BaseViewModel
             {
                 LabelsPaint = new SolidColorPaint(axisTextColor),
                 TextSize = 12,
-                Labeler = value => value.ToString("0.0"), // Formats labels like "10.4"
+                Labeler = value => value.FormatTime(), // Formats labels like "10.4"
                 SeparatorsPaint = new SolidColorPaint(gridLineColor)
                 {
                     StrokeThickness = 1,
@@ -200,7 +201,7 @@ public partial class StatsViewModel : BaseViewModel
     {
         // Group by seconds
         var distribution = validSolves
-            .GroupBy(s => (int)Math.Floor(s.SolveTimeSeconds))
+            .GroupBy(s => (double)Math.Floor(s.SolveTimeSeconds))
             .OrderBy(g => g.Key)
             .ToList();
 
@@ -211,7 +212,7 @@ public partial class StatsViewModel : BaseViewModel
         SKColor barColor = SKColor.Parse("#B84B9E");
 
         var values = distribution.Select(g => (double)g.Count()).ToArray();
-        var labels = distribution.Select(g => $"{g.Key}+").ToArray();
+        var labels = distribution.Select(g => g.Key.FormatTime() + "+").ToArray();
 
         // 1. Setup Series (The Bars)
         TimeDistributionSeries = new ISeries[]
@@ -252,85 +253,4 @@ public partial class StatsViewModel : BaseViewModel
         BestSingle = SessionMean = CurrentAo5 = CurrentAo12 = CurrentAo100 = "-";
         BestAo5 = BestAo12 = BestAo100 = "-";
     }
-    
-    // private void UpdateTimeDistributionChart(List<PuzzleSolve> validSolves)
-    // {
-    //     bool isDarkMode = Application.Current?.RequestedTheme == AppTheme.Dark;
-    //
-    //     SKColor axisTextColor = isDarkMode ? SKColor.Parse("#A0A0A0") : SKColor.Parse("#666666");
-    //
-    //     var distribution = validSolves
-    //         .GroupBy(s => (int)Math.Floor(s.SolveTimeSeconds))
-    //         .OrderBy(g => g.Key)
-    //         .ToList();
-    //
-    //     var entries = new List<ChartEntry>();
-    //
-    //     for (int i = 0; i < distribution.Count; i++)
-    //     {
-    //         var group = distribution[i];
-    //     
-    //         float fraction = distribution.Count > 1 ? (float)i / (distribution.Count - 1) : 0;
-    //     
-    //         byte r = (byte)(233 - (233 - 138) * fraction); 
-    //         byte g = (byte)(30 - (30 - 43) * fraction);    
-    //         byte b = (byte)(99 - (99 - 226) * fraction);   
-    //         SKColor barColor = new SKColor(r, g, b);
-    //
-    //         entries.Add(new ChartEntry(group.Count())
-    //         {
-    //             Color = barColor,
-    //             Label = $"{group.Key}+", 
-    //             ValueLabel = group.Count().ToString(), 
-    //         
-    //             TextColor = axisTextColor, 
-    //             ValueLabelColor = barColor 
-    //         });
-    //     }
-    //
-    //     TimeDistributionChart = new BarChart
-    //     {
-    //         Entries = entries,
-    //         BackgroundColor = SKColors.Transparent,
-    //         LabelTextSize = 20,
-    //         Margin = 20,
-    //         ValueLabelOrientation = Orientation.Horizontal,
-    //         LabelColor = axisTextColor 
-    //     };
-    // }
-    //
-    // private void UpdateTimeTrendChart(List<PuzzleSolve> validSolves)
-    // {
-    //     bool isDarkMode = Application.Current?.RequestedTheme == AppTheme.Dark;
-    //     SKColor textColor = isDarkMode ? SKColor.Parse("#F2F2F7") : SKColor.Parse("#1C1C1E");
-    //     SKColor lineColor = SKColor.Parse("#B84B9E"); 
-    //
-    //     var recentSolves = validSolves.TakeLast(50).ToList();
-    //     var entries = new List<ChartEntry>();
-    //
-    //     for (int i = 0; i < recentSolves.Count; i++)
-    //     {
-    //         var solve = recentSolves[i];
-    //         entries.Add(new ChartEntry((float)solve.SolveTimeSeconds)
-    //         {
-    //             Color = lineColor,
-    //             Label = "", 
-    //             ValueLabel = "",
-    //             TextColor = textColor,
-    //             ValueLabelColor = textColor
-    //         });
-    //     }
-    //
-    //     TimeTrendChart = new LineChart
-    //     {
-    //         Entries = entries,
-    //         LineMode = LineMode.Spline,
-    //         LineSize = 4,             
-    //         PointMode = PointMode.None, 
-    //         LineAreaAlpha = 45,    
-    //         BackgroundColor = SKColors.Transparent,
-    //         LabelColor = textColor,   
-    //         Margin = 0
-    //     };
-    // }
 }
