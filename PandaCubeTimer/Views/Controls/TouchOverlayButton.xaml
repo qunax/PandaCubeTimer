@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PandaCubeTimer.Views.Controls.TouchOverlayButton"
+             x:Name="RootControl">
+    <Button BackgroundColor="#01000000"
+            VerticalOptions="Fill"
+            HorizontalOptions="Fill"
+            CornerRadius="0"
+            BorderWidth="0">
+        
+        <Button.Behaviors>
+            <toolkit:EventToCommandBehavior EventName="Pressed" 
+                                            Command="{Binding PressedCommand, Source={x:Reference RootControl}}"
+                                            CommandParameter="{Binding CommandParameter, Source={x:Reference RootControl}}" />
+
+            <toolkit:EventToCommandBehavior EventName="Released" 
+                                            Command="{Binding ReleasedCommand, Source={x:Reference RootControl}}"
+                                            CommandParameter="{Binding CommandParameter, Source={x:Reference RootControl}}" />
+        </Button.Behaviors>
+        
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="#01000000" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </VisualStateManager.VisualStateGroups>
+    </Button>
+</ContentView>

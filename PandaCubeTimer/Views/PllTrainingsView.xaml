@@ -5,6 +5,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
              xmlns:models="clr-namespace:PandaCubeTimer.Models.Tutorials"
+             xmlns:controls="clr-namespace:PandaCubeTimer.Views.Controls"
              x:Class="PandaCubeTimer.Views.PLLTrainingsView"
              x:DataType="viewModels:PllTrainingsViewModel">
     
@@ -38,10 +39,10 @@
                         <Grid Padding="2">
                             <Frame Padding="0" Style="{StaticResource CardStyle}">
                                 
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer CommandParameter="{Binding}"
-                                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:PllTrainingsViewModel}}, Path= SelectAlgorithmCommand}"/>
-                                </Frame.GestureRecognizers>
+                                <!-- <Frame.GestureRecognizers> -->
+                                <!--     <TapGestureRecognizer CommandParameter="{Binding}" -->
+                                <!--                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:PllTrainingsViewModel}}, Path= SelectAlgorithmCommand}"/> -->
+                                <!-- </Frame.GestureRecognizers> -->
                                 
                                 <VerticalStackLayout Padding="10"
                                                      HorizontalOptions="Center"
@@ -56,6 +57,13 @@
                                            VerticalOptions="Center" />
                                 </VerticalStackLayout>
                             </Frame>
+                            
+                            <!-- using this instead of TapGestureRecognizer because of the bug on Android -->
+                            <controls:TouchOverlayButton CommandParameter="{Binding}"
+                                                         ReleasedCommand="{Binding 
+                                        Source={RelativeSource AncestorType={x:Type viewModels:PllTrainingsViewModel}}, 
+                                        Path= SelectAlgorithmCommand}"/>
+
                         </Grid>
                         
                     </DataTemplate>
@@ -65,10 +73,10 @@
             
             <!-- SELECTED ALGORITHM -->
             <Grid IsVisible="{Binding IsAlgOpened}"
-                  BackgroundColor="Transparent"
+                  BackgroundColor="#01000000"
                   InputTransparent="False">
-                <BoxView Color="Gray" 
-                         Opacity="0.5"/>
+                <Grid BackgroundColor="Black" 
+                          Opacity="0.6"/>
                 
                 <!-- <Grid.GestureRecognizers> -->
                 <!--     <TapGestureRecognizer Command="{Binding ClosePuzzleSolveCommand}"/> -->

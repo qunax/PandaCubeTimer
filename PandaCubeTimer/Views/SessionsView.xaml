@@ -4,6 +4,7 @@
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
              xmlns:models="clr-namespace:PandaCubeTimer.Models"
              xmlns:dtos="clr-namespace:PandaCubeTimer.Models.DTOs"
+             xmlns:controls="clr-namespace:PandaCubeTimer.Views.Controls"
              xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:SessionsViewModel"
@@ -44,7 +45,7 @@
                                                     StrokeThickness="0"
                                                     StrokeShape="RoundRectangle 10" 
                                                     WidthRequest="80"
-                                                    Margin="8, 0, 0, 0">
+                                                    Margin="2, 2, 2, 2">
                                                  <Label Text="Delete" 
                                                         TextColor="{StaticResource WhiteWool}"
                                                                 FontAttributes="Bold"
@@ -56,71 +57,89 @@
                                     </SwipeItems>
                                 </SwipeView.RightItems>
                                 
-                                <Frame Style="{StaticResource CardStyle}"
-                                       Margin="2"> 
-                                
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding}"
-                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/>
+                                <Grid>
+                                    
+                                    <Frame Style="{StaticResource CardStyle}"
+                                           Margin="2"> 
+                                    
+                                        <!-- <Frame.GestureRecognizers> -->
+                                        <!--     <TapGestureRecognizer CommandParameter="{Binding}" -->
+                                        <!--                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=SelectSessionCommand }"/> -->
+                                        <!-- -->
+                                        <!-- </Frame.GestureRecognizers> -->
                                         
-                                    </Frame.GestureRecognizers>
-                                    
-                                    <Frame.Triggers>
-                                        <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="True">
-                                            <Setter Property="BackgroundColor" Value="{StaticResource BambooGreen}" />
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="False">
-                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding
-                                                 Light={StaticResource White},
-                                                  Dark={StaticResource BlackEarsCard}}" />
-                                        </DataTrigger>
-                                    </Frame.Triggers>
-                                    
-                                    <FlyoutBase.ContextFlyout>
-                                        <MenuFlyout>
-                                            <MenuFlyoutItem Text="Delete" 
-                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=DeleteSessionCommand}"
-                                                            CommandParameter="{Binding}">
-                                            </MenuFlyoutItem>
-                                        </MenuFlyout>
-                                    </FlyoutBase.ContextFlyout>
-                                    
-                                    <HorizontalStackLayout Grid.Column="0"
-                                                               Spacing="10"
-                                                               VerticalOptions="Center"
-                                                               Background="Transparent">
+                                        <Frame.Triggers>
+                                            <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource BambooGreen}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame" Binding="{Binding IsSelected}" Value="False">
+                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding
+                                                     Light={StaticResource White},
+                                                      Dark={StaticResource BlackEarsCard}}" />
+                                            </DataTrigger>
+                                        </Frame.Triggers>
+                                        
+                                        <!-- for desktop for deletion with right mouse button -->
+                                        <FlyoutBase.ContextFlyout>
+                                            <MenuFlyout>
+                                                <MenuFlyoutItem Text="Delete" 
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=DeleteSessionCommand}"
+                                                                CommandParameter="{Binding}">
+                                                </MenuFlyoutItem>
+                                            </MenuFlyout>
+                                        </FlyoutBase.ContextFlyout>
+                                        
+                                        <Grid>
                                             
-                                            <Label x:Name="DisciplineNameLabel"
-                                                   Text="{Binding DisciplineName}"
-                                                   VerticalOptions="Center"
-                                                   FontAutoScalingEnabled="True"
-                                                   FontAttributes="Bold">
-                                                <Label.Triggers>
-                                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
-                                                        <Setter Property="TextColor" Value="#E0E0E0" />
-                                                    </DataTrigger>
-                                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
-                                                        <Setter Property="TextColor" Value="Gray" />
-                                                    </DataTrigger>
-                                                </Label.Triggers>
-                                            </Label>
+                                            <HorizontalStackLayout Grid.Column="0"
+                                                                   Spacing="10"
+                                                                   VerticalOptions="Center"
+                                                                   Background="Transparent">
+                                                
+                                                <Label x:Name="DisciplineNameLabel"
+                                                       Text="{Binding DisciplineName}"
+                                                       VerticalOptions="Center"
+                                                       FontAutoScalingEnabled="True"
+                                                       FontAttributes="Bold">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                                            <Setter Property="TextColor" Value="#E0E0E0" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
+                                                            <Setter Property="TextColor" Value="Gray" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
 
-                                            <Line VerticalOptions="Center" BackgroundColor="Blue" Y2="20" />
+                                                <Line VerticalOptions="Center" BackgroundColor="Blue" Y2="20" />
 
-                                            <Label x:Name="SessionNameLabel"
-                                                   Text="{Binding Name}"
-                                                   VerticalOptions="Center">
-                                                <Label.Triggers>
-                                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
-                                                        <Setter Property="TextColor" Value="White" />
-                                                    </DataTrigger>
-                                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
-                                                        <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
-                                                    </DataTrigger>
-                                                </Label.Triggers>
-                                            </Label>
-                                        </HorizontalStackLayout>
-                                </Frame>
+                                                <Label x:Name="SessionNameLabel"
+                                                       Text="{Binding Name}"
+                                                       VerticalOptions="Center">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                                            <Setter Property="TextColor" Value="White" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="False">
+                                                            <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                            </HorizontalStackLayout>
+                                            
+                                            <!-- using this instead of TapGestureRecognizer because of the bug on Android -->
+                                            <controls:TouchOverlayButton CommandParameter="{Binding}"
+                                                                         ReleasedCommand="{Binding Source={RelativeSource
+                                                                    AncestorType={x:Type viewModels:SessionsViewModel}},
+                                                                    Path=SelectSessionCommand }"/>
+                                            
+                                        </Grid>
+                                        
+                                    </Frame>
+                                    
+                                    
+                                        
+                                </Grid>
                                 
                             </SwipeView>
                             

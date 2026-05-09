@@ -55,10 +55,10 @@
                                    Padding="0"
                                    Style="{StaticResource CardStyle}">
                                 
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer CommandParameter="{Binding}"
-                                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SolvesViewModel}}, Path=SelectPuzzleSolveCommand  }"/>
-                                </Frame.GestureRecognizers>
+                                <!-- <Frame.GestureRecognizers> -->
+                                <!--     <TapGestureRecognizer CommandParameter="{Binding}" -->
+                                <!--                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SolvesViewModel}}, Path=SelectPuzzleSolveCommand  }"/> -->
+                                <!-- </Frame.GestureRecognizers> -->
                                 
                                 <VerticalStackLayout Padding="0"
                                                      HorizontalOptions="Center"
@@ -84,6 +84,14 @@
                                 </VerticalStackLayout>
                                 
                             </Frame>
+                            
+                            <!-- using this instead of TapGestureRecognizer because of the bug on Android -->
+                            <controls:TouchOverlayButton CommandParameter="{Binding}"
+                                                         ReleasedCommand="{Binding Source={RelativeSource 
+                                                            AncestorType={x:Type viewModels:SolvesViewModel}}, 
+                                                            Path=SelectPuzzleSolveCommand  }"/>
+
+                            
                         </Grid>
                         
                     </DataTemplate>
@@ -96,9 +104,8 @@
               BackgroundColor="Transparent"
               InputTransparent="False"
               Grid.Row="1">
-            <BoxView Color="Gray" 
-                     BackgroundColor="Black"
-                     Opacity="0.3"/>
+            <Grid BackgroundColor="Black" 
+                  Opacity="0.4"/>
             
             <!-- <Grid.GestureRecognizers> -->
             <!--     <TapGestureRecognizer Command="{Binding ClosePuzzleSolveCommand}"/> -->

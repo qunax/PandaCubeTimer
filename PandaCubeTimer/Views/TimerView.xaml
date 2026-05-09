@@ -8,6 +8,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:controls1="clr-namespace:PandaCubeTimer.Views.Controls"
              x:DataType="viewModels:TimerViewModel"
              x:Class="PandaCubeTimer.Views.TimerView"
              Title="Timer">
@@ -103,6 +104,8 @@
                     HasShadow="False"
                     BorderColor="Transparent" >
 
+                <!-- here idk why but tab gesture on android is working  -->
+                <!-- and I prefer to use it so i don't have to change Z index of penalty buttons -->
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding StartTimerCommand}"/>
                 </Frame.GestureRecognizers>
@@ -184,7 +187,7 @@
                 </Grid>
                 
             </Frame>
-                
+            
             <Grid Grid.Row="2">
                 
             </Grid>

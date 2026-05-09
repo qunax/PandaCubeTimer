@@ -5,7 +5,8 @@
              xmlns:viewModels="clr-namespace:PandaCubeTimer.ViewModels"
              xmlns:converters="clr-namespace:PandaCubeTimer.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="PandaCubeTimer.Views.InspectionView"
+             xmlns:controls="clr-namespace:PandaCubeTimer.Views.Controls"
+             x:Class="PandaCubeTimer.Views.InspectionView"  
              x:DataType="viewModels:InspectionViewModel"
              Shell.TabBarIsVisible="False">
     
@@ -41,32 +42,10 @@
                    VerticalOptions="Center"
                    x:Name="TimeText" />
         </Border>
-
-        <Button BackgroundColor="#01000000"
-                VerticalOptions="Fill"
-                HorizontalOptions="Fill">
-            
-            <Button.Behaviors>
-                <toolkit:EventToCommandBehavior EventName="Pressed" 
-                                                Command="{Binding ChangeColorOnPressCommand}" />
         
-                <toolkit:EventToCommandBehavior EventName="Released" 
-                                                Command="{Binding StartTimerCommand}" />
-            </Button.Behaviors>
-            
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal" />
-                        <VisualState x:Name="Pressed">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="#01000000" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </VisualStateManager.VisualStateGroups>
-        </Button>
+        <!-- using this instead of TapGestureRecognizer because of the bug on Android -->
+        <controls:TouchOverlayButton PressedCommand="{Binding ChangeColorOnPressCommand}"
+                                     ReleasedCommand="{Binding StartTimerCommand}"/>
         
     </Grid>
 </ContentPage>
