@@ -106,11 +106,19 @@
         <ShellContent
             Title="OLL"
             ContentTemplate="{DataTemplate views:OLLTrainingsView}"
-            Route="OLL_Trainings"/>
+            Route="OLL_Trainings">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe5c3;" Color="#9E9E9E" />
+            </ShellContent.Icon>
+        </ShellContent>
         <ShellContent
             Title="PLL"
             ContentTemplate="{DataTemplate views:PLLTrainingsView}"
-            Route="PLL_Trainings"/>
+            Route="PLL_Trainings">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe863;" Color="#9E9E9E" />
+            </ShellContent.Icon>
+        </ShellContent>
     </FlyoutItem>
     
     <FlyoutItem Title="Settings">
