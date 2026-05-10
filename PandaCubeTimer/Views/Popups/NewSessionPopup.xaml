@@ -4,10 +4,19 @@
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui"
                xmlns:views="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-               x:Class="PandaCubeTimer.Views.Popups.NewSessionPopup">
+               x:Class="PandaCubeTimer.Views.Popups.NewSessionPopup"
+               Color="Transparent">
 
-    <Border StrokeShape="RoundRectangle 12" BackgroundColor="{AppThemeBinding Light=White, Dark=#212121}"
-            Padding="20" VerticalOptions="Center">
+    <Border StrokeShape="RoundRectangle 12"
+            BackgroundColor="{AppThemeBinding
+             Light={StaticResource WhiteWool},
+              Dark={StaticResource BlackEars}}"
+            Padding="20"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"   
+            WidthRequest="320"
+            StrokeThickness="0">
+        
         <VerticalStackLayout Spacing="15">
             <Label Text="New Session" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" />
 

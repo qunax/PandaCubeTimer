@@ -60,7 +60,8 @@
                                 <Grid>
                                     
                                     <Frame Style="{StaticResource CardStyle}"
-                                           Margin="2"> 
+                                           Margin="2"
+                                           x:Name="SessionCard"> 
                                     
                                         <!-- <Frame.GestureRecognizers> -->
                                         <!--     <TapGestureRecognizer CommandParameter="{Binding}" -->
@@ -84,7 +85,7 @@
                                             <MenuFlyout>
                                                 <MenuFlyoutItem Text="Delete" 
                                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SessionsViewModel}}, Path=DeleteSessionCommand}"
-                                                                CommandParameter="{Binding}">
+                                                                CommandParameter="{Binding BindingContext, Source={x:Reference SessionCard}}">
                                                 </MenuFlyoutItem>
                                             </MenuFlyout>
                                         </FlyoutBase.ContextFlyout>
