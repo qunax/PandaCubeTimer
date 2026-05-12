@@ -68,7 +68,7 @@ public class AuthHeaderHandler : DelegatingHandler
                     }
                     
                     Shell.Current.FlyoutIsPresented = false;
-                    await Shell.Current.GoToAsync("//LoginPageAbsolute");
+                    //await Shell.Current.GoToAsync("//LoginPageAbsolute");
                 }
                 else
                 {
